@@ -61,7 +61,6 @@ export default {
     }
 };
 </script>
-
 <template>
     <div class="account-pages my-5 pt-5">
         <BContainer>
