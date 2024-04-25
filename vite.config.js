@@ -26,7 +26,6 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
-                'resources/sass/app-rtl.scss',
                 'resources/sass/bootstrap.scss',
                 'resources/sass/icons.scss',
                 'resources/js/app.js',
