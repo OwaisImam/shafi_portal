@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use HasRoles;
+    use HasPermissions;
+
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'dob', 
+        'dob',
         'avatar',
     ];
 
@@ -42,4 +51,46 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getDOB(): string
+    {
+        return $this->dob;
+    }
+
+    public function getCreatedAt(): string
+    {
+        return $this->created_at->format('d-m-Y');
+    }
+
+    public function getUpdatedAt(): string
+    {
+        return $this->updated_at->format('d-m-Y');
+    }
+
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function profilePicture(): BelongsTo
+    {
+        return $this->belongsTo(Upload::class, 'avatar');
+    }
+
+
 }

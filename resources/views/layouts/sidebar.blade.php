@@ -8,8 +8,24 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">@lang('translation.Menu')</li>
+                @canany(['users-update', 'users-list', 'users-view', 'users-delete', 'users-edit'])
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-home-circle"></i>
+                            <span key="t-dashboards">@lang('translation.Users')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @can('users-list')
+                                <li><a href="{{ route('admin.users.index') }}" key="t-default">@lang('translation.List')</a></li>
+                            @endcan
+                            @can('users-create')
+                                <li><a href="{{ route('admin.users.create') }}" key="t-default">@lang('translation.Create')</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-home-circle"></i>
                         <span key="t-dashboards">@lang('translation.Dashboards')</span>
@@ -431,7 +447,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>

@@ -102,7 +102,7 @@ return [
   "Images" => "Images",
   "Lightbox" => "Lightbox",
   "Modals" => "Modals",
-  "Offcanvas" =>"Off Canvas",
+  "Offcanvas" => "Off Canvas",
   "Range_Slider" => "Range Slider",
   "Session_Timeout" => "Session Timeout",
   "Progress_Bars" => "Progress Bars",
@@ -177,7 +177,7 @@ return [
   "Edit_Details" => "Edit Details",
   "Placeholders" => "Placeholders",
   "Toasts" => "Toasts",
-  
+
   "Jobs" => "Jobs",
   "Job_List" => "Job List",
   "Job_Grid" => "Job Grid",
@@ -190,5 +190,9 @@ return [
   "Utilities" => "Utilities",
   "hot" => "Hot",
   "backend" => "Backend",
-  "yajra-datatable" => "Yajra Datatable"
+  "yajra-datatable" => "Yajra Datatable",
+  "Users" => "Users",
+  "List" => "List",
+  "Create" => "Create",
+
 ];
