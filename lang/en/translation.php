@@ -195,6 +195,7 @@ return [
   "Users" => "Users",
   "List" => "List",
   "Create" => "Create",
-  "System_Settings" => "System Settings"
+  "System_Settings" => "System Settings",
+  "Clients" => "Clients"
 
 ];

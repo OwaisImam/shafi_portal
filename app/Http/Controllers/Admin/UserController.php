@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\Helper;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Repositories\CityRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,13 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     private UserRepository $userRepository;
+    private CityRepository $cityRepository;
     private Request $request;
 
-    public function __construct(UserRepository $userRepository, Request $request)
+    public function __construct(UserRepository $userRepository, Request $request, CityRepository $cityRepository)
     {
         $this->userRepository = $userRepository;
+        $this->cityRepository = $cityRepository;
         $this->request = $request;
 
 
@@ -47,7 +50,7 @@ class UserController extends Controller
             return JsonResponse::success($response, 'Users fetched successfully.');
         }
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index');
     }
 
     /**
@@ -55,8 +58,8 @@ class UserController extends Controller
      */
     public function create()
     {
-
-        return view('admin.users.create');
+        $cities = $this->cityRepository->where('flag', 1)->where('country_id', 167)->get();
+        return view('admin.users.create', compact('cities'));
     }
 
     /**
@@ -70,10 +73,19 @@ class UserController extends Controller
                 "email" => "required|email|unique:users,email",
                 "profile_picture" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
                 "dob" => "nullable|date",
+                'date_of_exit' => 'nullable',
+                'date_of_joining' => 'nullable',
                 "password" => "required|min:8",
                 "confirm_password" => "required|same:password",
                 "consent" => "required|accepted",
-                'status' => 'nullable|boolean'
+                'status' => 'nullable|boolean',
+                'doe' => 'nullable',
+                'city_id' => 'nullable',
+                'address' => 'nullable',
+                'cnic' => 'nullable',
+                'father_name' => 'nullable',
+                'is_employee' => 'nullable',
+                'phone_number' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -131,10 +143,20 @@ class UserController extends Controller
                 "email" => ["required",'email', Rule::unique('users')->ignore($id),],
                 "profile_picture" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
                 "dob" => "nullable|date",
-                "password" => "nullable|min:8",
-                "confirm_password" => "nullable|same:password",
+                'date_of_exit' => 'nullable',
+                'date_of_joining' => 'nullable',
+                "password" => "required|min:8",
+                "confirm_password" => "required|same:password",
                 "consent" => "required|accepted",
-                'status' => 'nullable|boolean'
+                'status' => 'nullable|boolean',
+                'doe' => 'nullable',
+                'city_id' => 'nullable',
+                'address' => 'nullable',
+                'cnic' => 'nullable',
+                'father_name' => 'nullable',
+                'is_employee' => 'nullable',
+                'phone_number' => 'required'
+
             ]);
 
             if ($validator->fails()) {

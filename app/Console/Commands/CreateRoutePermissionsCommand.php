@@ -33,6 +33,7 @@ class CreateRoutePermissionsCommand extends Command
         $permissions = [
                   'users',
                   'permissions',
+                  'clients',
               ];
 
         $permissionList = [];

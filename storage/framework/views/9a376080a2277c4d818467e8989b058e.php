@@ -1,18 +1,16 @@
-@extends('layouts.master')
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('translation.Form_Mask'); ?>
+<?php $__env->stopSection(); ?>
 
-@section('title')
-    @lang('translation.Form_Mask')
-@endsection
-
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?>
             Forms
-        @endslot
-        @slot('title')
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?>
             Form Mask
-        @endslot
-    @endcomponent
+        <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <div class="row">
         <div class="col-lg-12">
@@ -85,12 +83,14 @@
         </div>
     </div>
     <!-- end row -->
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
     <!-- form mask -->
-    <script src="{{ URL::asset('build/libs/inputmask/inputmask.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
 
     <!-- form mask init -->
-    <script src="{{ URL::asset('build/js/pages/form-mask.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/inputmask/jquery.inputmask.min.js') }}"></script>
-@endsection
+    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/form-mask.blade.php ENDPATH**/ ?>

@@ -32,7 +32,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'dob',
         'avatar',
         'status',
-        'role_id'
+        'role_id',
+        'phone_number',
+        'city_id',
+        'date_of_exit',
+        'date_of_joining',
+        'father_name',
+        'cnic',
+        'address',
+        'is_employee'
     ];
 
     /**
@@ -72,6 +80,38 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getDOB(): string
     {
         return $this->dob;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+
+    public function getDateOfExit(): string
+    {
+        return $this->date_of_exit;
+    }
+
+
+    public function getDateOfJoining(): string
+    {
+        return $this->date_of_joining;
+    }
+
+    public function getCNIC(): string
+    {
+        return $this->cnic;
+    }
+
+    public function getIsEmployee(): bool
+    {
+        return $this->is_employee;
+    }
+
+    public function getFatherName(): string
+    {
+        return $this->father_name;
     }
 
     public function getCreatedAt(): string
