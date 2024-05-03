@@ -29,9 +29,11 @@ class Helper
          ]);
     }
 
-    public static function getUploadedFile($file)
+    public static function getUploadedFile($fileID)
     {
-        return Storage::url('uploads/' . $file);
+        $upload = Upload::where('id', $fileID)->first();
+
+        return Storage::url('uploads/' . $upload->getFileName());
     }
 
     public static function getClientIpAddress()

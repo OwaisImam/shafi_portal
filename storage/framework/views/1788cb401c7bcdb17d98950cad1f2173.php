@@ -32,6 +32,7 @@
                         action="<?php echo e(route('admin.users.store')); ?>">
                         <?php echo csrf_field(); ?>
                         <div class="row">
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="validationCustom01" class="form-label">Name</label>
@@ -106,6 +107,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <div>
+                                        <input type="checkbox" name="status" value="1" id="switch6"
+                                            switch="primary" />
+                                        <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="form-check mb-3">
@@ -145,6 +156,23 @@
     <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>
     <!-- toastr init -->
     <script src="<?php echo e(URL::asset('build/js/pages/toastr.init.js')); ?>"></script>
+    <?php if($errors->any()): ?>
+        <script>
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                toastr["error"]('<?php echo e($error); ?>');
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </script>
+    <?php endif; ?>
+    <?php if(session('success')): ?>
+        <script>
+            toastr["success"]('<?php echo e(session('success')); ?>');
+        </script>
+    <?php endif; ?>
+    <?php if(session('error')): ?>
+        <script>
+            toastr["error"]('<?php echo e(session('error')); ?>');
+        </script>
+    <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/users/create.blade.php ENDPATH**/ ?>

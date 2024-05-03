@@ -34,6 +34,7 @@
                         action="{{ route('admin.users.store') }}">
                         @csrf
                         <div class="row">
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="validationCustom01" class="form-label">Name</label>
@@ -105,6 +106,16 @@
                                     <div class="mt-2">
                                         <input type="password" name="confirm_password" class="form-control" required
                                             data-parsley-equalto="#pass2" placeholder="Re-Type Password" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <div>
+                                        <input type="checkbox" name="status" value="1" id="switch6"
+                                            switch="primary" />
+                                        <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
                                     </div>
                                 </div>
                             </div>
@@ -182,4 +193,21 @@
     <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
     <!-- toastr init -->
     <script src="{{ URL::asset('build/js/pages/toastr.init.js') }}"></script>
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr["error"]('{{ $error }}');
+            @endforeach
+        </script>
+    @endif
+    @if (session('success'))
+        <script>
+            toastr["success"]('{{ session('success') }}');
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            toastr["error"]('{{ session('error') }}');
+        </script>
+    @endif
 @endsection

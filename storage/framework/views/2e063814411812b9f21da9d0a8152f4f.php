@@ -43,9 +43,9 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="text-sm-end">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#newContactModal"
+                                <a href="<?php echo e(route('admin.users.create')); ?>"
                                     class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Contact</button>
+                                        class="mdi mdi-plus me-1"></i> New User</a>
                             </div>
                         </div><!-- end col-->
                     </div>
@@ -58,6 +58,7 @@
                                     <th scope="col" style="width: 40px;">#</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
@@ -199,7 +200,7 @@
     <script src="<?php echo e(URL::asset('build/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')); ?>"></script>
 
     <!-- ecommerce-customer-list init -->
-    <script src="<?php echo e(URL::asset('build/js/pages/contact-user-list.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/users/user-list.init.js')); ?>"></script>
 
     <!-- toastr plugin -->
     <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>

@@ -5,12 +5,11 @@ namespace App\Repositories;
 use App\Dtos\UserDto;
 use App\Models\User;
 use App\Repositories\BaseRepository;
-use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
-class UserRepository extends BaseRepository implements IUserRepository
+class UserRepository extends BaseRepository
 {
     public function model()
     {
@@ -26,8 +25,9 @@ class UserRepository extends BaseRepository implements IUserRepository
 
     public function createNewUserWithRole($data): Model|User
     {
-        $user = parent::create($data);
         $role = Role::create(['name' => $data['name']]);
+        $data['role_id'] = $role->id;
+        $user = parent::create($data);
         $user->assignRole($role);
 
         return $user;

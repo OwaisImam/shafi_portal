@@ -3,6 +3,7 @@
 return [
   "Menu" => "Menu",
   "Dashboards" => "Dashboards",
+  "Dashboard" => "Dashboard",
   "Default" => "Default",
   "Saas" => "Saas",
   "Crypto" => "Crypto",
@@ -194,5 +195,6 @@ return [
   "Users" => "Users",
   "List" => "List",
   "Create" => "Create",
+  "System_Settings" => "System Settings"
 
 ];

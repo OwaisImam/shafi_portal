@@ -33,6 +33,7 @@
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
                         <div class="row">
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="validationCustom01" class="form-label">Name</label>
@@ -100,12 +101,12 @@
                                 <div class="mb-3">
                                     <label class="form-label">Password</label>
                                     <div>
-                                        <input type="password" id="pass2" name="password" class="form-control" required
-                                            placeholder="Password" />
+                                        <input type="password" id="pass2" name="password" class="form-control"
+                                            placeholder="*******" />
                                     </div>
                                     <div class="mt-2">
-                                        <input type="password" name="confirm_password" class="form-control" required
-                                            data-parsley-equalto="#pass2" placeholder="Re-Type Password" />
+                                        <input type="password" name="confirm_password" class="form-control"
+                                            data-parsley-equalto="#pass2" placeholder="*******" />
                                     </div>
                                 </div>
                             </div>

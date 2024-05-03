@@ -72,13 +72,15 @@ class UserController extends Controller
                 "dob" => "nullable|date",
                 "password" => "required|min:8",
                 "confirm_password" => "required|same:password",
-                "consent" => "required|accepted"
+                "consent" => "required|accepted",
+                'status' => 'nullable|boolean'
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
             $data = $validator->validated();
+
             unset($data['confirm_password']);
 
             DB::beginTransaction();
@@ -129,8 +131,8 @@ class UserController extends Controller
                 "email" => ["required",'email', Rule::unique('users')->ignore($id),],
                 "profile_picture" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
                 "dob" => "nullable|date",
-                "password" => "required|min:8",
-                "confirm_password" => "required|same:password",
+                "password" => "nullable|min:8",
+                "confirm_password" => "nullable|same:password",
                 "consent" => "required|accepted",
                 'status' => 'nullable|boolean'
             ]);
@@ -139,10 +141,13 @@ class UserController extends Controller
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
             $data = $validator->validated();
+
             unset($data['confirm_password']);
             DB::beginTransaction();
 
-            $this->userRepository->updatePassword($data['email'], $data['password']);
+            if(isset($data['password'])) {
+                $this->userRepository->updatePassword($data['email'], $data['password']);
+            }
 
             unset($data['password']);
             unset($data['consent']);

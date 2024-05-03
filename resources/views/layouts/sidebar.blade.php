@@ -8,11 +8,19 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">@lang('translation.Menu')</li>
+
+                <li>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <i class="bx bx-home-circle"></i>
+                        <span key="t-dashboards">@lang('translation.Dashboard')</span>
+                    </a>
+                </li>
+
                 @canany(['users-update', 'users-list', 'users-view', 'users-delete', 'users-edit'])
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-home-circle"></i>
-                            <span key="t-dashboards">@lang('translation.Users')</span>
+                            <i class="bx bx-user"></i>
+                            <span key="t-users">@lang('translation.Users')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             @can('users-list')
@@ -24,6 +32,17 @@
                         </ul>
                     </li>
                 @endcanany
+                {{-- @canany('') --}}
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bxs-cog"></i>
+                        <span key="t-settings">@lang('translation.Settings')</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.settings.systems') }}" key="t-default">@lang('translation.System_Settings')</a></li>
+                    </ul>
+                </li>
+                {{-- @endcan --}}
 
                 {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
