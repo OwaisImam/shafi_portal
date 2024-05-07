@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'role' => RoleMiddleware::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
+        'client.auth' => \App\Http\Middleware\RedirectIfClientUnauthenticated::class,
     ];
 }

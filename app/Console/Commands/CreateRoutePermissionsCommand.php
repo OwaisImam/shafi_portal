@@ -34,6 +34,8 @@ class CreateRoutePermissionsCommand extends Command
                   'users',
                   'permissions',
                   'clients',
+                  'email_templates',
+                  'departments'
               ];
 
         $permissionList = [];
@@ -45,6 +47,10 @@ class CreateRoutePermissionsCommand extends Command
             $permissionList[] = $permission . '-edit';
             $permissionList[] = $permission . '-view';
             $permissionList[] = $permission . '-delete';
+
+            if($permission == 'clients') {
+                $permissionList[] = $permission . '-generate-credentials';
+            }
         }
 
         foreach ($permissionList as $permission) {

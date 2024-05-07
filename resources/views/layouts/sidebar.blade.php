@@ -55,13 +55,41 @@
                             @can('clients-list')
                                 <li><a href="{{ route('admin.clients.index') }}" key="t-default">@lang('translation.List')</a></li>
                             @endcan
-                            @can('clients-create')
-                                <li><a href="{{ route('admin.clients.create') }}" key="t-default">@lang('translation.Create')</a></li>
+                        </ul>
+                    </li>
+                @endcanany
+                @canany(['email_templates-update', 'email_templates-list', 'email_templates-view',
+                    'email_templates-delete', 'email_templates-edit'])
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-user"></i>
+                            <span key="t-users">@lang('translation.Email_Templates')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @can('email_templates-list')
+                                <li><a href="{{ route('admin.email_templates.index') }}" key="t-default">@lang('translation.List')</a>
+                                </li>
                             @endcan
                         </ul>
                     </li>
                 @endcanany
+                @canany(['departments-update', 'departments-list', 'departments-view', 'departments-delete',
+                    'departments-edit'])
 
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-user"></i>
+                            <span key="t-users">@lang('translation.Departments')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @can('departments-list')
+                                <li><a href="{{ route('admin.departments.index') }}" key="t-default">@lang('translation.List')</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
                 {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-home-circle"></i>

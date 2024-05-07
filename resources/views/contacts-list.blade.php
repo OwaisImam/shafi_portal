@@ -8,11 +8,12 @@
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- DataTables -->
-    <link href="{{ URL::asset('build/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -98,8 +99,8 @@
                                         </div>
                                         <div class="avatar-lg">
                                             <div class="avatar-title bg-light rounded-circle">
-                                                <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}" id="member-img"
-                                                    class="avatar-md rounded-circle h-auto" />
+                                                <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
+                                                    id="member-img" class="avatar-md rounded-circle h-auto" />
                                             </div>
                                         </div>
                                     </div>

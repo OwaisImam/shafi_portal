@@ -42,13 +42,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#newClientModal"
-                                    class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Client</button>
-                            </div>
-                        </div><!-- end col-->
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('clients-create')): ?>
+                            <div class="col-sm-8">
+                                <div class="text-sm-end">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#newClientModal"
+                                        class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"><i
+                                            class="mdi mdi-plus me-1"></i> New Client</button>
+                                </div>
+                            </div><!-- end col-->
+                        <?php endif; ?>
+
                     </div>
                     <!-- end row -->
                     <div class="table-responsive">
@@ -59,11 +62,8 @@
                                     <th scope="col" style="width: 40px;">#</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Country</th>
-                                    <th scope="col">State</th>
                                     <th scope="col">City</th>
                                     <th scope="col">Postal Code</th>
-                                    <th scope="col">Website</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col" style="width: 200px;">Action</th>
@@ -83,7 +83,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="newContactModalLabel">Add Client</h5>
+                    <h5 class="modal-title" id="newClientModalLabel">Add Client</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -91,26 +91,40 @@
                         class="needs-validation createContact-form" id="createContact-form" novalidate method="post">
                         <?php echo csrf_field(); ?>
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="logo" class="form-label">Logo</label>
-                                    <input class="form-control" type="file" name="logo" required id="logo">
-                                    <div class="valid-feedback">
-                                        Looks good!
+                            <input type="hidden" class="form-control" id="userid-input">
+                            <div class="text-center mb-4">
+                                <div class="position-relative d-inline-block">
+                                    <div class="position-absolute bottom-0 end-0">
+                                        <label for="member-image-input" class="mb-0" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Select Member Image">
+                                            <div class="avatar-xs">
+                                                <div
+                                                    class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                                    <i class="bx bxs-image-alt"></i>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input class="form-control d-none" value="" name="logo"
+                                            id="member-image-input" type="file"
+                                            accept="image/png, image/gif, image/jpeg">
                                     </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid logo.
+                                    <div class="avatar-lg">
+                                        <div class="avatar-title bg-light rounded-circle">
+                                            <img src="<?php echo e(URL::asset('build/images/users/user-dummy-img.jpg')); ?>"
+                                                id="member-img" class="avatar-md rounded-circle h-auto" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="row">
                             <div class="col-md-6">
 
                                 <div class="mb-3">
                                     <label for="username-input" class="form-label">Client Name</label>
-                                    <input type="text" id="username-input" name="name" class="form-control"
-                                        placeholder="Enter name" required />
+                                    <input type="text" id="username-input" value="<?php echo e(old('name')); ?>" name="name"
+                                        class="form-control" placeholder="Enter name" required />
                                     <div class="invalid-feedback">Please enter a name.</div>
                                 </div>
                             </div>
@@ -118,8 +132,8 @@
 
                                 <div class="mb-3">
                                     <label for="email-input" class="form-label">Email</label>
-                                    <input type="email" id="email-input" class="form-control" placeholder="Enter email"
-                                        required name="email" />
+                                    <input type="email" id="email-input" value="<?php echo e(old('email')); ?>"
+                                        class="form-control" placeholder="Enter email" required name="email" />
                                     <div class="invalid-feedback">Please enter email.</div>
                                 </div>
                             </div>
@@ -128,9 +142,10 @@
                             <div class="col-md-6">
 
                                 <div class="mb-3">
-                                    <label for="designation-input" class="form-label">Address</label>
-                                    <input type="text" id="designation-input" class="form-control"
-                                        placeholder="Enter Address" name="address" required />
+                                    <label for="address-input" class="form-label">Address</label>
+                                    <input type="text" id="address-input" class="form-control"
+                                        placeholder="Enter Address" value="<?php echo e(old('address')); ?>" name="address"
+                                        required />
                                     <div class="invalid-feedback">Please enter address.</div>
                                 </div>
                             </div>
@@ -139,7 +154,8 @@
                                 <div class="mb-3">
                                     <label for="postalcode-input" class="form-label">Postal Code</label>
                                     <input type="text" id="postalcode-input" class="form-control"
-                                        placeholder="Enter Postal Code" name="postal_code" required />
+                                        placeholder="Enter Postal Code" value="<?php echo e(old('postal_code')); ?>"
+                                        name="postal_code" required />
                                     <div class="invalid-feedback">Please enter postal code.</div>
                                 </div>
                             </div>
@@ -183,7 +199,8 @@
                                 <div class="mb-3">
                                     <label for="phone-input" class="form-label">Phone Number</label>
                                     <input type="text" id="phone-input" class="form-control"
-                                        placeholder="Enter Phone Number" name="phone_number" required />
+                                        placeholder="Enter Phone Number" value="<?php echo e(old('phone_number')); ?>"
+                                        name="phone_number" required />
                                     <div class="invalid-feedback">Please enter phone number.</div>
                                 </div>
                             </div>
@@ -193,28 +210,31 @@
                                 <div class="mb-3">
                                     <label for="website-input" class="form-label">Website</label>
                                     <input type="text" id="website-input" class="form-control"
-                                        placeholder="Enter Website" required name="website" />
+                                        placeholder="Enter Website" required value="<?php echo e(old('website')); ?>"
+                                        name="website" />
                                     <div class="invalid-feedback">Please enter website.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="type-input" class="form-label">Type</label>
+                                    <label for="type-input" class="form-label">Sourcing Type</label>
                                     <div class="form-check form-radio-primary mb-3">
-                                        <input class="form-check-input" type="radio" value="direct" name="type"
+                                        <input class="form-check-input" type="radio"
+                                            <?php echo e(old('type') == 'direct' ? 'checked' : ''); ?> value="direct" name="type"
                                             id="direct" checked>
                                         <label class="form-check-label" for="direct">
                                             Direct
                                         </label>
                                     </div>
                                     <div class="form-check form-radio-primary mb-3">
-                                        <input class="form-check-input" type="radio" value="indirect" name="type"
-                                            id="indirect" checked>
+                                        <input class="form-check-input" type="radio"
+                                            <?php echo e(old('type') == 'indirect' ? 'checked' : ''); ?> value="indirect"
+                                            name="type" id="indirect" checked>
                                         <label class="form-check-label" for="indirect">
                                             Indirect
                                         </label>
                                     </div>
-                                    <div class="invalid-feedback">Please select type.</div>
+                                    <div class="invalid-feedback">Please select sourcing type.</div>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +272,8 @@
                     <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this User ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
-                        <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>
+                        <button type="button" class="btn btn-danger" id="remove-item">Remove
+                            Now</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -262,26 +283,25 @@
     <!-- end removeItemModal -->
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
-    <!-- select2 js -->
-    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
-    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
-
-    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
-    <script src="<?php echo e(URL::asset('build/libs/parsleyjs/parsley.min.js')); ?>"></script>
-    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
     <script src="<?php echo e(URL::asset('build/libs/select2/js/select2.min.js')); ?>"></script>
-    <script src="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js')); ?>"></script>
 
     <!-- Required datatable js -->
     <script src="<?php echo e(URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js')); ?>"></script>
     <script src="<?php echo e(URL::asset('build/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')); ?>"></script>
 
-    <!-- Responsive examples -->
-    <script src="<?php echo e(URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js')); ?>"></script>
-    <script src="<?php echo e(URL::asset('build/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')); ?>"></script>
-
     <!-- ecommerce-customer-list init -->
     <script src="<?php echo e(URL::asset('build/js/pages/clients/clients-list.init.js')); ?>"></script>
+
+    <!-- select2 js -->
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/moment/min/moment.min.js')); ?>"></script>
+
+    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/parsleyjs/parsley.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js')); ?>"></script>
+
 
     <!-- toastr plugin -->
     <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>
@@ -313,7 +333,7 @@
 
                     }
                 });
-            }); // <-- Added closing bracket
+            });
 
             $('#state').on('change', function() {
                 var idState = this.value;

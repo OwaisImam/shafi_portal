@@ -6,7 +6,7 @@ Contact: themesbrand@gmail.com
 File: contact user list Js File
 */
 
-var url = "build/json/";
+var url = "../build/json/";
 var userListData = '';
 var editList = false;
 
@@ -54,10 +54,10 @@ function loadUserList(datas) {
                 render: function (data, type, full) {
                     var isUserProfile = full.memberImg ? '<img src="' + full.memberImg + '" alt="" class="member-img img-fluid d-block rounded-circle" />'
                         : '<div class="avatar-title rounded-circle text-uppercase">' + full.nickname + '</div>';
-                    return '<div class="d-none">'+full.id+'</div><div class="avatar-xs img-fluid rounded-circle">' + isUserProfile + '</div';
+                    return '<div class="d-none">' + full.id + '</div><div class="avatar-xs img-fluid rounded-circle">' + isUserProfile + '</div';
                 }
 
-            }, 
+            },
             {
                 data: null,
                 render: function (data, type, full) {
@@ -77,15 +77,15 @@ function loadUserList(datas) {
                     Array.from(tags.slice(0, tabShowSize)).forEach(function (tag, index) {
                         tagHtml += '<a href="javascript: void(0);" class="badge badge-soft-primary font-size-11 m-1">' + tag + '</a>';
                     });
-                    if(tags.length > tabShowSize){
+                    if (tags.length > tabShowSize) {
                         var tabsLength = tags.length - tabShowSize;
-                        tagHtml += '<a href="javascript: void(0);" class="badge badge-soft-primary font-size-11 m-1">'+tabsLength+' more</a>';
+                        tagHtml += '<a href="javascript: void(0);" class="badge badge-soft-primary font-size-11 m-1">' + tabsLength + ' more</a>';
                     }
-                    
+
                     return tagHtml;
                 },
             },
-            {data: "projects"},
+            { data: "projects" },
             {
                 data: null,
                 'bSortable': false,
@@ -162,7 +162,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
 
             if (userName !== "" && designationInput !== "" && emailInput !== "" && !editList) {
                 var newUserId = findNextId();
-                
+
                 var newList = {
                     "id": newUserId,
                     "memberImg": memberImageValue,
@@ -175,7 +175,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                 };
 
                 userListData.push(newList)
-            }else if(userName !== "" && designationInput !== "" && emailInput !== "" && editList){
+            } else if (userName !== "" && designationInput !== "" && emailInput !== "" && editList) {
                 var getEditid = 0;
                 getEditid = document.getElementById("userid-input").value;
                 userListData = userListData.map(function (item) {
@@ -190,7 +190,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                             'tags': tagInputFieldValue,
                             "projects": item.projects
                         }
-                        
+
                         return editObj;
                     }
                     return item;
@@ -227,9 +227,9 @@ document.querySelector("#member-image-input").addEventListener("change", functio
     var preview = document.querySelector("#member-img");
     var file = document.querySelector("#member-image-input").files[0];
     var reader = new FileReader();
-    reader.addEventListener("load",function () {
+    reader.addEventListener("load", function () {
         preview.src = reader.result;
-    },false);
+    }, false);
     if (file) {
         reader.readAsDataURL(file);
     }
@@ -249,9 +249,9 @@ function editContactList() {
                     document.getElementById("newContactModalLabel").innerHTML = "Edit Profile";
                     document.getElementById("addContact-btn").innerHTML = "Update";
                     document.getElementById("userid-input").value = item.id;
-                    if(item.memberImg == ""){
+                    if (item.memberImg == "") {
                         document.getElementById("member-img").src = "build/images/users/user-dummy-img.jpg";
-                    }else{
+                    } else {
                         document.getElementById("member-img").src = item.memberImg;
                     }
                     document.getElementById("username-input").value = item.userName;
@@ -271,7 +271,7 @@ function editContactList() {
 
 
 // add list event
-Array.from(document.querySelectorAll(".addContact-modal")).forEach(function(elem) {
+Array.from(document.querySelectorAll(".addContact-modal")).forEach(function (elem) {
     elem.addEventListener('click', function (event) {
         editList = false;
         document.getElementById("createContact-form").classList.remove("was-validated");
@@ -304,7 +304,7 @@ function removeItem() {
                 var filtered = arrayRemove(userListData, getid);
 
                 userListData = filtered;
-                if ( $.fn.DataTable.isDataTable('#userList-table') ) {
+                if ($.fn.DataTable.isDataTable('#userList-table')) {
                     $('#userList-table').DataTable().destroy();
                 }
                 loadUserList(userListData);

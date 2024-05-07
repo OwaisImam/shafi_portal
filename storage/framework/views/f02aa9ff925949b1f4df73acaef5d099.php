@@ -55,13 +55,41 @@
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('clients-list')): ?>
                                 <li><a href="<?php echo e(route('admin.clients.index')); ?>" key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
                             <?php endif; ?>
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('clients-create')): ?>
-                                <li><a href="<?php echo e(route('admin.clients.create')); ?>" key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['email_templates-update', 'email_templates-list', 'email_templates-view',
+                    'email_templates-delete', 'email_templates-edit'])): ?>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-user"></i>
+                            <span key="t-users"><?php echo app('translator')->get('translation.Email_Templates'); ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('email_templates-list')): ?>
+                                <li><a href="<?php echo e(route('admin.email_templates.index')); ?>" key="t-default"><?php echo app('translator')->get('translation.List'); ?></a>
+                                </li>
                             <?php endif; ?>
                         </ul>
                     </li>
                 <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['departments-update', 'departments-list', 'departments-view', 'departments-delete',
+                    'departments-edit'])): ?>
 
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-user"></i>
+                            <span key="t-users"><?php echo app('translator')->get('translation.Departments'); ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('departments-list')): ?>
+                                <li><a href="<?php echo e(route('admin.departments.index')); ?>" key="t-default"><?php echo app('translator')->get('translation.List'); ?></a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
                 
 
             </ul>

@@ -196,6 +196,7 @@ return [
   "List" => "List",
   "Create" => "Create",
   "System_Settings" => "System Settings",
-  "Clients" => "Clients"
-
+  "Clients" => "Clients",
+  "Email_Templates" => "Email Templates",
+  "Departments" => "Departments",
 ];

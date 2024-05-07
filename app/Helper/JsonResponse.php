@@ -21,8 +21,7 @@ class JsonResponse
             ],
             Response::HTTP_OK,
             [
-                'knipklok-identifier' => request()->knipklok_identifier,
-                'message' => request()->message,
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0'
             ]
         );
     }
