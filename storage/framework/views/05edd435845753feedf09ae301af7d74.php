@@ -38,7 +38,7 @@
                                 <div class="mb-3">
                                     <label for="validationCustom01" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="validationCustom01" placeholder="Name"
-                                        value="<?php echo e($user->getname() ?: old('name')); ?>" required name="name">
+                                        value="<?php echo e($user->name); ?>" required name="name">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -47,11 +47,28 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="validationCustom02" placeholder="Email"
-                                        value="<?php echo e($user->getEmail() ?: old('email')); ?>" name="email" required>
+                                    <label for="father_name" class="form-label">Father Name</label>
+                                    <input type="text" class="form-control" id="father_name" placeholder="Father Name"
+                                        value="<?php echo e($user->father_name); ?>" required name="father_name">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the full name.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="input-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control input-mask" id="input-email"
+                                        placeholder="Email" value="<?php echo e($user->email); ?>" name="email" required>
+                                    <span class="text-muted">_@_._</span>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -60,31 +77,45 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cnic" class="form-label">CNIC</label>
+                                    <input class="form-control input-mask" type="text" value="<?php echo e($user->cnic); ?>"
+                                        data-inputmask="'mask': '99999-9999999-9'" name="cnic" required id="cnic">
+                                    <span class="text-muted">e.g "99999-9999999-9"</span>
+
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid cnic.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">Profile Picture</label>
-                                    <input class="form-control" type="file" name="profile_picture" id="formFile">
+                                    <label for="profile_picture" class="form-label">Profile Picture</label>
+                                    <input class="form-control" type="file" name="profile_picture" id="profile_picture">
+                                    <img src="<?php echo e($user->profilePicture?->image_path); ?>"
+                                        class="rounded-circle header-profile-user">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
                                         Enter the valid profile picture.
                                     </div>
-                                    <img class="rounded-circle header-profile-user"
-                                        src="<?php echo e($user->profilePicture?->image_path); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="validationCustom03" class="form-label">Date of Birth</label>
+                                    <label for="dob" class="form-label">Date of Birth</label>
                                     <div class="input-group" id="datepicker2">
-                                        <input type="text" class="form-control" id="validationCustom03"
+                                        <input type="text" class="form-control" id="dob"
                                             placeholder="yyyy-mm-dd" name="dob" data-date-format="yyyy-mm-dd"
                                             data-date-container='#datepicker2' data-provide="datepicker"
-                                            data-date-autoclose="true" required
-                                            value="<?php echo e($user->getDOB() ?: old('dob')); ?>">
+                                            data-date-autoclose="true" required value="<?php echo e($user->dob); ?>">
                                         <div class="valid-feedback">
                                             Looks good!
                                         </div>
@@ -97,31 +128,116 @@
                             </div>
                         </div>
                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="doj" class="form-label">Date of Joining</label>
+                                    <div class="input-group" id="datepicker2">
+                                        <input type="text" class="form-control" id="doj"
+                                            placeholder="yyyy-mm-dd" name="date_of_joining" data-date-format="yyyy-mm-dd"
+                                            data-date-container='#datepicker2' data-provide="datepicker"
+                                            data-date-autoclose="true" required value="<?php echo e($user->date_of_joining); ?>">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Select the valid date of joining.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date of exit</label>
+                                    <input type="text" class="form-control" id="date_of_exit"
+                                        placeholder="yyyy-mm-dd" name="date_of_exit" data-date-format="yyyy-mm-dd"
+                                        data-date-container='#datepicker2' data-provide="datepicker"
+                                        data-date-autoclose="true" value="<?php echo e($user->date_of_exit); ?>">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Select the valid date of joining.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Address</label>
+                                    <input class="form-control" type="text" name="address"
+                                        value="<?php echo e($user->address); ?>" required id="formFile">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid address.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <div class="input-group" id="city">
+                                        <select class="form-control select2" required name="city_id">
+                                            <option>Select</option>
+                                            <?php $__currentLoopData = $cities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item->id); ?>"
+                                                    <?php echo e($user->city_id == $item->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($item->name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select the city.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Password</label>
                                     <div>
                                         <input type="password" id="pass2" name="password" class="form-control"
-                                            placeholder="*******" />
+                                            placeholder="Password" />
                                     </div>
                                     <div class="mt-2">
                                         <input type="password" name="confirm_password" class="form-control"
-                                            data-parsley-equalto="#pass2" placeholder="*******" />
+                                            data-parsley-equalto="#pass2" placeholder="Re-Type Password" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <div>
+                                        <input type="text" id="phone_number" name="phone_number" value="+92"
+                                            class="form-control input-mask" required placeholder="Phone Number"
+                                            data-inputmask="'mask': '999999999999'" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label class="form-label">Status</label>
                                     <div>
-                                        <input type="checkbox" name="status" value="1"
-                                            <?php echo e($user->status == 1 ? 'checked' : ''); ?> id="switch6" switch="primary" />
+                                        <input type="checkbox" name="status" <?php echo e($user->status == 1 ? 'checked' : ''); ?>
+
+                                            value="1" id="switch6" switch="primary" />
                                         <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="consent" value="1"
                                 id="invalidCheck" required <?php echo e(old('consent') == 1 ? 'checked' : ''); ?>>
@@ -132,6 +248,7 @@
                                 You must agree before submitting.
                             </div>
                         </div>
+
                         <div>
                             <button class="btn btn-primary" type="submit">Update</button>
                         </div>

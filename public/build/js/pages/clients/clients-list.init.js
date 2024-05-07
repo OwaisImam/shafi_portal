@@ -212,11 +212,11 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                     "wesbite": websiteInput,
                     "postalcode": postalcodeInput,
                 };
-                userListData.push(newList)
+                userListData.data.push(newList)
             } else if (name !== "" && phoneInput !== "" && emailInput !== "" && editList) {
                 var getEditid = 0;
                 getEditid = document.getElementById("userid-input").value;
-                userListData = userListData.map(function (item) {
+                userListData.data = userListData.data.map(function (item) {
                     if (item.id == getEditid) {
 
                         var editObj = {
@@ -250,11 +250,11 @@ function fetchIdFromObj(member) {
 }
 
 function findNextId() {
-    if (userListData.length === 0) {
+    if (userListData.data.length === 0) {
         return 0;
     }
-    var lastElementId = fetchIdFromObj(userListData[userListData.length - 1]),
-        firstElementId = fetchIdFromObj(userListData[0]);
+    var lastElementId = fetchIdFromObj(userListData.data[userListData.data.length - 1]),
+        firstElementId = fetchIdFromObj(userListData.data[0]);
     return (firstElementId >= lastElementId) ? (firstElementId + 1) : (lastElementId + 1);
 }
 
@@ -281,7 +281,7 @@ function editClientList() {
             editList = true;
 
             document.getElementById("createContact-form").classList.remove("was-validated")
-            userListData = userListData.data.map(function (item) {
+            userListData.data = userListData.data.map(function (item) {
                 if (item.id == getEditid) {
                     document.getElementById("newClientModalLabel").innerHTML = "Edit Profile";
                     document.getElementById("addContact-btn").innerHTML = "Update";

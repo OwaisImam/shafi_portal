@@ -40,7 +40,7 @@
                                 <div class="mb-3">
                                     <label for="validationCustom01" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="validationCustom01" placeholder="Name"
-                                        value="{{ $user->getname() ?: old('name') }}" required name="name">
+                                        value="{{ $user->name }}" required name="name">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -49,11 +49,28 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="validationCustom02" placeholder="Email"
-                                        value="{{ $user->getEmail() ?: old('email') }}" name="email" required>
+                                    <label for="father_name" class="form-label">Father Name</label>
+                                    <input type="text" class="form-control" id="father_name" placeholder="Father Name"
+                                        value="{{ $user->father_name }}" required name="father_name">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the full name.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="input-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control input-mask" id="input-email"
+                                        placeholder="Email" value="{{ $user->email }}" name="email" required>
+                                    <span class="text-muted">_@_._</span>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -62,31 +79,45 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cnic" class="form-label">CNIC</label>
+                                    <input class="form-control input-mask" type="text" value="{{ $user->cnic }}"
+                                        data-inputmask="'mask': '99999-9999999-9'" name="cnic" required id="cnic">
+                                    <span class="text-muted">e.g "99999-9999999-9"</span>
+
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid cnic.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">Profile Picture</label>
-                                    <input class="form-control" type="file" name="profile_picture" id="formFile">
+                                    <label for="profile_picture" class="form-label">Profile Picture</label>
+                                    <input class="form-control" type="file" name="profile_picture" id="profile_picture">
+                                    <img src="{{ $user->profilePicture?->image_path }}"
+                                        class="rounded-circle header-profile-user">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
                                         Enter the valid profile picture.
                                     </div>
-                                    <img class="rounded-circle header-profile-user"
-                                        src="{{ $user->profilePicture?->image_path }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="validationCustom03" class="form-label">Date of Birth</label>
+                                    <label for="dob" class="form-label">Date of Birth</label>
                                     <div class="input-group" id="datepicker2">
-                                        <input type="text" class="form-control" id="validationCustom03"
+                                        <input type="text" class="form-control" id="dob"
                                             placeholder="yyyy-mm-dd" name="dob" data-date-format="yyyy-mm-dd"
                                             data-date-container='#datepicker2' data-provide="datepicker"
-                                            data-date-autoclose="true" required
-                                            value="{{ $user->getDOB() ?: old('dob') }}">
+                                            data-date-autoclose="true" required value="{{ $user->dob }}">
                                         <div class="valid-feedback">
                                             Looks good!
                                         </div>
@@ -99,66 +130,115 @@
                             </div>
                         </div>
                         <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="doj" class="form-label">Date of Joining</label>
+                                    <div class="input-group" id="datepicker2">
+                                        <input type="text" class="form-control" id="doj"
+                                            placeholder="yyyy-mm-dd" name="date_of_joining" data-date-format="yyyy-mm-dd"
+                                            data-date-container='#datepicker2' data-provide="datepicker"
+                                            data-date-autoclose="true" required value="{{ $user->date_of_joining }}">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Select the valid date of joining.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date of exit</label>
+                                    <input type="text" class="form-control" id="date_of_exit"
+                                        placeholder="yyyy-mm-dd" name="date_of_exit" data-date-format="yyyy-mm-dd"
+                                        data-date-container='#datepicker2' data-provide="datepicker"
+                                        data-date-autoclose="true" value="{{ $user->date_of_exit }}">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Select the valid date of joining.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Address</label>
+                                    <input class="form-control" type="text" name="address"
+                                        value="{{ $user->address }}" required id="formFile">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid address.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <div class="input-group" id="city">
+                                        <select class="form-control select2" required name="city_id">
+                                            <option>Select</option>
+                                            @foreach ($cities as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ $user->city_id == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select the city.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Password</label>
                                     <div>
                                         <input type="password" id="pass2" name="password" class="form-control"
-                                            placeholder="*******" />
+                                            placeholder="Password" />
                                     </div>
                                     <div class="mt-2">
                                         <input type="password" name="confirm_password" class="form-control"
-                                            data-parsley-equalto="#pass2" placeholder="*******" />
+                                            data-parsley-equalto="#pass2" placeholder="Re-Type Password" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <div>
+                                        <input type="text" id="phone_number" name="phone_number" value="+92"
+                                            class="form-control input-mask" required placeholder="Phone Number"
+                                            data-inputmask="'mask': '999999999999'" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label class="form-label">Status</label>
                                     <div>
-                                        <input type="checkbox" name="status" value="1"
-                                            {{ $user->status == 1 ? 'checked' : '' }} id="switch6" switch="primary" />
+                                        <input type="checkbox" name="status" {{ $user->status == 1 ? 'checked' : '' }}
+                                            value="1" id="switch6" switch="primary" />
                                         <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom03" class="form-label">State</label>
-                                    <select class="form-select" id="validationCustom03" required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <option>...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a valid state.
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom04" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="validationCustom04" placeholder="City"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid city.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom05" class="form-label">Zip</label>
-                                    <input type="text" class="form-control" id="validationCustom05" placeholder="Zip"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid zip.
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="consent" value="1"
                                 id="invalidCheck" required {{ old('consent') == 1 ? 'checked' : '' }}>
@@ -169,6 +249,7 @@
                                 You must agree before submitting.
                             </div>
                         </div>
+
                         <div>
                             <button class="btn btn-primary" type="submit">Update</button>
                         </div>

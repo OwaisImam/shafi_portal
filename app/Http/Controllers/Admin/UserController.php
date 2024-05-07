@@ -130,7 +130,9 @@ class UserController extends Controller
     {
         $user = $this->userRepository->getById($id);
 
-        return view('admin.users.edit', compact('user'));
+        $cities = $this->cityRepository->where('flag', 1)->where('country_id', 167)->get();
+
+        return view('admin.users.edit', compact('user', 'cities'));
     }
 
     /**
@@ -147,8 +149,8 @@ class UserController extends Controller
                 "dob" => "nullable|date",
                 'date_of_exit' => 'nullable',
                 'date_of_joining' => 'nullable',
-                "password" => "required|min:8",
-                "confirm_password" => "required|same:password",
+                "password" => "nullable|min:8",
+                "confirm_password" => "nullable|same:password",
                 "consent" => "required|accepted",
                 'status' => 'nullable|boolean',
                 'doe' => 'nullable',

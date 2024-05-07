@@ -25,7 +25,7 @@ class UserRepository extends BaseRepository
 
     public function createNewUserWithRole($data): Model|User
     {
-        $role = Role::create(['name' => $data['name']]);
+        $role = Role::create(['name' => $data['name']. random_int(1, 9999)]);
         $data['role_id'] = $role->id;
         $user = parent::create($data);
         $user->assignRole($role);

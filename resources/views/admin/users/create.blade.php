@@ -233,44 +233,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom03" class="form-label">State</label>
-                                    <select class="form-select" id="validationCustom03" required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <option>...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a valid state.
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom04" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="validationCustom04" placeholder="City"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid city.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="validationCustom05" class="form-label">Zip</label>
-                                    <input type="text" class="form-control" id="validationCustom05" placeholder="Zip"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid zip.
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="consent" value="1"
                                 id="invalidCheck" required {{ old('consent') == 1 ? 'checked' : '' }}>
@@ -282,7 +245,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </form>
                 </div>
