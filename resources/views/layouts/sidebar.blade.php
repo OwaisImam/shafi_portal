@@ -32,17 +32,17 @@
                         </ul>
                     </li>
                 @endcanany
-                {{-- @canany('') --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bxs-cog"></i>
-                        <span key="t-settings">@lang('translation.Settings')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('admin.settings.systems') }}" key="t-default">@lang('translation.System_Settings')</a></li>
-                    </ul>
-                </li>
-                {{-- @endcan --}}
+                @canany(['system_settings-list', 'system_settings-edit', 'system_settings-update'])
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bxs-cog"></i>
+                            <span key="t-settings">@lang('translation.Settings')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{ route('admin.settings.systems') }}" key="t-default">@lang('translation.System_Settings')</a></li>
+                        </ul>
+                    </li>
+                @endcan
 
 
                 @canany(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])

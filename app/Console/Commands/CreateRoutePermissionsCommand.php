@@ -35,7 +35,8 @@ class CreateRoutePermissionsCommand extends Command
                   'permissions',
                   'clients',
                   'email_templates',
-                  'departments'
+                  'departments',
+                  'system_settings'
               ];
 
         $permissionList = [];

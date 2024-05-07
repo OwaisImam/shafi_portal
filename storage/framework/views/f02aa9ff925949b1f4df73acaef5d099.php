@@ -32,17 +32,17 @@
                         </ul>
                     </li>
                 <?php endif; ?>
-                
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bxs-cog"></i>
-                        <span key="t-settings"><?php echo app('translator')->get('translation.Settings'); ?></span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="<?php echo e(route('admin.settings.systems')); ?>" key="t-default"><?php echo app('translator')->get('translation.System_Settings'); ?></a></li>
-                    </ul>
-                </li>
-                
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['system_settings-list', 'system_settings-edit', 'system_settings-update'])): ?>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bxs-cog"></i>
+                            <span key="t-settings"><?php echo app('translator')->get('translation.Settings'); ?></span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="<?php echo e(route('admin.settings.systems')); ?>" key="t-default"><?php echo app('translator')->get('translation.System_Settings'); ?></a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
 
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])): ?>
