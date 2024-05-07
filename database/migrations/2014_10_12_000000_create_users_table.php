@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        User::create(['name' => 'admin','dob' => '2000-10-10','email' => 'owaisimam2@gmail.com','password' => Hash::make('12345678'),'email_verified_at' => '2022-01-02 17:04:58','avatar' => 'images/avatar-1.jpg','created_at' => now(),]);
+
     }
 
     /**
