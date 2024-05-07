@@ -70,6 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $data['dob'] =  date('Y-m-d', strtotime($data['dob']));
         $data['password'] = Hash::make($data['password']);
 
         $user = $this->userRepository->createNewUserWithRole($data);
