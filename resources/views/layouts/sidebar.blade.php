@@ -48,7 +48,7 @@
                 @canany(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-group"></i>
                             <span key="t-users">@lang('translation.Clients')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
@@ -63,7 +63,7 @@
 
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-mail-send"></i>
                             <span key="t-users">@lang('translation.Email_Templates')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
@@ -79,7 +79,7 @@
 
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-spreadsheet"></i>
                             <span key="t-users">@lang('translation.Departments')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">

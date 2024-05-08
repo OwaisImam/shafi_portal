@@ -39,7 +39,7 @@
                 </div>
             </form>
 
-            <div class="dropdown dropdown-mega d-none d-lg-block ms-2">
+            {{-- <div class="dropdown dropdown-mega d-none d-lg-block ms-2">
                 <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown"
                     aria-haspopup="false" aria-expanded="false">
                     <span key="t-megamenu">@lang('translation.Mega_Menu')</span>
@@ -170,15 +170,14 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="d-flex">
 
             <div class="dropdown d-inline-block d-lg-none ms-2">
-                <button type="button" class="btn header-item noti-icon waves-effect"
-                    id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
+                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-magnify"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
@@ -190,125 +189,14 @@
                                 <input type="text" class="form-control" placeholder="@lang('translation.Search')"
                                     aria-label="Search input">
 
-                                <button class="btn btn-primary" type="submit"><i
-                                        class="mdi mdi-magnify"></i></button>
+                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    @switch(Session::get('lang'))
-                        @case('ru')
-                            <img src="{{ URL::asset('build/images/flags/russia.jpg') }}" alt="Header Language"
-                                height="16">
-                        @break
 
-                        @case('it')
-                            <img src="{{ URL::asset('build/images/flags/italy.jpg') }}" alt="Header Language" height="16">
-                        @break
-
-                        @case('gr')
-                            <img src="{{ URL::asset('build/images/flags/germany.jpg') }}" alt="Header Language"
-                                height="16">
-                        @break
-
-                        @case('sp')
-                            <img src="{{ URL::asset('build/images/flags/spain.jpg') }}" alt="Header Language" height="16">
-                        @break
-
-                        @default
-                            <img src="{{ URL::asset('build/images/flags/us.jpg') }}" alt="Header Language" height="16">
-                    @endswitch
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-
-                    <!-- item-->
-                    <a href="{{ url('index/en') }}" class="dropdown-item notify-item language" data-lang="eng">
-                        <img src="{{ URL::asset('build/images/flags/us.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">English</span>
-                    </a>
-                    <!-- item-->
-                    <a href="{{ url('index/sp') }}" class="dropdown-item notify-item language" data-lang="sp">
-                        <img src="{{ URL::asset('build/images/flags/spain.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Spanish</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="{{ url('index/gr') }}" class="dropdown-item notify-item language" data-lang="gr">
-                        <img src="{{ URL::asset('build/images/flags/germany.jpg') }}" alt="user-image"
-                            class="me-1" height="12"> <span class="align-middle">German</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="{{ url('index/it') }}" class="dropdown-item notify-item language" data-lang="it">
-                        <img src="{{ URL::asset('build/images/flags/italy.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Italian</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="{{ url('index/ru') }}" class="dropdown-item notify-item language" data-lang="ru">
-                        <img src="{{ URL::asset('build/images/flags/russia.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Russian</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="bx bx-customize"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                    <div class="px-lg-2">
-                        <div class="row g-0">
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/github.png') }}" alt="Github">
-                                    <span>GitHub</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/bitbucket.png') }}" alt="bitbucket">
-                                    <span>Bitbucket</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/dribbble.png') }}" alt="dribbble">
-                                    <span>Dribbble</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="row g-0">
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/dropbox.png') }}" alt="dropbox">
-                                    <span>Dropbox</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/mail_chimp.png') }}"
-                                        alt="mail_chimp">
-                                    <span>Mail Chimp</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ URL::asset('build/images/brands/slack.png') }}" alt="slack">
-                                    <span>Slack</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="dropdown d-none d-lg-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
                     <i class="bx bx-fullscreen"></i>
@@ -419,12 +307,9 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="contacts-profile"><i
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">@lang('translation.Profile')</span></a>
-                    <a class="dropdown-item" href="#"><i
-                            class="bx bx-wallet font-size-16 align-middle me-1"></i> <span
-                            key="t-my-wallet">@lang('translation.My_Wallet')</span></a>
                     <a class="dropdown-item d-block" href="#" data-bs-toggle="modal"
                         data-bs-target=".change-password"><span class="badge bg-success float-end">11</span><i
                             class="bx bx-wrench font-size-16 align-middle me-1"></i> <span

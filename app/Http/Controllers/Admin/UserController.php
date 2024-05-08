@@ -213,4 +213,10 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
+
+    public function showProfile()
+    {
+        $user = Auth::user();
+        return view('admin.users.profile', compact('user'));
+    }
 }

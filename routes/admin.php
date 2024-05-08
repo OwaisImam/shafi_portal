@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('profile', [UserController::class, 'showProfile'])->name('profile');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RolesController::class);
