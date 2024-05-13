@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Departments;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,8 +13,7 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $settings = Setting::all(); // Fetch settings data from the model
-        $this->app->instance('settings', $settings);
+
     }
 
     /**
@@ -21,6 +21,11 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
+        $settings = Setting::all();
+        $departments = Departments::where('status', 1)->get();
+        view()->share('settings', $settings);
+        view()->share('departments', $departments);
+
     }
 }

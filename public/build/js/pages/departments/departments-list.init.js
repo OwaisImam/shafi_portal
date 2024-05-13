@@ -65,12 +65,28 @@ function loadUserList(datas) {
                 data: "name",
             },
             {
+                data: "logo",
+                render: function (data, type, full) {
+                    var isDepartmentLogo = full.logo ? '<img src="' + full.logo.image_path + '" alt="" class="rounded-circle header-profile-user" />'
+                        : '<div class="avatar-title rounded-circle text-uppercase">' + full.name[0] + '</div>';
+                    return '<div class="d-none">' + full.id + '</div><div class="avatar-xs img-fluid rounded-circle">' + isDepartmentLogo + '</div';
+                }
+            },
+            {
                 data: "status",
                 render: function (data, type, full) {
                     if (full.status == 1) {
                         return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Active</a>';
                     } else {
                         return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Inactive</a>';
+                    }
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, full) {
+                    if (full.slug != null) {
+                        return '<a href="/admin/department/' + full.slug + '/dashboard" class="badge badge-soft-success"><i class="bx bx-link-external"></i></a>';
                     }
                 }
             },
@@ -136,7 +152,20 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
         } else {
             event.preventDefault();
 
+            var logoImg = document.getElementById("logo-input").src;
+            var logoImgValue = logoImg.substring(
+                logoImg.indexOf("/as") + 1
+            );
+
+            var logoImg
+            if (logoImgValue == "build/images/users/user-dummy-img.jpg") {
+                logoImgValue = ""
+            } else {
+                logoImgValue = logoImg
+            }
+
             var name = document.getElementById('name-input').value;
+            var slug = document.getElementById('slug-input').value;
             var status = document.getElementById('switch6').checked ? 1 : 0;
 
             if (name !== "" && status !== "" && !editList) {
@@ -146,7 +175,9 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                 var newList = {
                     "id": newUserId,
                     "name": name,
-                    "status": status
+                    "status": status,
+                    'slug': slug,
+                    'logo': logoImgValue
                 };
 
                 departmentListData.data.push(newList);
@@ -159,7 +190,9 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                         var editObj = {
                             'id': getEditid,
                             "name": name,
-                            "status": status
+                            "status": status,
+                            'slug': slug,
+                            'logo': logoImgValue
                         }
 
                         return editObj;
@@ -209,6 +242,13 @@ function editContactList() {
                     document.getElementById("departmentid-input").value = item.id;
                     document.getElementById("name-input").value = item.name;
                     document.getElementById('switch6').checked = item.status == 1 ? 1 : 0;
+                    document.getElementById('slug-input').value = item.slug;
+
+                    if (item.logo == "") {
+                        document.getElementById("logo-input").src = "build/images/users/user-dummy-img.jpg";
+                    } else {
+                        document.getElementById("logo-input").src = item.logo;
+                    }
 
                     var form = document.getElementById('createDepartment-form');
                     var currentAction = form.action;
@@ -248,6 +288,17 @@ Array.from(document.querySelectorAll(".addContact-modal")).forEach(function (ele
 
     });
 });
+
+function generateSlug() {
+    // Get the value from the title field
+    const title = document.getElementById('name-input').value;
+
+    // Generate a slug from the title
+    const slug = title.toLowerCase().replace(/\s+/g, '-');
+
+    // Set the slug value in the slug field
+    document.getElementById('slug-input').value = slug;
+}
 
 // remove item
 function removeItem() {

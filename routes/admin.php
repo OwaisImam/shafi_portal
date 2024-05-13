@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClientsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\DropdownController;
 use App\Http\Controllers\Admin\EmailTemplateController;
+use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\PreProductionPlanController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Departments;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +45,16 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
     Route::post('fetch-states', [DropdownController::class, 'fetchState'])->name('fetch.states');
     Route::post('fetch-cities', [DropdownController::class, 'fetchCity'])->name('fetch.cities');
 
+    Route::group(['prefix' => 'department/{slug}', 'as' => 'departments.'], function () {
+        Route::get('/dashboard', [DepartmentController::class, 'dashboard'])->name('dashboard');
+        Route::resource('pre_production_plans', PreProductionPlanController::class);
+        Route::resource('suppliers', SupplierController::class);
+        Route::get('suppliers/{id}/delete', [SupplierController::class, 'destroy']);
+        Route::resource('items', ItemController::class);
+        Route::get('items/{id}/delete', [ItemController::class, 'destroy']);
+        Route::post('items/bulk/upload', [ItemController::class, 'bulkUpload'])->name('items.bulk.upload');
+        Route::resource('category', CategoryController::class);
+        Route::get('category/{id}/delete', [CategoryController::class, 'destroy']);
+    });
 
 });

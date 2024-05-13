@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helper\Helper;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\DepartmentRepository;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class DepartmentController extends Controller
 {
@@ -25,7 +27,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = $this->departmentRepository->all();
+        $departments = $this->departmentRepository->with(['logo'])->get();
 
         $response = [
                   'data' => $departments,
@@ -52,14 +54,23 @@ class DepartmentController extends Controller
      */
     public function store()
     {
-
         try {
             DB::beginTransaction();
-            $validated = $this->request->validate([
+            $validator = Validator::make($this->request->all(), [
                   'name' => 'required',
-                  'status' => 'nullable|boolean'
-        ]);
+                  'status' => 'nullable|boolean',
+                  'slug' => 'required|max:255',
+                  'logo' => 'nullable|mimes:png,jpg,svg',
+            ]);
 
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator->messages())->withInput();
+            }
+            if ($this->request->hasFile('logo')) {
+                $logo = Helper::uploadFile($this->request->logo);
+                $validated['logo_id'] = $logo->id;
+            }
+            unset($validated['logo']);
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
@@ -97,10 +108,23 @@ class DepartmentController extends Controller
     {
         try {
             DB::beginTransaction();
-            $validated = $this->request->validate([
+            $validator = Validator::make($this->request->all(), [
                     'name' => 'required',
-                    'status' => 'nullable|boolean'
-        ]);
+                    'status' => 'nullable|boolean',
+                    'slug' => 'required|max:255',
+                    'logo' => 'nullable|mimes:png,jpg,svg',
+            ]);
+
+             if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator->messages())->withInput();
+            }
+
+            if ($this->request->hasFile('logo')) {
+                $logo = Helper::uploadFile($this->request->logo);
+                $validated['logo_id'] = $logo->id;
+            }
+
+            unset($validated['logo']);
 
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
@@ -135,5 +159,14 @@ class DepartmentController extends Controller
             Log::error($e);
             return JsonResponse::fail('Something went wrong.');
         }
+    }
+
+    public function dashboard($slug)
+    {
+        // Fetch department data based on slug
+        $department = $this->departmentRepository->getByColumn($slug, 'slug');
+
+        // Pass department data to the view
+        return view('admin.department.dashboard', ['department' => $department]);
     }
 }

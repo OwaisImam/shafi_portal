@@ -58,7 +58,9 @@
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Logo</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Link</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
                             </thead>
@@ -82,16 +84,33 @@
                 </div>
                 <div class="modal-body">
                     <form autocomplete="off" method="POST" class="needs-validation createDepartment-form"
-                        id="createDepartment-form" action="{{ route('admin.departments.store') }}" novalidate>
+                        enctype="multipart/form-data" id="createDepartment-form"
+                        action="{{ route('admin.departments.store') }}" novalidate>
                         @csrf
                         <div class="row">
                             <div class="col-lg-12">
                                 <input type="hidden" class="form-control" id="departmentid-input">
                                 <div class="mb-3">
                                     <label for="name-input" class="form-label">Name</label>
-                                    <input type="text" name="name" id="name-input" class="form-control"
-                                        placeholder="Enter name" required />
+                                    <input type="text" name="name" id="name-input" onkeyup="generateSlug()"
+                                        class="form-control" placeholder="Enter name" required />
                                     <div class="invalid-feedback">Please enter a name.</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="hidden" class="form-control" id="departmentid-input">
+                                <div class="mb-3">
+                                    <label for="slug-input" class="form-label">Slug</label>
+                                    <input type="text" name="slug" id="slug-input" class="form-control"
+                                        placeholder="Enter slug" required readonly />
+                                    <div class="invalid-feedback">Please enter a slug.</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="hidden" class="form-control" id="departmentid-input">
+                                <div class="mb-3">
+                                    <label for="logo-input" class="form-label">Logo</label>
+                                    <input type="file" name="logo" id="logo-input" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-lg-12">

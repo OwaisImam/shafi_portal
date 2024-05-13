@@ -196,6 +196,30 @@
                 </div>
             </div>
 
+            <div class="dropdown d-none d-lg-inline-block ms-1">
+                <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="bx bx-customize"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                    <div class="px-lg-2">
+                        @foreach ($departments->chunk(3) as $chunk)
+                            <div class="row g-0">
+                                @foreach ($chunk as $department)
+                                    <div class="col">
+                                        <a class="dropdown-icon-item"
+                                            href="{{ route('admin.departments.dashboard', $department->slug) }}">
+                                            <img src="{{ $department->logo?->image_path }}"
+                                                alt="{{ $department->name }}">
+                                            <span>{{ $department->name }}</span>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">

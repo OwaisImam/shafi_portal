@@ -199,4 +199,10 @@ return [
   "Clients" => "Clients",
   "Email_Templates" => "Email Templates",
   "Departments" => "Departments",
+  "Pre_Production_Plan" => "Pre Production Plan",
+  "Department_Menu" => "Department Menu",
+  "Supplier" => "Supplier",
+  "Hangtag" => "Hangtag",
+  "Category" => "Category",
+  "Items" => "Items"
 ];
