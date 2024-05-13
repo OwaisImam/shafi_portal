@@ -223,10 +223,10 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
             }
             console.log(itemListData);
             loadUserList(itemListData)
+            form.submit();
             $("#newCategoryModal").modal("hide");
         }
         form.classList.add('was-validated');
-        form.submit();
     }, false)
 });
 

@@ -174,10 +174,11 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                 $('#userList-table').DataTable().destroy();
             }
             loadUserList(itemListData)
+            form.submit();
+
             $("#newItemModal").modal("hide");
         }
         form.classList.add('was-validated');
-        form.submit();
     }, false)
 });
 

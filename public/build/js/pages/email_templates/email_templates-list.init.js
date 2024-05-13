@@ -208,6 +208,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                 $('#userList-table').DataTable().destroy();
             }
             loadUserList(emailListData)
+            form.submit();
             $("#newContactModal").modal("hide");
         }
         form.classList.add('was-validated');
