@@ -66,6 +66,9 @@ class DepartmentController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
+
+            $validated = $validator->validated();
+
             if ($this->request->hasFile('logo')) {
                 $logo = Helper::uploadFile($this->request->logo);
                 $validated['logo_id'] = $logo->id;
@@ -118,7 +121,7 @@ class DepartmentController extends Controller
              if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
-
+            $validated = $validator->validated();
             if ($this->request->hasFile('logo')) {
                 $logo = Helper::uploadFile($this->request->logo);
                 $validated['logo_id'] = $logo->id;

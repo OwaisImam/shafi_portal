@@ -72,6 +72,7 @@ class CategoryController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
+            $validated = $validator->validated();
 
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
@@ -118,6 +119,8 @@ class CategoryController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
+            $validated = $validator->validated();
+
 
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
