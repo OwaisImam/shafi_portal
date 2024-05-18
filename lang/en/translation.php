@@ -204,5 +204,12 @@ return [
   "Supplier" => "Supplier",
   "Hangtag" => "Hangtag",
   "Category" => "Category",
-  "Items" => "Items"
+  "Items" => "Items",
+  "Purchase_Order" => "Purchase Order",
+  "Article_Style" => "Article/Style",
+  "Payment_Terms" => "Payment Terms",
+  "Fabric_Construction" => "Fabric Construction",
+  "Range" => "Range",
+  "Ranges" => "Ranges",
+  "Orders" => "Orders"
 ];

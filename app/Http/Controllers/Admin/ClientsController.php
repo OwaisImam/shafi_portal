@@ -6,9 +6,11 @@ use App\Helper\Helper;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Mail\ClientLoginCredentials;
+use App\Models\Departments;
 use App\Repositories\CityRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\CountryRepository;
+use App\Repositories\DepartmentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,13 +25,20 @@ class ClientsController extends Controller
     private ClientRepository $clientRepository;
     private CountryRepository $countryRepository;
     private Request $request;
+    private Departments $department;
+    private DepartmentRepository $departmentRepository;
 
-    public function __construct(ClientRepository $clientRepository, Request $request, CountryRepository $countryRepository)
+    public function __construct(ClientRepository $clientRepository,
+            DepartmentRepository $departmentRepository,
+            Request $request,
+            CountryRepository $countryRepository
+            )
     {
+        $this->departmentRepository = $departmentRepository;
         $this->clientRepository = $clientRepository;
         $this->countryRepository = $countryRepository;
         $this->request = $request;
-
+        $this->department = $this->departmentRepository->getByColumn($this->request->slug, 'slug');
 
         $this->middleware('permission:clients-list|clients-create|clients-edit|clients-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:clients-create', ['only' => ['create', 'store']]);
@@ -44,10 +53,9 @@ class ClientsController extends Controller
     public function index()
     {
 
-        // return view('contacts-list');
-
         $clients = $this->clientRepository->with(['logo', 'city.state.country'])->all();
 
+        $department = $this->department;
 
         $response = [
            'data' => $clients,
@@ -61,7 +69,7 @@ class ClientsController extends Controller
 
         $countries = $this->countryRepository->where('flag', 1)->get();
 
-        return view('admin.clients.index', compact('countries'));
+        return view('admin.clients.index', compact('countries', 'department'));
 
     }
 
@@ -90,13 +98,16 @@ class ClientsController extends Controller
                 'postal_code' => 'required',
                 'phone_number' => 'required',
                 'website' => 'nullable',
-                'type' => 'required'
+                'type' => 'required',
+                'label' => 'nullable|max:255'
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
             $data = $validator->validated();
+
+            $data['code'] = Helper::generateRandomString();
 
             DB::beginTransaction();
 
@@ -109,11 +120,12 @@ class ClientsController extends Controller
             $client =  $this->clientRepository->create($data);
 
             DB::commit();
-            return redirect()->route('admin.clients.index')->with('success', 'Client created successfully.');
+            return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client created successfully.');
         } catch(\Exception $e) {
             DB::rollBack();
             Log::error($e);
-            return redirect()->back()->with('error', 'Something went wrong.');
+            return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('error', 'Something went wrong.');
+
         }
     }
 
@@ -136,7 +148,7 @@ class ClientsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id)
+    public function update(string $department, string $id)
     {
         try {
             $validator = Validator::make($this->request->all(), [
@@ -149,13 +161,19 @@ class ClientsController extends Controller
                 'postal_code' => 'required',
                 'phone_number' => 'required',
                 'website' => 'nullable',
-                'type' => 'required'
+                'type' => 'required',
+                'label' => 'nullable|max:255'
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
             $data = $validator->validated();
+            $client = $this->clientRepository->getById($id);
+
+            if($client->code == null) {
+                $data['code'] = Helper::generateRandomString();
+            }
 
             DB::beginTransaction();
 
@@ -168,21 +186,19 @@ class ClientsController extends Controller
             $this->clientRepository->updateById($id, $data);
 
             DB::commit();
-            return redirect()->route('admin.clients.index')->with('success', 'Client updated successfully.');
+            return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client updated successfully.');
         } catch(\Exception $e) {
             DB::rollBack();
             Log::error($e);
-            return redirect()->back()->with('error', 'Something went wrong.');
+            return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('error', 'Something went wrong.');
         }
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $department,  string $id)
     {
-
         try {
 
             DB::beginTransaction();
@@ -208,7 +224,7 @@ class ClientsController extends Controller
         }
     }
 
-    public function generateCredentials(string $id)
+    public function generateCredentials(string $department, string $id)
     {
         try {
             DB::beginTransaction();
@@ -222,7 +238,7 @@ class ClientsController extends Controller
             Mail::to($client->email)->send($mail);
 
             DB::commit();
-            return redirect()->route('admin.clients.index')->with('success', 'Client credentials generated successfully.');
+            return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client credentials generated successfully.');
         } catch(\Exception $e) {
             DB::rollBack();
             Log::error($e);

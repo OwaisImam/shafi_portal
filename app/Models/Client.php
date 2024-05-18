@@ -15,7 +15,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     use Notifiable;
 
     protected $fillable = [
-        'name', 'code', 'city_id', 'logo_id', 'email', 'address', 'password', 'postal_code', 'phone_number', 'website', 'status', 'type'
+        'name', 'code', 'city_id', 'logo_id', 'email', 'address', 'password', 'postal_code', 'phone_number', 'website', 'status', 'type', 'label'
     ];
 
     protected $hidden = [

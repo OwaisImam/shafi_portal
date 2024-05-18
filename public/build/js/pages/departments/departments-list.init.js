@@ -321,6 +321,7 @@ function removeItem() {
                     type: "GET",
                     dataType: 'json',
                     success: function (resonse) {
+                        toastr["success"](resonse.message);
 
                     }
                 });

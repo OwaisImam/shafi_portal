@@ -40,6 +40,8 @@ class SettingController extends Controller
         try {
             DB::beginTransaction();
 
+            $params = $this->request->except(['_token']);
+
             if($this->request->hasFile('logo_light')) {
                 $logoLight = Helper::uploadFile($this->request->logo_light);
                 $params['logo_light'] = $logoLight->id;
@@ -49,7 +51,6 @@ class SettingController extends Controller
                 $logoDark = Helper::uploadFile($this->request->logo_dark);
                 $params['logo_dark'] = $logoDark->id;
             }
-
             $this->settingRepository->updateSetting($this->request->types, $params);
             DB::commit();
             return redirect()->back()->with('success', 'Settings updated successfully.');

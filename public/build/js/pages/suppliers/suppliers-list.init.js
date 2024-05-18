@@ -112,8 +112,8 @@ function loadUserList(datas) {
                 data: null,
                 'bSortable': false,
                 render: function (data, type, full) {
-                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'departments-edit');
-                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'departments-delete');
+                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'supplier-edit');
+                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'supplier-delete');
                     if (hasDeletePermission || hasEditPermission) {
 
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -345,6 +345,7 @@ function removeItem() {
                     type: "GET",
                     dataType: 'json',
                     success: function (resonse) {
+                        toastr["success"](resonse.message);
 
                     }
                 });

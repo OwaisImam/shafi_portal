@@ -29,14 +29,22 @@ class CreateRoutePermissionsCommand extends Command
     public function handle()
     {
 
-
         $permissions = [
                   'users',
                   'permissions',
                   'clients',
                   'email_templates',
                   'departments',
-                  'system_settings'
+                  'system_settings',
+                  'category',
+                  'items',
+                  'suppliers',
+                  'purchase_order',
+                  'range',
+                  'fabric_construction',
+                  'payment_terms',
+                  'article',
+                  'orders'
               ];
 
         $permissionList = [];

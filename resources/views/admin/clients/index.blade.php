@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.departments.master')
 
 @section('title')
     @lang('translation.Data_Tables')
@@ -17,6 +17,7 @@
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
+    <meta name="department" content="{{ $department->slug }}">
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
 @endsection
@@ -89,8 +90,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form autocomplete="off" action="{{ route('admin.clients.store') }}" enctype="multipart/form-data"
-                        class="needs-validation createContact-form" id="createContact-form" novalidate method="post">
+                    <form autocomplete="off"
+                        action="{{ route('admin.departments.clients.store', ['slug' => $department->slug]) }}"
+                        enctype="multipart/form-data" class="needs-validation createContact-form" id="createContact-form"
+                        novalidate method="post">
                         @csrf
                         <div class="row">
                             <input type="hidden" class="form-control" id="userid-input">
@@ -149,6 +152,24 @@
                                     <input type="email" id="email-input" value="{{ old('email') }}"
                                         class="form-control" placeholder="Enter email" required name="email" />
                                     <div class="invalid-feedback">Please enter email.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="code-input" class="form-label">Code</label>
+                                    <input type="text" id="code-input" value="{{ old('code') }}" name="code"
+                                        class="form-control" placeholder="Enter code" required />
+                                    <div class="invalid-feedback">Please enter a code.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="label-input" class="form-label">Label</label>
+                                    <input type="text" id="label-input" value="{{ old('label') }}"
+                                        class="form-control" placeholder="Enter label" name="label" />
+                                    <div class="invalid-feedback">Please enter valid label.</div>
                                 </div>
                             </div>
                         </div>

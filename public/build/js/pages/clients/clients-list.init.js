@@ -7,8 +7,10 @@ File: contact user list Js File
 */
 
 var url = "/";
+var baseUrl = $('meta[name="base_url"]').attr('content');;
 var userListData = '';
 var editList = false;
+var department = $('meta[name="department"]').attr('content');
 
 //contact user list by json
 var getJSON = function (jsonurl, callback) {
@@ -31,7 +33,7 @@ var getJSON = function (jsonurl, callback) {
 };
 
 // get json
-getJSON("admin/clients  ", function (err, data) {
+getJSON("admin/department/" + department + "/clients  ", function (err, data) {
     if (err !== null) {
         console.log("Something went wrong: " + err);
     } else {
@@ -180,7 +182,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
             );
 
             var memberImageValue
-            if (memberImgValue == "build/images/users/user-dummy-img.jpg") {
+            if (memberImgValue == "../../../build/images/users/user-dummy-img.jpg") {
                 memberImageValue = ""
             } else {
                 memberImageValue = memberImg
@@ -288,10 +290,10 @@ function editClientList() {
                     document.getElementById("userid-input").value = item.id;
 
                     var form = document.getElementById('createContact-form');
-                    var currentAction = form.action;
 
+                    var actionUrl = baseUrl + "/admin/department/" + department + "/clients";
                     // Append the value to the current action
-                    var newAction = currentAction + '/' + item.id; // Replace 'your-value' with the value you want to append
+                    var newAction = actionUrl + '/' + item.id; // Replace 'your-value' with the value you want to append
 
                     // Update the form action with the new value
                     form.action = newAction;
@@ -306,7 +308,7 @@ function editClientList() {
                     form.appendChild(methodField);
 
                     if (item.memberImg == "") {
-                        document.getElementById("member-img").src = "build/images/users/user-dummy-img.jpg";
+                        document.getElementById("member-img").src = "../../../build/images/users/user-dummy-img.jpg";
                     } else {
                         document.getElementById("member-img").src = item?.logo?.image_path;
                     }
@@ -321,6 +323,10 @@ function editClientList() {
                     document.getElementById("phone-input").value = item.phone_number;
                     document.getElementById("website-input").value = item.website;
                     document.getElementById("postalcode-input").value = item.postal_code;
+                    document.getElementById("label-input").value = item.label;
+                    document.getElementById("code-input").value = item.code;
+                    document.getElementById("code-input").disabled = true;
+
                     if (item.type == 'indirect') {
                         document.getElementById('indirect').checked = true;
                     } else if (item.type == 'direct') {
@@ -345,7 +351,7 @@ function selectState(item) {
 
     $("#seachable-select-state").html('');
     $.ajax({
-        url: "../admin/fetch-states",
+        url: "../../../admin/fetch-states",
         type: "POST",
         data: {
             country_id: idCountry,
@@ -375,7 +381,7 @@ function selectCity(item) {
 
     $("#seachable-select-state").html('');
     $.ajax({
-        url: "../admin/fetch-cities",
+        url: "../../../admin/fetch-cities",
         type: "POST",
         data: {
             state_id: item.city.state.id,
@@ -407,8 +413,9 @@ Array.from(document.querySelectorAll(".addContact-modal")).forEach(function (ele
         document.getElementById("userid-input").value = "";
         document.getElementById("username-input").value = "";
         document.getElementById("email-input").value = "";
-        document.getElementById("designation-input").value = "";
-        document.getElementById("member-img").src = "build/images/users/user-dummy-img.jpg";
+        document.getElementById("label-input").value = "";
+        document.getElementById("code-input").disabled = true;
+        document.getElementById("member-img").src = "../../../build/images/users/user-dummy-img.jpg";
         $("#tag-input").select2({
             multiple: true,
         });
@@ -430,6 +437,7 @@ function removeItem() {
                     dataType: 'json',
                     success: function (resonse) {
                         userListData = resonse.result;
+                        toastr["success"](resonse.message);
 
                         if ($.fn.DataTable.isDataTable('#userList-table')) {
                             $('#userList-table').DataTable().destroy();

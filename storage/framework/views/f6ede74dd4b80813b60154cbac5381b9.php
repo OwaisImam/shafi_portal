@@ -15,6 +15,7 @@
     <!-- Responsive datatable examples -->
     <link href="<?php echo e(URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')); ?>"
         rel="stylesheet" type="text/css" />
+    <meta name="department" content="<?php echo e($department->slug); ?>">
 
     <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.css')); ?>">
 <?php $__env->stopSection(); ?>
@@ -87,8 +88,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form autocomplete="off" action="<?php echo e(route('admin.clients.store')); ?>" enctype="multipart/form-data"
-                        class="needs-validation createContact-form" id="createContact-form" novalidate method="post">
+                    <form autocomplete="off"
+                        action="<?php echo e(route('admin.departments.clients.store', ['slug' => $department->slug])); ?>"
+                        enctype="multipart/form-data" class="needs-validation createContact-form" id="createContact-form"
+                        novalidate method="post">
                         <?php echo csrf_field(); ?>
                         <div class="row">
                             <input type="hidden" class="form-control" id="userid-input">
@@ -135,6 +138,24 @@
                                     <input type="email" id="email-input" value="<?php echo e(old('email')); ?>"
                                         class="form-control" placeholder="Enter email" required name="email" />
                                     <div class="invalid-feedback">Please enter email.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="code-input" class="form-label">Code</label>
+                                    <input type="text" id="code-input" value="<?php echo e(old('code')); ?>" name="code"
+                                        class="form-control" placeholder="Enter code" required />
+                                    <div class="invalid-feedback">Please enter a code.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="label-input" class="form-label">Label</label>
+                                    <input type="text" id="label-input" value="<?php echo e(old('label')); ?>"
+                                        class="form-control" placeholder="Enter label" name="label" />
+                                    <div class="invalid-feedback">Please enter valid label.</div>
                                 </div>
                             </div>
                         </div>
@@ -378,4 +399,4 @@
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/clients/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/clients/index.blade.php ENDPATH**/ ?>

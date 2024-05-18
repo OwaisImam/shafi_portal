@@ -14,6 +14,7 @@ class DefaultValues
 
     public const PAGINATION_LIMIT = 10;
 
+    public const PAYMENT_STATUS = ["Receivable", "Cancelled"];
 
     public const TIMEZONES = [
         '(GMT-12:00) International Date Line West' => 'Pacific/Wake',

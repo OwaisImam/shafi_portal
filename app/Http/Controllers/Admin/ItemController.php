@@ -75,6 +75,7 @@ class ItemController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
+            $validated = $validator->validated();
 
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
@@ -121,7 +122,7 @@ class ItemController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
-
+            $validated = $validator->validated();
             if(!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
@@ -140,19 +141,6 @@ class ItemController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-        try {
-            DB::beginTransaction();
-            $this->itemRepository->deleteById($id);
-            DB::commit();
-
-            if($this->request->ajax()) {
-                return JsonResponse::success(null, 'Item deleted successfully.');
-            }
-        } catch(\Exception $e) {
-            DB::rollBack();
-            Log::error($e);
-            return JsonResponse::fail('Something went wrong.');
-        }
     }
 
     public function bulkUpload()
