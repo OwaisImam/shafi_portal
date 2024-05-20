@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DropdownController;
 use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\FabricContructionController;
 use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentTermsController;
 use App\Http\Controllers\Admin\PermissionsController;
@@ -80,6 +81,9 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
         Route::resource('article', ArticleStyleController::class);
         Route::get('article/{range}/delete', [ArticleStyleController::class, 'destroy']);
+
+        Route::resource('jobs', JobController::class);
+        Route::get('jobs/{range}/delete', [JobController::class, 'destroy']);
 
         Route::resource('orders', OrderController::class);
     });

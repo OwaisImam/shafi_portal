@@ -211,5 +211,6 @@ return [
   "Fabric_Construction" => "Fabric Construction",
   "Range" => "Range",
   "Ranges" => "Ranges",
-  "Orders" => "Orders"
+  "Orders" => "Orders",
+  "Jobs" => "Jobs"
 ];

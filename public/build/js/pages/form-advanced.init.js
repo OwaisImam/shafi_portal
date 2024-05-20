@@ -14,7 +14,9 @@ File: Form Advanced Js File
     AdvancedForm.prototype.init = function () {
 
         // Select2
-        $(".select2").select2();
+        $(".select2").select2({
+            placeholder: "Select"
+        });
 
         $(".select2-limiting").select2({
             maximumSelectionLength: 2
@@ -104,6 +106,8 @@ File: Form Advanced Js File
             return $state;
         };
 
+
+
         $(".select2-templating").select2({
             templateResult: formatState
         });
@@ -115,6 +119,11 @@ File: Form Advanced Js File
             showAlpha: true
         });
 
+        $(".colorpicker-showalpha").each(function () {
+            $(this).spectrum({
+                showAlpha: true
+            });
+        });
         $("#colorpicker-showpaletteonly").spectrum({
             showPaletteOnly: true,
             showPalette: true,

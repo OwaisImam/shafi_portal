@@ -157,6 +157,20 @@
                             </ul>
                         </li>
                     <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['job-update', 'job-list', 'job-view', 'job-delete', 'job-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.Jobs'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('job-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.jobs.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                     
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">

@@ -157,6 +157,20 @@
                             </ul>
                         </li>
                     @endcanany
+                    @canany(['job-update', 'job-list', 'job-view', 'job-delete', 'job-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users">@lang('translation.Jobs')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('job-list')
+                                    <li><a href="{{ route('admin.departments.jobs.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                     {{-- @canany(['pro-production-plan-update', 'pro-production-plan-list', 'pro-production-plan-view', 'pro-production-plan-delete', 'pro-production-plan-edit']) --}}
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
