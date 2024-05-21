@@ -61,8 +61,11 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">PO Receive Date</th>
+                                    <th scope="col">Delivery Date</th>
+                                    <th scope="col">Order Quantity</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
                             </thead>

@@ -16,6 +16,8 @@ class DefaultValues
 
     public const PAYMENT_STATUS = ["Receivable", "Cancelled"];
 
+    public const SIZES = ["S", "M", "L", "XL", "XXL", "XXXL"];
+
     public const TIMEZONES = [
         '(GMT-12:00) International Date Line West' => 'Pacific/Wake',
         '(GMT-11:00) Midway Island' => 'Pacific/Apia',

@@ -34,14 +34,16 @@
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.departments.orders.store', ['slug' => $department->slug]) }}">
+                        action="{{ route('admin.departments.orders.update', ['slug' => $department->slug, 'order' => $order->id]) }}">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="supplier" class="form-label">Customer's PO Number</label>
-                                    <input type="text" name="customer_po_number" required
-                                        value="{{ old('customer_po_number') }}" class="form-control">
+                                    <input type="text" name="customer_po_number"
+                                        value="{{ $order->customer_po_number ? $order->customer_po_number : old('customer_po_number') }}"
+                                        class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -56,7 +58,9 @@
                                     <select name="job_id" class="form-control select2" required>
                                         <option>Select</option>
                                         @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->number }}</option>
+                                            <option value="{{ $job->id }}"
+                                                {{ $order->job_id == $job->id ? 'selected' : '' }}>{{ $job->number }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -72,10 +76,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="customer" class="form-label">Customer</label>
-                                    <select class="form-control select2" name="customer_id" required>
+                                    <select class="form-control select2" name="customer_id">
                                         <option>Select</option>
                                         @foreach ($clients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                            <option value="{{ $client->id }}"
+                                                {{ $order->customer_id == $client->id ? 'selected' : '' }}>
+                                                {{ $client->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -90,8 +96,9 @@
                                 <div class="mb-3">
                                     <label for="serial_no" class="form-label">PO Receive Date</label>
                                     <input type="date" class="form-control" id="po_receive_date"
-                                        placeholder="PO Receive Date" value="{{ old('po_receive_date') }}" required
-                                        name="po_receive_date">
+                                        placeholder="PO Receive Date"
+                                        value="{{ $order->po_receive_date ? $order->po_receive_date : old('po_receive_date') }}"
+                                        required name="po_receive_date">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -107,7 +114,8 @@
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Delivery Date</label>
                                     <input type="date" class="form-control" id="delivery_date" placeholder="Deliery Date"
-                                        value="{{ old('delivery_date') }}" required name="delivery_date">
+                                        value="{{ $order->delivery_date ? $order->delivery_date : old('delivery_date') }}"
+                                        required name="delivery_date">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -119,10 +127,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="gst_no" class="form-label">Payment Terms</label>
-                                    <select name="payment_term_id" class="form-control select2" required>
-                                        <option value="0">Select</option>
+                                    <select name="payment_term_id" class="form-control select2">
+                                        <option>Select</option>
                                         @foreach ($paymentTerms as $paymentTerm)
-                                            <option value="{{ $paymentTerm->id }}">{{ $paymentTerm->name }}</option>
+                                            <option value="{{ $paymentTerm->id }}"
+                                                {{ $order->payment_term_id == $paymentTerm->id ? 'selected' : '' }}>
+                                                {{ $paymentTerm->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -139,10 +149,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Range</label>
-                                    <select name="range_id" class="form-control select2" required>
+                                    <select name="range_id" class="form-control select2">
                                         <option>Select</option>
                                         @foreach ($ranges as $range)
-                                            <option value="{{ $range->id }}">{{ $range->name }}</option>
+                                            <option value="{{ $range->id }}"
+                                                {{ $order->range_id == $range->id ? 'selected' : '' }}>{{ $range->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -156,10 +168,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Fabric Construction</label>
-                                    <select name="fabric_construction_id" required class="form-control select2">
+                                    <select name="fabric_construction_id" class="form-control select2">
                                         <option>Select</option>
                                         @foreach ($fabricConstructions as $fabricConstruction)
-                                            <option value="{{ $fabricConstruction->id }}">{{ $fabricConstruction->name }}
+                                            <option value="{{ $fabricConstruction->id }}"
+                                                {{ $order->fabric_construction_id == $fabricConstruction->id ? 'selected' : '' }}>
+                                                {{ $fabricConstruction->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -179,7 +193,7 @@
                                 <div class="mb-3">
                                     <label for="delivery_address" class="form-label">GSM</label>
                                     <input type="number" class="form-control" id="delivery_address" placeholder="GSM"
-                                        value="{{ old('gsm') }}" required name="gsm">
+                                        value="{{ $order->gsm ? $order->gsm : old('gsm') }}" required name="gsm">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -193,7 +207,8 @@
                                 <div class="mb-3">
                                     <label for="order_quantity" class="form-label">Total Order Quantity</label>
                                     <input type="text" class="form-control" id="order_quantity"
-                                        placeholder="Total Order Quantity" value="{{ old('order_quantity') ?: 0 }}"
+                                        placeholder="Total Order Quantity"
+                                        value="{{ $order->order_quantity ? $order->order_quantity : old('order_quantity') }}"
                                         required name="order_quantity">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -206,64 +221,83 @@
                         </div>
 
                         <div data-repeater-list="group-a">
-                            <div data-repeater-item class="row data-repeater-item">
-                                <div class="mb-3 col-lg-2   ">
-                                    <label for="article_style_no">Article No</label>
-                                    <input type="text" id="article_style_no" required name="article_style_no"
-                                        class="form-control" placeholder="Enter Item Article No" />
-                                </div>
+                            @php
+                                $sumQty = 0;
+                            @endphp
+                            @foreach ($order->order_items as $key => $order_item)
+                                <div data-repeater-item class="row data-repeater-item">
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="article_style_no-{{ $key }}">Article No</label>
+                                        <input type="text" id="article_style_no-{{ $key }}"
+                                            value="{{ $order_item->article_style_no ? $order_item->article_style_no : old('article_style_no') }}"
+                                            name="article_style_no" class="form-control"
+                                            placeholder="Enter Item Article No" />
+                                        <input type="hidden" name="order_item_id" value="{{ $order_item->id }}">
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="uom">Title / Product Type</label>
-                                    <select name="article_style_id" required id="article_style_id"
-                                        class="form-control select2">
-                                        <option value="0">Select</option>
-                                        @foreach ($articleStyles as $articleStyle)
-                                            <option value="{{ $articleStyle->id }}">{{ $articleStyle->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="article_style_id-{{ $key }}">Title / Product Type</label>
+                                        <select name="article_style_id" id="article_style_id-{{ $key }}"
+                                            class="form-control select2">
+                                            <option>Select</option>
+                                            @foreach ($articleStyles as $articleStyle)
+                                                <option value="{{ $articleStyle->id }}"
+                                                    {{ $order_item->article_style_id == $articleStyle->id ? 'selected' : '' }}>
+                                                    {{ $articleStyle->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="description">Description</label>
-                                    <input type="text" id="description" required name="description"
-                                        class="form-control" placeholder="Description" />
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="description-{{ $key }}">Description</label>
+                                        <input type="text" id="description-{{ $key }}" name="description"
+                                            value="{{ $order_item->description }}" class="form-control"
+                                            placeholder="Description" />
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="size">Size</label>
-                                    <select name="size" id="size" required
-                                        class="form-control select2 select2-multiple" multiple>
-                                        @foreach (App\Constants\DefaultValues::SIZES as $size)
-                                            <option value="{{ $size }}">{{ $size }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="size-{{ $key }}">Size</label>
+                                        <select name="size" id="size-{{ $key }}"
+                                            class="form-control select2 select2-multiple" multiple>
+                                            @foreach (App\Constants\DefaultValues::SIZES as $size)
+                                                <option value="{{ $size }}"
+                                                    {{ in_array($size, json_decode($order_item->sizes)) ? 'selected' : '' }}>
+                                                    {{ $size }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                <div class="mb-3 col-lg-1">
-                                    <label for="color">Color</label>
-                                    <input type="text" id="color" name="color" required value="#556ee6"
-                                        class="form-control colorpicker-showalpha" placeholder="Color" />
-                                </div>
-                                <div class="mb-3 col-lg-1">
-                                    <label for="qty">Qty</label>
-                                    <input type="number" id="qty" onchange="calculateQnty(this)"
-                                        onkeyup="calculateQnty(this)" required name="qty" class="form-control"
-                                        placeholder="Qty" />
-                                </div>
-                                <div class="mb-3 col-lg-1">
-                                    <label for="unit">Unit</label>
-                                    <input type="text" id="unit" name="unit" class="form-control"
-                                        placeholder="Unit" required />
-                                </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="color-{{ $key }}">Color</label>
+                                        <input type="text" id="color-{{ $key }}" name="color"
+                                            value="{{ $order_item->color }}" class="form-control colorpicker-showalpha"
+                                            placeholder="Color" />
+                                    </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="qty-{{ $key }}">Qty</label>
+                                        <input type="number" id="qty-{{ $key }}"
+                                            value="{{ $order_item->qty }}" onchange="calculateQnty(this)"
+                                            onkeyup="calculateQnty(this)" name="qty" class="form-control"
+                                            placeholder="Qty" />
+                                    </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="unit-{{ $key }}">Unit</label>
+                                        <input type="text" id="unit-{{ $key }}"
+                                            value="{{ $order_item->unit }}" name="unit" class="form-control"
+                                            placeholder="Unit" />
+                                    </div>
 
-                                <div class="col-lg-1 align-self-center">
-                                    <div class="d-grid">
-                                        <input data-repeater-delete type="button" class="btn btn-primary"
-                                            value="Delete" />
+                                    <div class="col-lg-1 align-self-center">
+                                        <div class="d-grid">
+                                            <input data-repeater-delete type="button" class="btn btn-primary"
+                                                value="Delete" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                @php
+                                    $sumQty += $order_item->qty;
+                                @endphp
+                            @endforeach
                         </div>
 
                         <div class="row">
@@ -278,7 +312,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Total Order Qty :</td>
-                                                    <td id="total_qty">0.00</td>
+                                                    <td id="total_qty">{{ $sumQty }}</td>
                                                     <td style="width: 50px">
                                                     </td>
                                                 </tr>
@@ -289,7 +323,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -337,6 +371,11 @@
             $('#total_qty').text(total);
 
         }
+        $(".select2").each(function() {
+            $(this).select2({
+                placeholder: "Select"
+            });
+        });
     </script>
     @if ($errors->any())
         <script>

@@ -86,6 +86,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::get('jobs/{range}/delete', [JobController::class, 'destroy']);
 
         Route::resource('orders', OrderController::class);
+        Route::get('orders/{order}/delete', [OrderController::class, 'destroy']);
     });
 
 });

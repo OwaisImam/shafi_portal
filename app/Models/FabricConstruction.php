@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FabricContruction extends Model
+class FabricConstruction extends Model
 {
     use HasFactory;
+
     protected $fillable = ["name", "status"];
 
 }

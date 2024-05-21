@@ -33,14 +33,16 @@
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="<?php echo e(route('admin.departments.orders.store', ['slug' => $department->slug])); ?>">
+                        action="<?php echo e(route('admin.departments.orders.update', ['slug' => $department->slug, 'order' => $order->id])); ?>">
                         <?php echo csrf_field(); ?>
+                        <?php echo method_field('PUT'); ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="supplier" class="form-label">Customer's PO Number</label>
-                                    <input type="text" name="customer_po_number" required
-                                        value="<?php echo e(old('customer_po_number')); ?>" class="form-control">
+                                    <input type="text" name="customer_po_number"
+                                        value="<?php echo e($order->customer_po_number ? $order->customer_po_number : old('customer_po_number')); ?>"
+                                        class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -55,7 +57,10 @@
                                     <select name="job_id" class="form-control select2" required>
                                         <option>Select</option>
                                         <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($job->id); ?>"><?php echo e($job->number); ?></option>
+                                            <option value="<?php echo e($job->id); ?>"
+                                                <?php echo e($order->job_id == $job->id ? 'selected' : ''); ?>><?php echo e($job->number); ?>
+
+                                            </option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
@@ -71,10 +76,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="customer" class="form-label">Customer</label>
-                                    <select class="form-control select2" name="customer_id" required>
+                                    <select class="form-control select2" name="customer_id">
                                         <option>Select</option>
                                         <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($client->id); ?>"><?php echo e($client->name); ?></option>
+                                            <option value="<?php echo e($client->id); ?>"
+                                                <?php echo e($order->customer_id == $client->id ? 'selected' : ''); ?>>
+                                                <?php echo e($client->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
@@ -89,8 +96,9 @@
                                 <div class="mb-3">
                                     <label for="serial_no" class="form-label">PO Receive Date</label>
                                     <input type="date" class="form-control" id="po_receive_date"
-                                        placeholder="PO Receive Date" value="<?php echo e(old('po_receive_date')); ?>" required
-                                        name="po_receive_date">
+                                        placeholder="PO Receive Date"
+                                        value="<?php echo e($order->po_receive_date ? $order->po_receive_date : old('po_receive_date')); ?>"
+                                        required name="po_receive_date">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -106,7 +114,8 @@
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Delivery Date</label>
                                     <input type="date" class="form-control" id="delivery_date" placeholder="Deliery Date"
-                                        value="<?php echo e(old('delivery_date')); ?>" required name="delivery_date">
+                                        value="<?php echo e($order->delivery_date ? $order->delivery_date : old('delivery_date')); ?>"
+                                        required name="delivery_date">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -118,10 +127,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="gst_no" class="form-label">Payment Terms</label>
-                                    <select name="payment_term_id" class="form-control select2" required>
-                                        <option value="0">Select</option>
+                                    <select name="payment_term_id" class="form-control select2">
+                                        <option>Select</option>
                                         <?php $__currentLoopData = $paymentTerms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paymentTerm): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($paymentTerm->id); ?>"><?php echo e($paymentTerm->name); ?></option>
+                                            <option value="<?php echo e($paymentTerm->id); ?>"
+                                                <?php echo e($order->payment_term_id == $paymentTerm->id ? 'selected' : ''); ?>>
+                                                <?php echo e($paymentTerm->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
@@ -138,10 +149,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Range</label>
-                                    <select name="range_id" class="form-control select2" required>
+                                    <select name="range_id" class="form-control select2">
                                         <option>Select</option>
                                         <?php $__currentLoopData = $ranges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $range): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($range->id); ?>"><?php echo e($range->name); ?></option>
+                                            <option value="<?php echo e($range->id); ?>"
+                                                <?php echo e($order->range_id == $range->id ? 'selected' : ''); ?>><?php echo e($range->name); ?>
+
+                                            </option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
@@ -155,10 +169,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Fabric Construction</label>
-                                    <select name="fabric_construction_id" required class="form-control select2">
+                                    <select name="fabric_construction_id" class="form-control select2">
                                         <option>Select</option>
                                         <?php $__currentLoopData = $fabricConstructions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fabricConstruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($fabricConstruction->id); ?>"><?php echo e($fabricConstruction->name); ?>
+                                            <option value="<?php echo e($fabricConstruction->id); ?>"
+                                                <?php echo e($order->fabric_construction_id == $fabricConstruction->id ? 'selected' : ''); ?>>
+                                                <?php echo e($fabricConstruction->name); ?>
 
                                             </option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -179,7 +195,7 @@
                                 <div class="mb-3">
                                     <label for="delivery_address" class="form-label">GSM</label>
                                     <input type="number" class="form-control" id="delivery_address" placeholder="GSM"
-                                        value="<?php echo e(old('gsm')); ?>" required name="gsm">
+                                        value="<?php echo e($order->gsm ? $order->gsm : old('gsm')); ?>" required name="gsm">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -193,7 +209,8 @@
                                 <div class="mb-3">
                                     <label for="order_quantity" class="form-label">Total Order Quantity</label>
                                     <input type="text" class="form-control" id="order_quantity"
-                                        placeholder="Total Order Quantity" value="<?php echo e(old('order_quantity') ?: 0); ?>"
+                                        placeholder="Total Order Quantity"
+                                        value="<?php echo e($order->order_quantity ? $order->order_quantity : old('order_quantity')); ?>"
                                         required name="order_quantity">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -206,64 +223,83 @@
                         </div>
 
                         <div data-repeater-list="group-a">
-                            <div data-repeater-item class="row data-repeater-item">
-                                <div class="mb-3 col-lg-2   ">
-                                    <label for="article_style_no">Article No</label>
-                                    <input type="text" id="article_style_no" required name="article_style_no"
-                                        class="form-control" placeholder="Enter Item Article No" />
-                                </div>
+                            <?php
+                                $sumQty = 0;
+                            ?>
+                            <?php $__currentLoopData = $order->order_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order_item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div data-repeater-item class="row data-repeater-item">
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="article_style_no-<?php echo e($key); ?>">Article No</label>
+                                        <input type="text" id="article_style_no-<?php echo e($key); ?>"
+                                            value="<?php echo e($order_item->article_style_no ? $order_item->article_style_no : old('article_style_no')); ?>"
+                                            name="article_style_no" class="form-control"
+                                            placeholder="Enter Item Article No" />
+                                        <input type="hidden" name="order_item_id" value="<?php echo e($order_item->id); ?>">
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="uom">Title / Product Type</label>
-                                    <select name="article_style_id" required id="article_style_id"
-                                        class="form-control select2">
-                                        <option value="0">Select</option>
-                                        <?php $__currentLoopData = $articleStyles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $articleStyle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($articleStyle->id); ?>"><?php echo e($articleStyle->name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="article_style_id-<?php echo e($key); ?>">Title / Product Type</label>
+                                        <select name="article_style_id" id="article_style_id-<?php echo e($key); ?>"
+                                            class="form-control select2">
+                                            <option>Select</option>
+                                            <?php $__currentLoopData = $articleStyles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $articleStyle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($articleStyle->id); ?>"
+                                                    <?php echo e($order_item->article_style_id == $articleStyle->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($articleStyle->name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="description">Description</label>
-                                    <input type="text" id="description" required name="description"
-                                        class="form-control" placeholder="Description" />
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="description-<?php echo e($key); ?>">Description</label>
+                                        <input type="text" id="description-<?php echo e($key); ?>" name="description"
+                                            value="<?php echo e($order_item->description); ?>" class="form-control"
+                                            placeholder="Description" />
+                                    </div>
 
-                                <div class="mb-3 col-lg-2">
-                                    <label for="size">Size</label>
-                                    <select name="size" id="size" required
-                                        class="form-control select2 select2-multiple" multiple>
-                                        <?php $__currentLoopData = App\Constants\DefaultValues::SIZES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($size); ?>"><?php echo e($size); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
+                                    <div class="mb-3 col-lg-2">
+                                        <label for="size-<?php echo e($key); ?>">Size</label>
+                                        <select name="size" id="size-<?php echo e($key); ?>"
+                                            class="form-control select2 select2-multiple" multiple>
+                                            <?php $__currentLoopData = App\Constants\DefaultValues::SIZES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($size); ?>"
+                                                    <?php echo e(in_array($size, json_decode($order_item->sizes)) ? 'selected' : ''); ?>>
+                                                    <?php echo e($size); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                    </div>
 
-                                <div class="mb-3 col-lg-1">
-                                    <label for="color">Color</label>
-                                    <input type="text" id="color" name="color" required value="#556ee6"
-                                        class="form-control colorpicker-showalpha" placeholder="Color" />
-                                </div>
-                                <div class="mb-3 col-lg-1">
-                                    <label for="qty">Qty</label>
-                                    <input type="number" id="qty" onchange="calculateQnty(this)"
-                                        onkeyup="calculateQnty(this)" required name="qty" class="form-control"
-                                        placeholder="Qty" />
-                                </div>
-                                <div class="mb-3 col-lg-1">
-                                    <label for="unit">Unit</label>
-                                    <input type="text" id="unit" name="unit" class="form-control"
-                                        placeholder="Unit" required />
-                                </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="color-<?php echo e($key); ?>">Color</label>
+                                        <input type="text" id="color-<?php echo e($key); ?>" name="color"
+                                            value="<?php echo e($order_item->color); ?>" class="form-control colorpicker-showalpha"
+                                            placeholder="Color" />
+                                    </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="qty-<?php echo e($key); ?>">Qty</label>
+                                        <input type="number" id="qty-<?php echo e($key); ?>"
+                                            value="<?php echo e($order_item->qty); ?>" onchange="calculateQnty(this)"
+                                            onkeyup="calculateQnty(this)" name="qty" class="form-control"
+                                            placeholder="Qty" />
+                                    </div>
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="unit-<?php echo e($key); ?>">Unit</label>
+                                        <input type="text" id="unit-<?php echo e($key); ?>"
+                                            value="<?php echo e($order_item->unit); ?>" name="unit" class="form-control"
+                                            placeholder="Unit" />
+                                    </div>
 
-                                <div class="col-lg-1 align-self-center">
-                                    <div class="d-grid">
-                                        <input data-repeater-delete type="button" class="btn btn-primary"
-                                            value="Delete" />
+                                    <div class="col-lg-1 align-self-center">
+                                        <div class="d-grid">
+                                            <input data-repeater-delete type="button" class="btn btn-primary"
+                                                value="Delete" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <?php
+                                    $sumQty += $order_item->qty;
+                                ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
 
                         <div class="row">
@@ -278,7 +314,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Total Order Qty :</td>
-                                                    <td id="total_qty">0.00</td>
+                                                    <td id="total_qty"><?php echo e($sumQty); ?></td>
                                                     <td style="width: 50px">
                                                     </td>
                                                 </tr>
@@ -289,7 +325,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -337,6 +373,11 @@
             $('#total_qty').text(total);
 
         }
+        $(".select2").each(function() {
+            $(this).select2({
+                placeholder: "Select"
+            });
+        });
     </script>
     <?php if($errors->any()): ?>
         <script>
@@ -357,4 +398,4 @@
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/department/orders/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/department/orders/edit.blade.php ENDPATH**/ ?>

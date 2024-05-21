@@ -63,24 +63,39 @@ function loadUserList(datas) {
                 }
             },
             {
-                data: "name",
+                data: "code",
             },
             {
-                data: "status",
+                data: "customer_id",
                 render: function (data, type, full) {
-                    if (full.status == 1) {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Active</a>';
-                    } else {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Inactive</a>';
-                    }
+                    return full.client.name;
                 }
             },
+            {
+                data: "po_receive_date",
+            },
+            {
+                data: "delivery_date",
+            },
+            {
+                data: "order_quantity"
+            },
+            // {
+            //     data: "status",
+            //     render: function (data, type, full) {
+            //         if (full.status == 1) {
+            //             return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Active</a>';
+            //         } else {
+            //             return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Inactive</a>';
+            //         }
+            //     }
+            // },
             {
                 data: null,
                 'bSortable': false,
                 render: function (data, type, full) {
-                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'order-edit');
-                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'order-delete');
+                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'orders-edit');
+                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
                     if (hasDeletePermission || hasEditPermission) {
 
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -93,7 +108,7 @@ function loadUserList(datas) {
                         <ul class="dropdown-menu dropdown-menu-end">';
 
                         if (hasEditPermission) {
-                            actions += '<li><a href="#newOrderModal" data-bs-toggle="modal" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
+                            actions += '<li><a href="./orders/' + full.id + '/edit" class="dropdown-item edit-list"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
                         }
 
                         if (hasDeletePermission) {

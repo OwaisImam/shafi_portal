@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fabric_constructions', function (Blueprint $table) {
-            $table->id();
-              $table->string('name');
-            $table->boolean('status')->default(0);
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->boolean('status');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fabric_constructions');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->boolean('status');
+        });
     }
 };
