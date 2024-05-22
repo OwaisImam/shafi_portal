@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\Models\Item;
 
 class ItemRepository extends BaseRepository
@@ -11,5 +10,4 @@ class ItemRepository extends BaseRepository
     {
         return Item::class;
     }
-
 }

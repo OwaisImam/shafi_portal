@@ -5,26 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Departments;
 use App\Repositories\DepartmentRepository;
+use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 
 class PreProductionPlanController extends Controller
 {
     private DepartmentRepository $departmentRepository;
     private Request $request;
+    private OrderRepository $orderRepository;
     private Departments|null $department;
 
-    public function __construct(DepartmentRepository $departmentRepository, Request $request)
+    public function __construct(DepartmentRepository $departmentRepository, OrderRepository $orderRepository, Request $request)
     {
         $this->request = $request;
         $this->departmentRepository = $departmentRepository;
+        $this->orderRepository = $orderRepository;
         $this->department = $this->departmentRepository->getByColumn($this->request->slug, 'slug');
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $department = $this->department;
+
         return view('admin.department.pre_production_plan.index', compact('department'));
     }
 
@@ -33,9 +38,10 @@ class PreProductionPlanController extends Controller
      */
     public function create()
     {
-
         $department = $this->department;
-        return view('admin.department.pre_production_plan.create', compact('department'));
+        $order = $this->orderRepository->getById($this->request->order_id);
+
+        return view('admin.department.pre_production_plan.create', compact('department', 'order'));
     }
 
     /**

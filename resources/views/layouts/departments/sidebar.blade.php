@@ -171,42 +171,24 @@
                             </ul>
                         </li>
                     @endcanany
-                    {{-- @canany(['pro-production-plan-update', 'pro-production-plan-list', 'pro-production-plan-view', 'pro-production-plan-delete', 'pro-production-plan-edit']) --}}
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
-                            <span key="t-users">@lang('translation.Pre_Production_Plan')</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            {{-- @can('pro-production-plan-list') --}}
-                            <li><a href="{{ route('admin.departments.pre_production_plans.index', ['slug' => $department->slug]) }}"
-                                    key="t-default">@lang('translation.List')</a></li>
-                            {{-- @endcan --}}
-                            {{-- @can('pro-production-plan-create') --}}
-                            <li><a href="{{ route('admin.departments.pre_production_plans.create', ['slug' => $department->slug]) }}"
-                                    key="t-default">@lang('translation.Create')</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
-                    {{-- @canany(['pro-production-plan-update', 'pro-production-plan-list', 'pro-production-plan-view', 'pro-production-plan-delete', 'pro-production-plan-edit']) --}}
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
-                            <span key="t-users">@lang('translation.Orders')</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            {{-- @can('pro-production-plan-list') --}}
-                            <li><a href="{{ route('admin.departments.orders.index', ['slug' => $department->slug]) }}"
-                                    key="t-default">@lang('translation.List')</a></li>
-                            {{-- @endcan --}}
-                            {{-- @can('pro-production-plan-create') --}}
-                            <li><a href="{{ route('admin.departments.orders.create', ['slug' => $department->slug]) }}"
-                                    key="t-default">@lang('translation.Create')</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                    @canany(['orders-update', 'orders-list', 'orders-view', 'orders-delete', 'orders-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.Orders')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('orders-list')
+                                    <li><a href="{{ route('admin.departments.orders.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                                @can('orders-create')
+                                    <li><a href="{{ route('admin.departments.orders.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                 @endif
 
                 {{-- <li>

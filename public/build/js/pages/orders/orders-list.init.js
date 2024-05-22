@@ -80,25 +80,25 @@ function loadUserList(datas) {
             {
                 data: "order_quantity"
             },
-            // {
-            //     data: "status",
-            //     render: function (data, type, full) {
-            //         if (full.status == 1) {
-            //             return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Active</a>';
-            //         } else {
-            //             return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Inactive</a>';
-            //         }
-            //     }
-            // },
+            {
+                data: "status",
+                render: function (data, type, full) {
+                    if (full.status != "Pending") {
+                        return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">' + full.status + '</a>';
+                    } else {
+                        return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">' + full.status + '</a>';
+                    }
+                }
+            },
             {
                 data: null,
                 'bSortable': false,
                 render: function (data, type, full) {
                     var hasEditPermission = datas.permissions.some(permission => permission.name === 'orders-edit');
                     var hasDeletePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
+                    var hasPreProdoctionPlanCreatePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
                     if (hasDeletePermission || hasEditPermission) {
 
-                        var csrfToken = $('meta[name="csrf-token"]').attr('content');
                         var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
                         <li class="list-inline-item">\
                         <div class="dropdown">\
@@ -113,6 +113,10 @@ function loadUserList(datas) {
 
                         if (hasDeletePermission) {
                             actions += '<li><a href="#removeOrderModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
+                        }
+
+                        if (hasPreProdoctionPlanCreatePermission) {
+                            actions += '<li><a href="./pre_production_plans/create?order_id=' + full.id + '" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-warning me-1"></i> Pre Production Plan</a></li>';
                         }
 
                         actions += '</ul>\

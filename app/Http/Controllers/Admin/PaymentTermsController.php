@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Departments;
-use App\Models\PaymentTerms;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\PaymentTermsRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +41,7 @@ class PaymentTermsController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Payment terms fetched successfully.');
         }
 
@@ -63,7 +63,7 @@ class PaymentTermsController extends Controller
      */
     public function store()
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'name' => 'required',
@@ -75,16 +75,18 @@ class PaymentTermsController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->paymentTermsRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.payment_terms.index', ['slug' => $this->department->slug])->with('success', 'Payment terms created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -110,7 +112,7 @@ class PaymentTermsController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -122,15 +124,17 @@ class PaymentTermsController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->paymentTermsRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.payment_terms.index', ['slug' => $this->department->slug])->with('success', 'Payment terms  updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -140,17 +144,18 @@ class PaymentTermsController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->paymentTermsRepository->deleteById($id);
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Payment terms deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

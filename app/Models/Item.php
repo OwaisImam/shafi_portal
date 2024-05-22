@@ -11,7 +11,7 @@ class Item extends Model
 
     protected $fillable = ['name', 'status'];
 
-     public function suppliers()
+    public function suppliers()
     {
         return $this->belongsToMany(Supplier::class);
     }

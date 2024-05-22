@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PurchaseOrderController extends Controller
 {
-
     private SupplierRepository $supplierRepository;
     private DepartmentRepository $departmentRepository;
     private CategoryRepository $categoryRepository;
@@ -28,8 +27,7 @@ class PurchaseOrderController extends Controller
         DepartmentRepository $departmentRepository,
         PurchaseOrderRepository $purchaseOrderRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->departmentRepository = $departmentRepository;
         $this->supplierRepository = $supplierRepository;
         $this->purchaseOrderRepository = $purchaseOrderRepository;
@@ -50,7 +48,7 @@ class PurchaseOrderController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Purchase Orders fetched successfully.');
         }
 
@@ -65,6 +63,7 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         $department = $this->department;
+
         return view('admin.department.purchase_orders.create', compact('department'));
     }
 

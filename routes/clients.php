@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'client.'], function () {
 
-
     Auth::routes(['verify' => true]);
 
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -31,7 +30,6 @@ Route::group(['as' => 'client.'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('home');
         Route::post('client/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 
         Route::post('/update-profile/{id}', [AuthController::class, 'updateProfile'])->name('updateProfile');
         Route::post('/update-password/{id}', [AuthController::class, 'updatePassword'])->name('updatePassword');

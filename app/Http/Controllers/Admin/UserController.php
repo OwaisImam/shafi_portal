@@ -7,6 +7,7 @@ use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\CityRepository;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,13 +28,13 @@ class UserController extends Controller
         $this->cityRepository = $cityRepository;
         $this->request = $request;
 
-
         $this->middleware('permission:users-list|users-create|users-edit|users-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:users-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:users-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:users-delete', ['only' => ['destroy']]);
 
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -46,8 +47,7 @@ class UserController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Users fetched successfully.');
         }
 
@@ -60,6 +60,7 @@ class UserController extends Controller
     public function create()
     {
         $cities = $this->cityRepository->where('flag', 1)->where('country_id', 167)->get();
+
         return view('admin.users.create', compact('cities'));
     }
 
@@ -70,15 +71,15 @@ class UserController extends Controller
     {
         try {
             $validator = Validator::make($this->request->all(), [
-                "name" => "required",
-                "email" => "required|email|unique:users,email",
-                "profile_picture" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
-                "dob" => "nullable|date",
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'dob' => 'nullable|date',
                 'date_of_exit' => 'nullable',
                 'date_of_joining' => 'nullable',
-                "password" => "required|min:8",
-                "confirm_password" => "required|same:password",
-                "consent" => "required|accepted",
+                'password' => 'required|min:8',
+                'confirm_password' => 'required|same:password',
+                'consent' => 'required|accepted',
                 'status' => 'nullable|boolean',
                 'doe' => 'nullable',
                 'city_id' => 'nullable',
@@ -86,7 +87,7 @@ class UserController extends Controller
                 'cnic' => 'nullable',
                 'father_name' => 'nullable',
                 'is_employee' => 'nullable',
-                'phone_number' => 'required'
+                'phone_number' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -107,10 +108,12 @@ class UserController extends Controller
             $this->userRepository->createNewUserWithRole($data);
 
             DB::commit();
+
             return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -143,15 +146,15 @@ class UserController extends Controller
 
         try {
             $validator = Validator::make($this->request->all(), [
-                "name" => "required",
-                "email" => ["required",'email', Rule::unique('users')->ignore($id),],
-                "profile_picture" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
-                "dob" => "nullable|date",
+                'name' => 'required',
+                'email' => ['required', 'email', Rule::unique('users')->ignore($id)],
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'dob' => 'nullable|date',
                 'date_of_exit' => 'nullable',
                 'date_of_joining' => 'nullable',
-                "password" => "nullable|min:8",
-                "confirm_password" => "nullable|same:password",
-                "consent" => "required|accepted",
+                'password' => 'nullable|min:8',
+                'confirm_password' => 'nullable|same:password',
+                'consent' => 'required|accepted',
                 'status' => 'nullable|boolean',
                 'doe' => 'nullable',
                 'city_id' => 'nullable',
@@ -159,7 +162,7 @@ class UserController extends Controller
                 'cnic' => 'nullable',
                 'father_name' => 'nullable',
                 'is_employee' => 'nullable',
-                'phone_number' => 'required'
+                'phone_number' => 'required',
 
             ]);
 
@@ -171,13 +174,14 @@ class UserController extends Controller
             unset($data['confirm_password']);
             DB::beginTransaction();
 
-            if(isset($data['password'])) {
+            if (isset($data['password'])) {
                 $this->userRepository->updatePassword($data['email'], $data['password']);
             }
 
             unset($data['password']);
             unset($data['consent']);
             $data['status'] = $data['status'] ?? false;
+
             if ($this->request->hasFile('profile_picture')) {
                 $profileImage = Helper::uploadFile($this->request->profile_picture);
                 $data['avatar'] = $profileImage->id;
@@ -188,10 +192,12 @@ class UserController extends Controller
             $this->userRepository->updateUser($data);
 
             DB::commit();
+
             return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
 
@@ -206,10 +212,12 @@ class UserController extends Controller
             DB::beginTransaction();
             $this->userRepository->deleteById($id);
             DB::commit();
+
             return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -217,6 +225,7 @@ class UserController extends Controller
     public function showProfile()
     {
         $user = Auth::user();
+
         return view('admin.users.profile', compact('user'));
     }
 }

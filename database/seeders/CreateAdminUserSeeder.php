@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -20,7 +19,7 @@ class CreateAdminUserSeeder extends Seeder
         $user = User::create([
                     'name' => 'Admin',
                     'email' => 'admin@gmail.com',
-                    'password' => Hash::make('admin123')
+                    'password' => Hash::make('admin123'),
                 ]);
 
         $role = Role::create(['name' => 'admin']);

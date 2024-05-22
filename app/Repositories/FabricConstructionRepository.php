@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\Models\FabricConstruction;
-use App\Models\Item;
-use App\Models\Range;
 
 class FabricConstructionRepository extends BaseRepository
 {
@@ -13,5 +10,4 @@ class FabricConstructionRepository extends BaseRepository
     {
         return FabricConstruction::class;
     }
-
 }

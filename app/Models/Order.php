@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["code", "customer_po_number", "customer_id", "job_id", "po_receive_date", "delivery_date", "payment_term_id", "range_id", "fabric_construction_id", "gsm", "order_quantity", "article_style_count"];
+    protected $fillable = ['code', 'customer_po_number', 'customer_id', 'job_id', 'po_receive_date', 'delivery_date', 'payment_term_id', 'range_id', 'fabric_construction_id', 'gsm', 'order_quantity', 'article_style_count'];
 
     public function attachments(): MorphMany
     {

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Departments;
-use App\Models\FabricContruction;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\FabricConstructionRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +41,7 @@ class FabricContructionController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Fabric construction fetched successfully.');
         }
 
@@ -63,7 +63,7 @@ class FabricContructionController extends Controller
      */
     public function store()
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'name' => 'required',
@@ -75,16 +75,18 @@ class FabricContructionController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->fabricConstructionRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.fabric_construction.index', ['slug' => $this->department->slug])->with('success', 'Fabric construction created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -110,7 +112,7 @@ class FabricContructionController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -122,15 +124,17 @@ class FabricContructionController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->fabricConstructionRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.fabric_construction.index', ['slug' => $this->department->slug])->with('success', 'Fabric construction  updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -140,17 +144,18 @@ class FabricContructionController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->fabricConstructionRepository->deleteById($id);
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Fabric construction deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

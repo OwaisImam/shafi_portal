@@ -3,8 +3,7 @@
 namespace App\Repositories;
 
 use App\Constants\DefaultValues;
-use App\Models\EmailTemplate ;
-use App\Repositories\BaseRepository;
+use App\Models\EmailTemplate;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmailTemplateRepository extends BaseRepository

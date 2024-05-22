@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\Models\Setting;
 
 class SettingRepository extends BaseRepository
@@ -41,7 +40,6 @@ class SettingRepository extends BaseRepository
             file_put_contents($path, $envContents);
         }
     }
-
 
     public function updateSetting(array $types, array $params): void
     {

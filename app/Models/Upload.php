@@ -16,7 +16,7 @@ class Upload extends Model
     ];
 
     protected $appends = [
-        'image_path'
+        'image_path',
     ];
 
     public function getId()

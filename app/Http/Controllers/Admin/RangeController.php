@@ -8,6 +8,7 @@ use App\Models\Departments;
 use App\Models\Range;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\RangeRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RangeController extends Controller
 {
-
     private RangeRepository $rangeRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
@@ -42,7 +42,7 @@ class RangeController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Ranges fetched successfully.');
         }
 
@@ -64,7 +64,7 @@ class RangeController extends Controller
      */
     public function store()
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'name' => 'required',
@@ -76,16 +76,18 @@ class RangeController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->rangeRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.range.index', ['slug' => $this->department->slug])->with('success', 'Range created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -111,7 +113,7 @@ class RangeController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -123,15 +125,17 @@ class RangeController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->rangeRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.range.index', ['slug' => $this->department->slug])->with('success', 'Range updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -141,17 +145,18 @@ class RangeController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->rangeRepository->deleteById($id);
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Range deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

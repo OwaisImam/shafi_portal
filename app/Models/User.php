@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +17,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use HasRoles;
     use HasPermissions;
-
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'father_name',
         'cnic',
         'address',
-        'is_employee'
+        'is_employee',
     ];
 
     /**
@@ -87,12 +85,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->address;
     }
 
-
     public function getDateOfExit(): string
     {
         return $this->date_of_exit;
     }
-
 
     public function getDateOfJoining(): string
     {
@@ -133,6 +129,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Upload::class, 'avatar');
     }
-
-
 }

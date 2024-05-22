@@ -2,11 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
-use App\Models\Country;
-use App\Models\Order;
 use App\Models\OrderItems;
-use App\Models\Setting;
 
 class OrderItemRepository extends BaseRepository
 {
@@ -14,5 +10,4 @@ class OrderItemRepository extends BaseRepository
     {
         return OrderItems::class;
     }
-
 }

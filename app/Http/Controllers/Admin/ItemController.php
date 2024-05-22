@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\Helper;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Imports\ItemImport;
 use App\Models\Departments;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\ItemRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +43,7 @@ class ItemController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Items fetched successfully.');
         }
 
@@ -77,16 +77,18 @@ class ItemController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->itemRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.items.index', ['slug' => $this->department->slug])->with('success', 'Item created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -123,15 +125,18 @@ class ItemController extends Controller
                 return redirect()->back()->withErrors($validator->messages())->withInput();
             }
             $validated = $validator->validated();
-            if(!isset($validated['status'])) {
+
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->itemRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.items.index', ['slug' => $this->department->slug])->with('success', 'Item updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -145,7 +150,7 @@ class ItemController extends Controller
 
     public function bulkUpload()
     {
-         try {
+        try {
             DB::beginTransaction();
 
             $this->request->validate([
@@ -159,11 +164,13 @@ class ItemController extends Controller
             Excel::import(new ItemImport, $file);
 
             DB::commit();
+
             return redirect()->route('admin.departments.items.index', ['slug' => $this->department->slug])->with('success', 'Items uploaded successfully.');
 
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
 

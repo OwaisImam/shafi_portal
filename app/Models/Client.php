@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Notifications\CustomPasswordReset;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -15,7 +14,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     use Notifiable;
 
     protected $fillable = [
-        'name', 'code', 'city_id', 'logo_id', 'email', 'address', 'password', 'postal_code', 'phone_number', 'website', 'status', 'type', 'label'
+        'name', 'code', 'city_id', 'logo_id', 'email', 'address', 'password', 'postal_code', 'phone_number', 'website', 'status', 'type', 'label',
     ];
 
     protected $hidden = [
@@ -31,7 +30,6 @@ class Client extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
 
     public function getName(): string
     {

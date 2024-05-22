@@ -3,7 +3,6 @@
 namespace App\Helper;
 
 use App\Models\Upload;
-use Goutte\Client;
 use Illuminate\Support\Facades\Storage;
 
 class Helper
@@ -69,5 +68,4 @@ class Helper
     {
         return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
-
 }

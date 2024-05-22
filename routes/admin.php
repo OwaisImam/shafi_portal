@@ -20,8 +20,6 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\CustomerController;
-use App\Models\Departments;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,13 +44,11 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::post('update/env', [SettingController::class, 'envKeyUpdate'])->name('systems.env.update');
     });
 
-
     Route::post('fetch-states', [DropdownController::class, 'fetchState'])->name('fetch.states');
     Route::post('fetch-cities', [DropdownController::class, 'fetchCity'])->name('fetch.cities');
 
     Route::group(['prefix' => 'department/{slug}', 'as' => 'departments.'], function () {
         Route::get('/dashboard', [DepartmentController::class, 'dashboard'])->name('dashboard');
-        Route::resource('pre_production_plans', PreProductionPlanController::class);
 
         Route::resource('suppliers', SupplierController::class);
         Route::get('suppliers/{id}/delete', [SupplierController::class, 'destroy']);
@@ -87,6 +83,9 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
         Route::resource('orders', OrderController::class);
         Route::get('orders/{order}/delete', [OrderController::class, 'destroy']);
+
+        Route::resource('pre_production_plans', PreProductionPlanController::class);
+
     });
 
 });

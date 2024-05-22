@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
 use App\Models\Country;
-use App\Models\Setting;
 
 class CountryRepository extends BaseRepository
 {
@@ -12,5 +10,4 @@ class CountryRepository extends BaseRepository
     {
         return Country::class;
     }
-
 }

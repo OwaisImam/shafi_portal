@@ -7,10 +7,10 @@ use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Mail\ClientLoginCredentials;
 use App\Models\Departments;
-use App\Repositories\CityRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\DepartmentRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,12 +28,12 @@ class ClientsController extends Controller
     private Departments $department;
     private DepartmentRepository $departmentRepository;
 
-    public function __construct(ClientRepository $clientRepository,
-            DepartmentRepository $departmentRepository,
-            Request $request,
-            CountryRepository $countryRepository
-            )
-    {
+    public function __construct(
+        ClientRepository $clientRepository,
+        DepartmentRepository $departmentRepository,
+        Request $request,
+        CountryRepository $countryRepository
+    ) {
         $this->departmentRepository = $departmentRepository;
         $this->clientRepository = $clientRepository;
         $this->countryRepository = $countryRepository;
@@ -62,8 +62,7 @@ class ClientsController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Clients fetched successfully.');
         }
 
@@ -89,9 +88,9 @@ class ClientsController extends Controller
     {
         try {
             $validator = Validator::make($this->request->all(), [
-                "name" => "required",
-                "email" => "required|email|unique:users,email",
-                "logo" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'status' => 'nullable|boolean',
                 'city_id' => 'nullable',
                 'address' => 'nullable',
@@ -99,7 +98,7 @@ class ClientsController extends Controller
                 'phone_number' => 'required',
                 'website' => 'nullable',
                 'type' => 'required',
-                'label' => 'nullable|max:255'
+                'label' => 'nullable|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -117,13 +116,15 @@ class ClientsController extends Controller
                 unset($data['logo']);
             }
 
-            $client =  $this->clientRepository->create($data);
+            $client = $this->clientRepository->create($data);
 
             DB::commit();
+
             return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('error', 'Something went wrong.');
 
         }
@@ -152,9 +153,9 @@ class ClientsController extends Controller
     {
         try {
             $validator = Validator::make($this->request->all(), [
-                "name" => "required",
-                "email" => ["required",'email', Rule::unique('clients')->ignore($id),],
-                "logo" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+                'name' => 'required',
+                'email' => ['required', 'email', Rule::unique('clients')->ignore($id)],
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'status' => 'nullable|boolean',
                 'city_id' => 'nullable',
                 'address' => 'nullable',
@@ -162,7 +163,7 @@ class ClientsController extends Controller
                 'phone_number' => 'required',
                 'website' => 'nullable',
                 'type' => 'required',
-                'label' => 'nullable|max:255'
+                'label' => 'nullable|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -171,7 +172,7 @@ class ClientsController extends Controller
             $data = $validator->validated();
             $client = $this->clientRepository->getById($id);
 
-            if($client->code == null) {
+            if ($client->code == null) {
                 $data['code'] = Helper::generateRandomString();
             }
 
@@ -186,10 +187,12 @@ class ClientsController extends Controller
             $this->clientRepository->updateById($id, $data);
 
             DB::commit();
+
             return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('error', 'Something went wrong.');
         }
     }
@@ -197,7 +200,7 @@ class ClientsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $department,  string $id)
+    public function destroy(string $department, string $id)
     {
         try {
 
@@ -212,14 +215,14 @@ class ClientsController extends Controller
                'permissions' => Auth::user()->role->permissions,
             ];
 
-
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success($response, 'Clients deleted successfully.');
             }
 
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -231,17 +234,19 @@ class ClientsController extends Controller
             $client = $this->clientRepository->getById($id);
             $string = Helper::generateRandomString();
             $client->update([
-                'password' => Hash::make($string)
+                'password' => Hash::make($string),
             ]);
 
             $mail = new ClientLoginCredentials($client, $string);
             Mail::to($client->email)->send($mail);
 
             DB::commit();
+
             return redirect()->route('admin.departments.clients.index', ['slug' => $this->department->slug])->with('success', 'Client credentials generated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

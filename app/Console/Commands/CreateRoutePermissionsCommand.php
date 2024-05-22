@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -45,7 +44,7 @@ class CreateRoutePermissionsCommand extends Command
                   'payment_terms',
                   'article',
                   'orders',
-                  'job'
+                  'job',
               ];
 
         $permissionList = [];
@@ -58,7 +57,7 @@ class CreateRoutePermissionsCommand extends Command
             $permissionList[] = $permission . '-view';
             $permissionList[] = $permission . '-delete';
 
-            if($permission == 'clients') {
+            if ($permission == 'clients') {
                 $permissionList[] = $permission . '-generate-credentials';
             }
         }

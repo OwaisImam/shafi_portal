@@ -171,42 +171,24 @@
                             </ul>
                         </li>
                     <?php endif; ?>
-                    
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
-                            <span key="t-users"><?php echo app('translator')->get('translation.Pre_Production_Plan'); ?></span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            
-                            <li><a href="<?php echo e(route('admin.departments.pre_production_plans.index', ['slug' => $department->slug])); ?>"
-                                    key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
-                            
-                            
-                            <li><a href="<?php echo e(route('admin.departments.pre_production_plans.create', ['slug' => $department->slug])); ?>"
-                                    key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
-                            
-                        </ul>
-                    </li>
-                    
-                    
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="bx bx-user"></i>
-                            <span key="t-users"><?php echo app('translator')->get('translation.Orders'); ?></span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            
-                            <li><a href="<?php echo e(route('admin.departments.orders.index', ['slug' => $department->slug])); ?>"
-                                    key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
-                            
-                            
-                            <li><a href="<?php echo e(route('admin.departments.orders.create', ['slug' => $department->slug])); ?>"
-                                    key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
-                            
-                        </ul>
-                    </li>
-                    
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['orders-update', 'orders-list', 'orders-view', 'orders-delete', 'orders-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.Orders'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('orders-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.orders.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('orders-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.orders.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 

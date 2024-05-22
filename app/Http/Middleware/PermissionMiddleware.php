@@ -5,14 +5,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Spatie\Permission\Exceptions\UnauthorizedException;
-use Symfony\Component\HttpFoundation\Response;
 
 class PermissionMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle($request, Closure $next, $permission = null, $guard = null)
     {
@@ -22,7 +21,7 @@ class PermissionMiddleware
             throw UnauthorizedException::notLoggedIn();
         }
 
-        if (! is_null($permission)) {
+        if (!is_null($permission)) {
             $permissions = is_array($permission)
                 ? $permission
                 : explode('|', $permission);
@@ -31,9 +30,8 @@ class PermissionMiddleware
         if (is_null($permission)) {
             $permission = $request->route()->getName();
 
-            $permissions = array($permission);
+            $permissions = [$permission];
         }
-
 
         foreach ($permissions as $permission) {
             if ($authGuard->user()->can($permission)) {

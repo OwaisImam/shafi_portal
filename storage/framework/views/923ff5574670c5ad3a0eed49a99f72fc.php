@@ -28,77 +28,133 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="<?php echo e(route('admin.departments.pre_production_plans.store', ['slug' => $department->slug])); ?>">
-                        <?php echo csrf_field(); ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="validationCustom01" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="validationCustom01" placeholder="Name"
-                                        value="<?php echo e(old('name')); ?>" required name="name">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the full name.
-                                    </div>
-                                </div>
-                            </div>
+                    <h5>Order Details</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-responsive table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Order Code</th>
+                                        <td><?php echo e($order->code); ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="subject" class="form-label">Subject</label>
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject"
-                                        value="<?php echo e(old('subject')); ?>" required name="subject">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid subject.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="content" class="form-label">Content</label>
-                                    <textarea id="content" name="content"><?php echo e(old('content')); ?></textarea>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid subject.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="key" class="form-label">Key</label>
-                                    <input class="form-control" type="text" name="key" required id="key">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid key.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
-                        </div>
-                    </form>
+                    </div>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>State</th>
+                                <th>Shipping Address</th>
+                                <th>PO Receive Date</th>
+                                <th>Delivery Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?php echo e($order->client->name); ?></td>
+                                <td><?php echo e($order->client->city->state->name); ?></td>
+                                <td><?php echo e($order->client->address); ?></td>
+                                <td><?php echo e($order->po_receive_date); ?></td>
+                                <td><?php echo e($order->delivery_date); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Range</th>
+                                <th>Fabric Construction</th>
+                                <th>GSM</th>
+                                <th>Total Order Quantity</th>
+                                <th>Total Article Style</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?php echo e($order->range->name); ?></td>
+                                <td><?php echo e($order->fabric_construction->name); ?></td>
+                                <td><?php echo e($order->gsm); ?></td>
+                                <td><?php echo e($order->order_quantity .' '. $order->order_items->first()->unit); ?></td>
+                                <td><?php echo e($order->article_style_count); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- end card -->
         </div> <!-- end col -->
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
+                        action="<?php echo e(route('admin.email_templates.store')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="supplier" class="form-label">Supplier</label>
+                                    <select name="supplier" class="form-control select2">
+                                        <option>Select</option>
+                                    </select>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Select the supplier.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="moobile_no" class="form-label">Mobile No</label>
+                                    <input type="text" class="form-control" id="moobile_no" placeholder="Mobile No"
+                                        value="<?php echo e(old('moobile_no')); ?>" required name="moobile_no">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid subject.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Category</label>
+                                    <input type="text" class="form-control" id="category" placeholder="Category"
+                                        value="<?php echo e(old('category')); ?>" required name="category">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the valid category.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="serial_no" class="form-label">Job No</label>
+                                    <input type="text" class="form-control" id="job_no" placeholder="Job No"
+                                        value="<?php echo e(old('job_no')); ?>" required name="job_no">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Enter the job no.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>

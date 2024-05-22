@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Constants\DefaultValues;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,6 +16,7 @@ class ClientLoginCredentials extends Mailable
 
     private $client;
     private $string;
+
     /**
      * Create a new message instance.
      */
@@ -39,7 +39,6 @@ class ClientLoginCredentials extends Mailable
     /**
      * Get the message content definition.
      */
-
     public function build()
     {
         $params = [

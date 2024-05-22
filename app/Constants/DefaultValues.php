@@ -14,9 +14,9 @@ class DefaultValues
 
     public const PAGINATION_LIMIT = 10;
 
-    public const PAYMENT_STATUS = ["Receivable", "Cancelled"];
+    public const PAYMENT_STATUS = ['Receivable', 'Cancelled'];
 
-    public const SIZES = ["S", "M", "L", "XL", "XXL", "XXXL"];
+    public const SIZES = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
     public const TIMEZONES = [
         '(GMT-12:00) International Date Line West' => 'Pacific/Wake',

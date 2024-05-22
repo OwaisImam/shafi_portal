@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
-use App\Models\Item;
 use App\Models\PurchaseOrder;
 
 class PurchaseOrderRepository extends BaseRepository
@@ -12,5 +10,4 @@ class PurchaseOrderRepository extends BaseRepository
     {
         return PurchaseOrder::class;
     }
-
 }

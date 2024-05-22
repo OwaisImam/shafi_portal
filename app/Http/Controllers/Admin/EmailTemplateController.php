@@ -40,7 +40,7 @@ class EmailTemplateController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Templates fetched successfully.');
         }
 

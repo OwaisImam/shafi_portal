@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -34,6 +34,7 @@ class RegisterController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     private UserRepository $userRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -58,7 +59,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'dob' => ['required', 'date', 'before:today'],
-            'avatar' => ['required', 'image' ,'mimes:jpg,jpeg,png','max:1024'],
+            'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
     }
 
@@ -66,16 +67,17 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return User
      */
     protected function create(array $data)
     {
-        $data['dob'] =  date('Y-m-d', strtotime($data['dob']));
+        $data['dob'] = date('Y-m-d', strtotime($data['dob']));
         $data['password'] = Hash::make($data['password']);
 
         $user = $this->userRepository->createNewUserWithRole($data);
 
         $user->sendEmailVerificationNotification();
+
         return $user;
     }
 }

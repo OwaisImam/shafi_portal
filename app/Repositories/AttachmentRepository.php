@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Attachment;
-use App\Repositories\BaseRepository;
 
 class AttachmentRepository extends BaseRepository
 {

@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
-use App\Models\Item;
 use App\Models\PaymentTerms;
-use App\Models\PurchaseOrder;
 
 class PaymentTermsRepository extends BaseRepository
 {
@@ -13,5 +10,4 @@ class PaymentTermsRepository extends BaseRepository
     {
         return PaymentTerms::class;
     }
-
 }

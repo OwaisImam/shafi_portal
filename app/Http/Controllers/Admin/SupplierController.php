@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\Helper;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Departments;
-use App\Models\SupplierItem;
 use App\Repositories\CategoryRepository;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\ItemRepository;
 use App\Repositories\SupplierRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +31,7 @@ class SupplierController extends Controller
         DepartmentRepository $departmentRepository,
         ItemRepository $itemRepository,
         CategoryRepository $categoryRepository
-    )
-    {
+    ) {
         $this->departmentRepository = $departmentRepository;
         $this->supplierRepository = $supplierRepository;
         $this->itemRepository = $itemRepository;
@@ -56,7 +54,7 @@ class SupplierController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Suppliers fetched successfully.');
         }
 
@@ -64,7 +62,6 @@ class SupplierController extends Controller
 
         return view('admin.department.suppliers.index', compact('department', 'items', 'categories'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -95,21 +92,23 @@ class SupplierController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
-            $validated['category_id'] =  $validated['category'];
-            $validated['code'] = rand(1111,9999);
+            $validated['category_id'] = $validated['category'];
+            $validated['code'] = rand(1111, 9999);
             $supplier = $this->supplierRepository->create($validated);
 
             $supplier->items()->sync($validated['items']);
 
             DB::commit();
+
             return redirect()->route('admin.departments.suppliers.index', ['slug' => $this->department->slug])->with('success', 'Supplier created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -135,7 +134,7 @@ class SupplierController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'name' => 'required|max:255',
@@ -151,20 +150,22 @@ class SupplierController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
-            $validated['category_id'] =  $validated['category'];
+            $validated['category_id'] = $validated['category'];
             $supplier = $this->supplierRepository->updateById($id, $validated);
 
             $supplier->items()->sync($validated['items']);
 
             DB::commit();
+
             return redirect()->route('admin.departments.suppliers.index', ['slug' => $this->department->slug])->with('success', 'Supplier updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -181,12 +182,14 @@ class SupplierController extends Controller
             $supplier->items()->detach();
             $supplier->delete();
             DB::commit();
-            if($this->request->ajax()) {
+
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Supplier deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }

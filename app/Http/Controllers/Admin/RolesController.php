@@ -14,6 +14,7 @@ class RolesController extends Controller
     {
         $this->roleRespository = $roleRepository;
     }
+
     /**
      * Display a listing of the resource.
      */

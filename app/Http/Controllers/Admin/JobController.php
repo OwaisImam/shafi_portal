@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Departments;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\JobRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,7 @@ class JobController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Jobs fetched successfully.');
         }
 
@@ -62,7 +63,7 @@ class JobController extends Controller
      */
     public function store()
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'number' => 'required|numeric',
@@ -74,16 +75,18 @@ class JobController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->jobRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.jobs.index', ['slug' => $this->department->slug])->with('success', 'Job created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -109,7 +112,7 @@ class JobController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'number' => 'required|numeric',
@@ -121,15 +124,17 @@ class JobController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->jobRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.jobs.index', ['slug' => $this->department->slug])->with('success', 'Job updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
@@ -139,17 +144,18 @@ class JobController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->jobRepository->deleteById($id);
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Job deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

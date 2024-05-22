@@ -2,9 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helper\Helper;
-use App\Models\Country;
-use App\Models\Departments;
 use App\Models\Supplier;
 
 class SupplierRepository extends BaseRepository
@@ -13,5 +10,4 @@ class SupplierRepository extends BaseRepository
     {
         return Supplier::class;
     }
-
 }

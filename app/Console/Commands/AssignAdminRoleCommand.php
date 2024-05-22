@@ -34,7 +34,7 @@ class AssignAdminRoleCommand extends Command
 
         $permissions = Permission::pluck('id', 'id')->all();
 
-        if($role) {
+        if ($role) {
             $role->syncPermissions($permissions);
 
             $user->assignRole([$role->id]);

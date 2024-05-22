@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\PermissionRepository;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class PermissionsController extends Controller
 {
@@ -23,6 +22,7 @@ class PermissionsController extends Controller
         $this->userRepository = $userRepository;
         $this->request = $request;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -78,8 +78,9 @@ class PermissionsController extends Controller
 
             return redirect()->back()->with('success', 'Permissions updated successfully.');
 
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

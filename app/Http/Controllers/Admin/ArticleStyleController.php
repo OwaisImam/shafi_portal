@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Models\ArticleStyle;
 use App\Models\Departments;
 use App\Repositories\ArticleStyleRepository;
 use App\Repositories\DepartmentRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +41,7 @@ class ArticleStyleController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Article style fetched successfully.');
         }
 
@@ -63,7 +63,7 @@ class ArticleStyleController extends Controller
      */
     public function store()
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                   'name' => 'required',
@@ -75,16 +75,18 @@ class ArticleStyleController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
 
             $this->articleStyleRepository->create($validated);
             DB::commit();
+
             return redirect()->route('admin.departments.article.index', ['slug' => $this->department->slug])->with('success', 'Article style created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -110,7 +112,7 @@ class ArticleStyleController extends Controller
      */
     public function update(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -122,15 +124,17 @@ class ArticleStyleController extends Controller
             }
             $validated = $validator->validated();
 
-            if(!isset($validated['status'])) {
+            if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
             $this->articleStyleRepository->updateById($id, $validated);
             DB::commit();
+
             return redirect()->route('admin.departments.article.index', ['slug' => $this->department->slug])->with('success', 'Article style updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -140,17 +144,18 @@ class ArticleStyleController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->articleStyleRepository->deleteById($id);
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Article style deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }

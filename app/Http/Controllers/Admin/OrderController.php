@@ -16,6 +16,8 @@ use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\PaymentTermsRepository;
 use App\Repositories\RangeRepository;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -49,8 +51,7 @@ class OrderController extends Controller
         ItemRepository $itemRepository,
         OrderItemRepository $orderItemRepository,
         ArticleStyleRepository $articleStyleRepository
-        )
-    {
+    ) {
         $this->departmentRepository = $departmentRepository;
         $this->orderRepository = $orderRepository;
         $this->itemRepository = $itemRepository;
@@ -64,6 +65,7 @@ class OrderController extends Controller
         $this->request = $request;
         $this->department = $this->departmentRepository->getByColumn($this->request->slug, 'slug');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -76,7 +78,7 @@ class OrderController extends Controller
            'permissions' => Auth::user()->role->permissions,
         ];
 
-        if($this->request->ajax()) {
+        if ($this->request->ajax()) {
             return JsonResponse::success($response, 'Orders fetched successfully.');
         }
 
@@ -108,7 +110,9 @@ class OrderController extends Controller
     {
         try {
             DB::beginTransaction();
-            $validator = Validator::make($this->request->all(), [
+            $validator = Validator::make(
+                $this->request->all(),
+                [
                 'customer_po_number' => 'required|string|max:255',
                 'job_id' => 'required|integer|exists:p_jobs,id',
                 'customer_id' => 'required|integer|exists:clients,id',
@@ -128,7 +132,7 @@ class OrderController extends Controller
                 'group-a.*.qty' => 'required|integer|min:1',
                 'group-a.*.unit' => 'required|string|max:255',
             ],
-            [
+                [
                 'customer_po_number.required' => 'The customer PO number is required.',
                 'job_id.required' => 'The job ID is required.',
                 'customer_id.required' => 'The customer ID is required.',
@@ -147,7 +151,8 @@ class OrderController extends Controller
                 'group-a.*.color.required' => 'The color is required.',
                 'group-a.*.qty.required' => 'The quantity is required.',
                 'group-a.*.unit.required' => 'The unit is required.',
-            ]);
+            ]
+            );
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
@@ -155,24 +160,29 @@ class OrderController extends Controller
 
             $validated = $validator->validated();
             $validated['article_style_count'] = count($validated['group-a']);
-            $validated['code'] = "ORD-". rand(1000, 9999);
+
+            $customer = $this->clientRepository->getById($validated['customer_id']);
+
+            $validated['code'] = $customer->name[0] . '-' . Carbon::now()->format('dmY');
 
             $orderData['order_items'] = $validated['group-a'];
             unset($validated['group-a']);
 
             $order = $this->orderRepository->create($validated);
 
-            foreach($orderData['order_items'] as $item) {
+            foreach ($orderData['order_items'] as $item) {
                 $item['order_id'] = $order->id;
                 $item['sizes'] = json_encode($item['size']);
                 $this->orderItemRepository->create($item);
             }
 
             DB::commit();
+
             return redirect()->route('admin.departments.orders.index', ['slug' => $this->department->slug])->with('success', 'Order created successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -207,9 +217,11 @@ class OrderController extends Controller
      */
     public function update(string $department, string $id)
     {
-           try {
+        try {
             DB::beginTransaction();
-            $validator = Validator::make($this->request->all(), [
+            $validator = Validator::make(
+                $this->request->all(),
+                [
                 'customer_po_number' => 'required|string|max:255',
                 'job_id' => 'required|integer|exists:p_jobs,id',
                 'customer_id' => 'required|integer|exists:clients,id',
@@ -228,9 +240,9 @@ class OrderController extends Controller
                 'group-a.*.color' => 'required|string|max:7', // Assuming it's a hex code for the color
                 'group-a.*.qty' => 'required|integer|min:1',
                 'group-a.*.unit' => 'required|string|max:255',
-                'group-a.*.order_item_id' => 'required'
+                'group-a.*.order_item_id' => 'required',
             ],
-            [
+                [
                 'customer_po_number.required' => 'The customer PO number is required.',
                 'job_id.required' => 'The job ID is required.',
                 'customer_id.required' => 'The customer ID is required.',
@@ -249,7 +261,8 @@ class OrderController extends Controller
                 'group-a.*.color.required' => 'The color is required.',
                 'group-a.*.qty.required' => 'The quantity is required.',
                 'group-a.*.unit.required' => 'The unit is required.',
-            ]);
+            ]
+            );
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages())->withInput();
@@ -263,16 +276,18 @@ class OrderController extends Controller
 
             $this->orderRepository->updateById($id, $validated);
 
-            foreach($orderData['order_items'] as $item) {
+            foreach ($orderData['order_items'] as $item) {
                 $item['sizes'] = json_encode($item['size']);
                 $this->orderItemRepository->updateById($item['order_item_id'], $item);
             }
 
             DB::commit();
+
             return redirect()->route('admin.departments.orders.index', ['slug' => $this->department->slug])->with('success', 'Order updated successfully.');
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
+
             return JsonResponse::fail('Something went wrong.');
         }
     }
@@ -289,13 +304,14 @@ class OrderController extends Controller
             $order->delete();
             DB::commit();
 
-            if($this->request->ajax()) {
+            if ($this->request->ajax()) {
                 return JsonResponse::success(null, 'Order deleted successfully.');
             }
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             DB::rollBack();
             Log::error($e);
+
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

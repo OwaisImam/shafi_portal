@@ -2,13 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Dtos\UserDto;
 use App\Models\Client;
 use App\Models\User;
-use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class ClientRepository extends BaseRepository
 {
