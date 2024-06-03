@@ -24,7 +24,7 @@
 
         <?php $__env->endSlot(); ?>
         <?php $__env->slot('title'); ?>
-            Pre Production Planning List
+            <?php echo app('translator')->get('translation.Pre_Production_Plan'); ?>
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
 
@@ -41,13 +41,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <a href="<?php echo e(route('admin.departments.pre_production_plans.create', ['slug' => $department->slug])); ?>"
-                                    class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Pre Production Plan</a>
-                            </div>
-                        </div><!-- end col-->
                     </div>
                     <!-- end row -->
                     <div class="table-responsive">
@@ -56,10 +49,12 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Logo</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Job ID</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Link</th>
+                                    <th scope="col">Processes</th>
+                                    <th scope="col">Accessories</th>
+                                    <th scope="col">Total KG's</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
                             </thead>
@@ -72,77 +67,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="newDepartmentModal" tabindex="-1" aria-labelledby="newContactModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newContactModalLabel">Add Department</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form autocomplete="off" method="POST" class="needs-validation createDepartment-form"
-                        enctype="multipart/form-data" id="createDepartment-form"
-                        action="<?php echo e(route('admin.departments.store')); ?>" novalidate>
-                        <?php echo csrf_field(); ?>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <input type="hidden" class="form-control" id="departmentid-input">
-                                <div class="mb-3">
-                                    <label for="name-input" class="form-label">Name</label>
-                                    <input type="text" name="name" id="name-input" onkeyup="generateSlug()"
-                                        class="form-control" placeholder="Enter name" required />
-                                    <div class="invalid-feedback">Please enter a name.</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <input type="hidden" class="form-control" id="departmentid-input">
-                                <div class="mb-3">
-                                    <label for="slug-input" class="form-label">Slug</label>
-                                    <input type="text" name="slug" id="slug-input" class="form-control"
-                                        placeholder="Enter slug" required readonly />
-                                    <div class="invalid-feedback">Please enter a slug.</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <input type="hidden" class="form-control" id="departmentid-input">
-                                <div class="mb-3">
-                                    <label for="logo-input" class="form-label">Logo</label>
-                                    <input type="file" name="logo" id="logo-input" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="name-input" class="form-label">Status</label>
-                                    <div>
-                                        <input type="checkbox" name="status" value="1" id="switch6"
-                                            switch="primary" />
-                                        <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" id="addContact-btn" class="btn btn-success">Add
-                                        Department</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- end modal body -->
-            </div>
-            <!-- end modal-content -->
-        </div>
-        <!-- end modal-dialog -->
-    </div>
-    <!-- end newContactModal -->
-
-    <!-- removeItemModal -->
-    <div class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="removePreProductionPlanModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body px-4 py-5 text-center">
@@ -153,17 +78,16 @@
                             <i class="mdi mdi-trash-can-outline"></i>
                         </div>
                     </div>
-                    <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this User ?</p>
+                    <p class="text-muted font-size-16 mb-4">Are you Sure You Want To Remove This Record ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
-                        <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>
+                        <button type="button" class="btn btn-danger" id="remove-yarn_purchase_order">Remove Now</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end removeItemModal -->
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
     <!-- select2 js -->
@@ -178,7 +102,7 @@
     <script src="<?php echo e(URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js')); ?>"></script>
     <script src="<?php echo e(URL::asset('build/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')); ?>"></script>
 
-    <script src="<?php echo e(URL::asset('build/js/pages/departments/departments-list.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/pre_production_plan/pre_production_plan-list.init.js')); ?>"></script>
 
     <!-- toastr plugin -->
     <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>

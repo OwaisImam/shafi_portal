@@ -257,7 +257,7 @@
                                             placeholder="Description" />
                                     </div>
 
-                                    <div class="mb-3 col-lg-2">
+                                    <div class="mb-3 col-lg-1">
                                         <label for="size-<?php echo e($key); ?>">Size</label>
                                         <select name="size" id="size-<?php echo e($key); ?>"
                                             class="form-control select2 select2-multiple" multiple>
@@ -268,7 +268,11 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
-
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="color">GSM</label>
+                                        <input type="text" id="gsm" name="gsm" required
+                                            value="<?php echo e($order_item->gsm); ?>" class="form-control" placeholder="GSM" />
+                                    </div>
                                     <div class="mb-3 col-lg-1">
                                         <label for="color-<?php echo e($key); ?>">Color</label>
                                         <input type="text" id="color-<?php echo e($key); ?>" name="color"

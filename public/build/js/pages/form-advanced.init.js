@@ -281,7 +281,8 @@ $(function () {
         },
         pick: function (e) {
             console.log(e.type, e.namespace, e.view);
-        }
+        },
+
     };
 
     $date.on({

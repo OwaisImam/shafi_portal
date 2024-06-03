@@ -45,6 +45,14 @@ class CreateRoutePermissionsCommand extends Command
                   'article',
                   'orders',
                   'job',
+                  'count',
+                  'fiber',
+                  'mills',
+                  'terms_of_delivery',
+                  'yarn_purchase_order',
+                  'agents',
+                  'pre_production_plan'
+
               ];
 
         $permissionList = [];

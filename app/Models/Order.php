@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'customer_po_number', 'customer_id', 'job_id', 'po_receive_date', 'delivery_date', 'payment_term_id', 'range_id', 'fabric_construction_id', 'gsm', 'order_quantity', 'article_style_count'];
+    protected $fillable = ['code', 'customer_po_number', 'customer_id', 'job_id', 'gsm', 'po_receive_date', 'delivery_date', 'payment_term_id', 'range_id', 'fabric_construction_id', 'gsm', 'order_quantity', 'article_style_count'];
 
     public function attachments(): MorphMany
     {
@@ -45,5 +45,10 @@ class Order extends Model
     public function order_items()
     {
         return $this->hasMany(OrderItems::class);
+    }
+
+    public function yarn_purchase_order()
+    {
+        return $this->hasMany(YarnPurchaseOrder::class);
     }
 }

@@ -154,7 +154,7 @@
                             <i class="mdi mdi-trash-can-outline"></i>
                         </div>
                     </div>
-                    <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this User ?</p>
+                    <p class="text-muted font-size-16 mb-4">Are you Sure You Want To Remove This Record ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
                         <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>

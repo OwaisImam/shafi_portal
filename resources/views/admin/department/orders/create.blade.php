@@ -177,8 +177,8 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="delivery_address" class="form-label">GSM</label>
-                                    <input type="number" class="form-control" id="delivery_address" placeholder="GSM"
+                                    <label for="gsm" class="form-label">GSM</label>
+                                    <input type="number" class="form-control" id="gsm" placeholder="GSM"
                                         value="{{ old('gsm') }}" required name="gsm">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -230,7 +230,7 @@
                                         class="form-control" placeholder="Description" />
                                 </div>
 
-                                <div class="mb-3 col-lg-2">
+                                <div class="mb-3 col-lg-1">
                                     <label for="size">Size</label>
                                     <select name="size" id="size" required
                                         class="form-control select2 select2-multiple" multiple>
@@ -238,6 +238,11 @@
                                             <option value="{{ $size }}">{{ $size }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="mb-3 col-lg-1">
+                                    <label for="color">GSM</label>
+                                    <input type="text" id="gsm" name="gsm" required class="form-control"
+                                        placeholder="GSM" />
                                 </div>
 
                                 <div class="mb-3 col-lg-1">

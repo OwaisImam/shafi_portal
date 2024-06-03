@@ -15,6 +15,7 @@
         type="text/css" />
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
+    <link href="{{ URL::asset('build/libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -46,6 +47,7 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
+                                <th>Job ID</th>
                                 <th>Client Name</th>
                                 <th>State</th>
                                 <th>Shipping Address</th>
@@ -55,6 +57,7 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td>{{ $order->job->number }}</td>
                                 <td>{{ $order->client->name }}</td>
                                 <td>{{ $order->client->city->state->name }}</td>
                                 <td>{{ $order->client->address }}</td>
@@ -78,7 +81,7 @@
                                 <td>{{ $order->range->name }}</td>
                                 <td>{{ $order->fabric_construction->name }}</td>
                                 <td>{{ $order->gsm }}</td>
-                                <td>{{ $order->order_quantity .' '. $order->order_items->first()->unit }}</td>
+                                <td>{{ $order->order_quantity . ' ' . $order->order_items->first()->unit }}</td>
                                 <td>{{ $order->article_style_count }}</td>
                             </tr>
                         </tbody>
@@ -88,75 +91,291 @@
             <!-- end card -->
         </div> <!-- end col -->
     </div>
+    <form action="{{ route('admin.departments.pre_production_plans.store', ['slug' => $department->slug]) }}"
+        method="Post">
+        @csrf
+        <input type="hidden" name="order_id" value="{{ $order->id }}">
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card">
-                <div class="card-body">
-                    <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.email_templates.store') }}">
-                        @csrf
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Section 1</h4>
+                        <p>Yarn Booking</p>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Yarn</th>
+                                        <th>Unit</th>
+                                        <th>Qty</th>
+                                        <th>Kgs</th>
+                                        <th>%</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($yarn_purchase_orders as $key => $yarn_purchase_order)
+                                        <tr>
+                                            <td>{{ $yarn_purchase_order->count->name . ' ' . $yarn_purchase_order->fiber->name }}
+                                                <input type="hidden" name="yarn_purchase_order[{{ $key }}][id]"
+                                                    value="{{ $yarn_purchase_order->id }}">
+
+                                            </td>
+                                            <td>{{ $yarn_purchase_order->unit }}</td>
+                                            <td>
+                                                <div class="mb-3 col-lg-12">
+                                                    <input type="number"
+                                                        name="yarn_purchase_order[{{ $key }}][qty]"
+                                                        onchange="calculateTotalQty(this, {{ $key }} )"
+                                                        step="0.01" class="form-control qty"
+                                                        max="{{ $yarn_purchase_order->qty }}" required
+                                                        placeholder="Enter qty">
+                                                </div>
+                                            </td>
+                                            <td><span class="kgs_{{ $key }} kgs">0</span>
+                                                <input type="hidden" name="yarn_purchase_order[{{ $key }}][kgs]"
+                                                    required class="kgs_field_{{ $key }}">
+                                            </td>
+                                            <td>
+                                                <span class="percentage_{{ $key }} percentage">0%</span>
+                                                <input type="hidden"
+                                                    name="yarn_purchase_order[{{ $key }}][percentage]" required
+                                                    class="percentage_field_{{ $key }}">
+                                            </td>
+                                            <td>
+                                                <span class="balance_{{ $key }} balance">0</span>
+                                                <input type="hidden"
+                                                    name="yarn_purchase_order[{{ $key }}][balance]" required
+                                                    class="balance_field_{{ $key }}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total KGs (Gross)</th>
+                                        <th></th>
+                                        <th><span id="total-qty">0</span></th>
+                                        <th><span id="total-kgs">0</span></th>
+                                        <th><span id="total-percentage">0</span></th>
+                                        <th><span id="total-balance">0</span></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Section 2</h4>
+                        <p>Define Process</p>
+
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="supplier" class="form-label">Supplier</label>
-                                    <select name="supplier" class="form-control select2">
-                                        <option>Select</option>
-                                    </select>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the supplier.
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-responsive ">
+                                            <thead>
+                                                <tr>
+                                                    <th width="30%">Process</th>
+                                                    <th>Want to add?</th>
+                                                    <th>Notes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="process-list" id="processes">
+                                                @foreach ($processes as $key => $process)
+                                                    <tr class="align-middle" id="NewprocessForm{{ $process->id }}">
+                                                        <th>{{ $process->name }}
+                                                        </th>
+                                                        <td>
+                                                            <div class="col-lg-12">
+                                                                <div class="form-check form-check-primary">
+                                                                    <input type="hidden"
+                                                                        name="processes[{{ $key }}][parent_process_id]"
+                                                                        value="">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        name="processes[{{ $key }}][id]"
+                                                                        value="{{ $process->id }}"
+                                                                        id="formCheckcolor{{ $key }}">
+                                                                    <label class="form-check-label"
+                                                                        for="formCheckcolor{{ $key }}">
+                                                                        Yes
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class=" col-lg-12">
+                                                                <input type="text" id="notes{{ $key }}"
+                                                                    name="processes[{{ $key }}][notes]"
+                                                                    class="form-control" placeholder="Notes" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @if ($loop->last)
+                                                        <input type="hidden" id="last_index"
+                                                            value="{{ $key }}">
+                                                    @endif
+                                                @endforeach
+
+                                            </tbody>
+                                        </table>
+                                        <div class="text-center d-grid col-3">
+                                            <a href="javascript: void(0);"
+                                                class="btn btn-success waves-effect waves-light addProcess-btn"
+                                                data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"
+                                                data-id="#processes"><i class="mdi mdi-plus me-1"></i> Add New</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="moobile_no" class="form-label">Mobile No</label>
-                                    <input type="text" class="form-control" id="moobile_no" placeholder="Mobile No"
-                                        value="{{ old('moobile_no') }}" required name="moobile_no">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid subject.
-                                    </div>
-                                </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Section 2</h4>
+                        <p>Accessories arrangement</p>
+                        <div class="table-responsice">
+                            <table class="table" id="accessories_table">
+                                <thead>
+                                    <th>Item Category</th>
+                                    <th>Req Quantity</th>
+                                    <th>Note</th>
+                                </thead>
+                                <tbody>
+                                    <input type="hidden" id="accessories_last_index" value="0">
+                                </tbody>
+                            </table>
+                            <div class="text-center d-grid col-3">
+                                <a href="javascript: void(0);"
+                                    class="btn btn-success waves-effect waves-light addAccessories-btn"
+                                    data-bs-toggle="modal" data-bs-target=".bs-accessories-modal-lg"
+                                    data-id="#accessories"><i class="mdi mdi-plus me-1"></i> Add New</a>
+                            </div>
+
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="modalForm" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 add-process-title">Add New Process</h5>
+                    <h5 class="modal-title mt-0 update-process-title" style="display: none;">Update
+                        Process</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="NewprocessForm" role="form">
+                        <div class="form-group mb-3">
+                            <label for="processname" class="col-form-label">Process Name<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-12">
+                                <input id="processname" name="processname" type="text" class="form-control validate"
+                                    placeholder="Enter Process Name..." required>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" class="form-control" id="category" placeholder="Category"
-                                        value="{{ old('category') }}" required name="category">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid category.
-                                    </div>
-                                </div>
+
+                        <div class="form-group mb-4">
+                            <label class="col-form-label">Parent Process</label>
+                            <div class="col-lg-12">
+                                <select class="form-select validate" id="ParentProcess">
+                                    <option value="" selected>Choose..</option>
+                                    @foreach ($processes as $key => $process)
+                                        <option value="{{ $process->id }}">{{ $process->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="serial_no" class="form-label">Job No</label>
-                                    <input type="text" class="form-control" id="job_no" placeholder="Job No"
-                                        value="{{ old('job_no') }}" required name="job_no">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the job no.
-                                    </div>
-                                </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <button type="button" class="btn btn-primary" id="addprocess">Create
+                                    Process</button>
+                                <button type="button" class="btn btn-primary" id="updateprocessdetail">Update
+                                    Process</button>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div id="accessoriesModalForm" class="modal fade bs-accessories-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0 add-accessories-title">Add New Item</h5>
+                    <h5 class="modal-title mt-0 update-accessories-title" style="display: none;">Update
+                        Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="NewaccessoriesForm" role="form">
+                        <div class="form-group mb-4">
+                            <label class="col-form-label">Item<span class="text-danger">*</span></label>
+                            <div class="col-lg-12">
+                                <select class="form-select validate" required id="accessories">
+                                    <option value="" selected>Choose..</option>
+                                    @foreach ($items as $key => $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="col-form-label">Require Qty<span class="text-danger">*</span></label>
+                            <div class="col-lg-12">
+                                <input type="number" id="required_qty" required class="form-control validate">
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="col-form-label">Notes</label>
+                            <div class="col-lg-12">
+                                <textarea id="accessories_notes" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <button type="button" class="btn btn-primary" id="addaccessories">Add
+                                    Item</button>
+                                <button type="button" class="btn btn-primary" id="updateaccessoriesdetail">Update
+                                    Item</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 @endsection
 @section('script')
@@ -180,11 +399,68 @@
     <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
     <!-- toastr init -->
     <script src="{{ URL::asset('build/js/pages/toastr.init.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
 
-    <script src="{{ URL::asset('build/js/pages/ckeditor/ckeditor.js') }}"></script>
+    <!-- jquery-validation -->
+    <script src="{{ URL::asset('build/libs/jquery-validation/jquery.validate.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/js/pages/task-kanban.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/process-form.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/accessories-form.init.js') }}"></script>
 
     <script>
-        CKEDITOR.replace('content');
+        function calculateTotalQty(input, index) {
+            const maxValue = parseFloat(input.max);
+            const currentValue = parseFloat(input.value);
+
+            if (currentValue > maxValue) {
+                toastr["error"](`Qty should not be greater than ${maxValue}`);
+                input.value = '';
+                return;
+            }
+            var total = 0;
+            var balance = 0;
+            var totalKgs = 0;
+            var totalPercentage = 0;
+            var totalBalance = 0;
+
+            $('.qty').each(function() {
+                total += Number($(this).val()) || 0;
+            });
+
+            $('#total-qty').text(Number(total).toFixed(2));
+
+            var kgs = Number($(input).val()) * 45.359237;
+
+            $('.kgs_' + index).text(Number(kgs).toFixed(2));
+            $('.kgs_field_' + index).val(Number(kgs).toFixed(2));
+
+            balance = maxValue - Number($(input).val());
+
+            $('.balance_' + index).text(Number(balance).toFixed(2));
+            $('.balance_field_' + index).val(Number(balance).toFixed(2));
+
+            $('.balance').each(function() {
+                totalBalance += Number($(this).text());
+            });
+
+            $('.kgs').each(function() {
+                totalKgs += Number($(this).text()) || 0;
+            });
+
+            $('.kgs').each(function(index) {
+                var percentage = (Number($(this).text()) / totalKgs) * 100;
+                totalPercentage += percentage;
+                $('.percentage_' + index).text(Number(percentage).toFixed(2));
+                $('.percentage_field_' + index).val(Number(percentage).toFixed(2));
+            });
+
+            $('#total-kgs').text(Number(totalKgs).toFixed(2));
+            $('#total-balance').text(Number(totalBalance).toFixed(2));
+
+            $('#total-percentage').text(Number(totalPercentage).toFixed(2));
+
+        }
     </script>
 
     @if ($errors->any())

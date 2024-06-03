@@ -1,15 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\ArticleStyleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClientsController;
+use App\Http\Controllers\Admin\CountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\DropdownController;
 use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\FabricContructionController;
+use App\Http\Controllers\Admin\FiberController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\MillController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentTermsController;
 use App\Http\Controllers\Admin\PermissionsController;
@@ -19,7 +23,10 @@ use App\Http\Controllers\Admin\RangeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\TermsOfDeliveryController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\YarnPurchaseOrderController;
+use App\Http\Controllers\ProcessController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +92,28 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::get('orders/{order}/delete', [OrderController::class, 'destroy']);
 
         Route::resource('pre_production_plans', PreProductionPlanController::class);
+        Route::get('pre_production_plans/{pre_production_plan}/delete', [PreProductionPlanController::class, 'destroy']);
+
+        Route::resource('count', CountController::class);
+        Route::get('count/{count}/delete', [CountController::class, 'destroy']);
+
+        Route::resource('fiber', FiberController::class);
+        Route::get('fiber/{fiber}/delete', [FiberController::class, 'destroy']);
+
+        Route::resource('mill', MillController::class);
+        Route::get('mill/{mill}/delete', [MillController::class, 'destroy']);
+
+        Route::resource('terms_of_delivery', TermsOfDeliveryController::class);
+        Route::get('terms_of_delivery/{terms_of_delivery}/delete', [TermsOfDeliveryController::class, 'destroy']);
+
+        Route::resource('yarn_purchase_order', YarnPurchaseOrderController::class);
+        Route::get('yarn_purchase_order/{yarn_purchase_order}/delete', [YarnPurchaseOrderController::class, 'destroy']);
+
+        Route::resource('agents', AgentController::class);
+        Route::get('agents/{agent}/delete', [AgentController::class, 'destroy']);
+
+        Route::resource('processes', ProcessController::class);
+        Route::get('processes/{process}/delete', [ProcessController::class, 'destroy'])->name('processes.destroy');
 
     });
 

@@ -212,5 +212,15 @@ return [
   "Range" => "Range",
   "Ranges" => "Ranges",
   "Orders" => "Orders",
-  "Jobs" => "Jobs"
+  "Jobs" => "Jobs",
+  "Count" => "Count",
+  "Counts" => "Counts",
+  "Fibers" => "Fibers",
+  "Fiber" => "Fiber",
+  "TermsOfDelivery" => "Terms Of Delivery",
+  "Mills" => "Mills",
+  "YarnPurchaseOrder" => "Yarn Purchase Order",
+  "YarnPurchaseOrders" => "Yarn Purchase Orders",
+  "Agents" => "Agents",
+  "Agent" => "Agent"
 ];

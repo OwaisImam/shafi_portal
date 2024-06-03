@@ -32,16 +32,26 @@ $(function () {
         inputclass: 'form-control-sm'
     });
 
+    $('.inline-editable').each(function () {
+        $(this).editable({
+            validate: function (value) {
+                if ($.trim(value) == '') return 'This field is required';
+            },
+            mode: 'inline',
+            inputclass: 'form-control-sm'
+        });
+    });
+
     $('#inline-sex').editable({
         prepend: "not selected",
         mode: 'inline',
         inputclass: 'form-select form-select-sm',
         source: [
-            {value: 1, text: 'Male'},
-            {value: 2, text: 'Female'}
+            { value: 1, text: 'Male' },
+            { value: 2, text: 'Female' }
         ],
         display: function (value, sourceData) {
-            var colors = {"": "#98a6ad", 1: "#5fbeaa", 2: "#5d9cec"},
+            var colors = { "": "#98a6ad", 1: "#5fbeaa", 2: "#5d9cec" },
                 elem = $.grep(sourceData, function (o) {
                     return o.value == value;
                 });

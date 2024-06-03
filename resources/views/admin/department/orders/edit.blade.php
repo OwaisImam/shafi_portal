@@ -255,7 +255,7 @@
                                             placeholder="Description" />
                                     </div>
 
-                                    <div class="mb-3 col-lg-2">
+                                    <div class="mb-3 col-lg-1">
                                         <label for="size-{{ $key }}">Size</label>
                                         <select name="size" id="size-{{ $key }}"
                                             class="form-control select2 select2-multiple" multiple>
@@ -266,7 +266,11 @@
                                             @endforeach
                                         </select>
                                     </div>
-
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="color">GSM</label>
+                                        <input type="text" id="gsm" name="gsm" required
+                                            value="{{ $order_item->gsm }}" class="form-control" placeholder="GSM" />
+                                    </div>
                                     <div class="mb-3 col-lg-1">
                                         <label for="color-{{ $key }}">Color</label>
                                         <input type="text" id="color-{{ $key }}" name="color"

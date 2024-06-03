@@ -5,14 +5,16 @@
 @endsection
 @section('css')
     <!-- bootstrap-datepicker css -->
-    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css">
 
     <!-- DataTables -->
-    <link href="{{ URL::asset('build/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -146,7 +148,7 @@
                             <i class="mdi mdi-trash-can-outline"></i>
                         </div>
                     </div>
-                    <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this User ?</p>
+                    <p class="text-muted font-size-16 mb-4">Are you Sure You Want To Remove This Record ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
                         <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>

@@ -16,11 +16,18 @@
 
 @section('body')
 
-    <body data-sidebar="dark" data-layout-mode="light">
+    <body data-sidebar="dark" data-layout-mode="light" {!! in_array(request()->route()->getName(), [
+        'admin.departments.orders.create',
+        'admin.departments.yarn_purchase_order.create',
+        'admin.departments.yarn_purchase_order.edit',
+        'admin.departments.orders.edit',
+    ])
+        ? 'class="sidebar-enable vertical-collpsed"'
+        : '' !!}>
     @show
     <!-- Begin page -->
     <div id="layout-wrapper">
-        @include('layouts.topbar')
+        @include('layouts.departments.topbar')
         @include('layouts.departments.sidebar')
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -40,7 +47,6 @@
     <!-- END layout-wrapper -->
 
     <!-- Right Sidebar -->
-    @include('layouts.departments.right-sidebar')
     <!-- /Right-bar -->
 
     <!-- JAVASCRIPT -->

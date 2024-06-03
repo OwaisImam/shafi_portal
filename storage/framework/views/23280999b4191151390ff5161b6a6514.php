@@ -16,11 +16,18 @@
 
 <?php $__env->startSection('body'); ?>
 
-    <body data-sidebar="dark" data-layout-mode="light">
+    <body data-sidebar="dark" data-layout-mode="light" <?php echo in_array(request()->route()->getName(), [
+        'admin.departments.orders.create',
+        'admin.departments.yarn_purchase_order.create',
+        'admin.departments.yarn_purchase_order.edit',
+        'admin.departments.orders.edit',
+    ])
+        ? 'class="sidebar-enable vertical-collpsed"'
+        : ''; ?>>
     <?php echo $__env->yieldSection(); ?>
     <!-- Begin page -->
     <div id="layout-wrapper">
-        <?php echo $__env->make('layouts.topbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('layouts.departments.topbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <?php echo $__env->make('layouts.departments.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -40,7 +47,6 @@
     <!-- END layout-wrapper -->
 
     <!-- Right Sidebar -->
-    <?php echo $__env->make('layouts.departments.right-sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- /Right-bar -->
 
     <!-- JAVASCRIPT -->
