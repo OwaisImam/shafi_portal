@@ -121,7 +121,7 @@
                                 <div class="mb-3">
                                     <label for="category-input" class="form-label">Category</label>
                                     <select class="form-control select2" required name="category" id="category-input">
-                                        <option>Select</option>
+                                        <option value="">Select</option>
                                         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -130,49 +130,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="contact-number-input" class="form-label">GST No</label>
-                                    <input type="text" name="gst_number" id="contact-number-input"
-                                        placeholder="Enter gst number" required class="form-control input-mask"
-                                        data-inputmask="'mask': '999999999999'" />
-                                    <div class="invalid-feedback">Please enter a contact number.</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="ntn-input" class="form-label">NTN No</label>
-                                    <input type="text" name="ntn_number" id="ntn-number-input"
-                                        placeholder="Enter ntn number" required class="form-control input-mask"
-                                        data-inputmask="'mask': '9999999999'" />
-                                    <div class="invalid-feedback">Please enter valid ntn number.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="contact-number-input" class="form-label">Mobile No</label>
-                                    <input type="text" name="contact_number" id="contact-number-input"
-                                        placeholder="Enter contact number" required class="form-control input-mask"
-                                        value="92" data-inputmask="'mask': '999999999999'" />
-                                    <div class="invalid-feedback">Please enter a contact number.</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="category-input" class="form-label">Category</label>
-                                    <select class="form-control select2" required name="category" id="category-input">
-                                        <option>Select</option>
-                                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a category.</div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
@@ -186,6 +144,7 @@
                                     <div class="invalid-feedback">Please select items.</div>
                                 </div>
                             </div>
+
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="name-input" class="form-label">Status</label>
@@ -196,8 +155,11 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="row">
+
+
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="name-input" class="form-label">Type</label>

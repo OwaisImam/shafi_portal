@@ -112,8 +112,8 @@ function loadUserList(datas) {
                 data: null,
                 'bSortable': false,
                 render: function (data, type, full) {
-                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'supplier-edit');
-                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'supplier-delete');
+                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'suppliers-edit');
+                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'suppliers-delete');
                     if (hasDeletePermission || hasEditPermission) {
 
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');

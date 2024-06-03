@@ -140,8 +140,8 @@ class SupplierController extends Controller
                   'name' => 'required|max:255',
                   'status' => 'nullable|boolean',
                   'contact_person' => 'required|max:255',
-                  'contact_number' => 'required|numeric|max_digits:13',
-                  'category' => 'required',
+                  'contact_number' => 'required|string',
+                  'category' => 'required|exists:categories,id',
                   'items.*' => 'required',
             ]);
 
@@ -166,7 +166,7 @@ class SupplierController extends Controller
             DB::rollBack();
             Log::error($e);
 
-            return JsonResponse::fail('Something went wrong.');
+            return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
 

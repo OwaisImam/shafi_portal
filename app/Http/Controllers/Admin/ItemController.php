@@ -146,6 +146,24 @@ class ItemController extends Controller
      */
     public function destroy(string $slug, string $id)
     {
+
+        try {
+            DB::beginTransaction();
+
+            $this->itemRepository->deleteById($id);
+
+            DB::commit();
+
+            if ($this->request->ajax()) {
+                return JsonResponse::success(null, 'Item deleted successfully.');
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+
+            return JsonResponse::fail('Something went wrong.');
+        }
+
     }
 
     public function bulkUpload()
