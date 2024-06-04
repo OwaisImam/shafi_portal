@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -66,12 +67,9 @@ class HomeController extends Controller
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
-        if ($request->file('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $avatarPath = public_path('/images/');
-            $avatar->move($avatarPath, $avatarName);
-            $user->avatar = '/images/' . $avatarName;
+        if ($request->hasFile('avatar')) {
+            $logo = Helper::uploadFile($request->avatar);
+            $user->avatar = $logo->id;
         }
 
         $user->update();
