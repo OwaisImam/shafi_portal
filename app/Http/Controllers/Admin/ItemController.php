@@ -21,7 +21,7 @@ class ItemController extends Controller
     private ItemRepository $itemRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, ItemRepository $itemRepository, DepartmentRepository $departmentRepository)
     {

@@ -16,11 +16,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CountController extends Controller
 {
-
     private CountRepository $countRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, CountRepository $countRepository, DepartmentRepository $departmentRepository)
     {
@@ -113,7 +112,7 @@ class CountController extends Controller
      */
     public function update(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -145,7 +144,7 @@ class CountController extends Controller
      */
     public function destroy(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->countRepository->deleteById($id);
             DB::commit();

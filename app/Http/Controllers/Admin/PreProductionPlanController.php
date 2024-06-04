@@ -226,9 +226,14 @@ class PreProductionPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $department, string $id)
     {
-        //
+
+        $department = $this->department;
+        $preProductionPlan = $this->preProductionPlanRepository->getById($id);
+
+        return view('admin.department.pre_production_plan.view', compact('department', 'preProductionPlan'));
+
     }
 
     /**

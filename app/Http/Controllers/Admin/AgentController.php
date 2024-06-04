@@ -19,7 +19,7 @@ class AgentController extends Controller
     private AgentRepository $agentRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, AgentRepository $agentRepository, DepartmentRepository $departmentRepository)
     {
@@ -115,7 +115,7 @@ class AgentController extends Controller
      */
     public function update(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required|max:255|string',
@@ -150,7 +150,7 @@ class AgentController extends Controller
      */
     public function destroy(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->agentRepository->deleteById($id);
             DB::commit();

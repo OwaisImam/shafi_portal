@@ -19,7 +19,7 @@ class FabricContructionController extends Controller
     private FabricConstructionRepository $fabricConstructionRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, FabricConstructionRepository $fabricConstructionRepository, DepartmentRepository $departmentRepository)
     {

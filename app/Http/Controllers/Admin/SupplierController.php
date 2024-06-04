@@ -23,7 +23,7 @@ class SupplierController extends Controller
     private CategoryRepository $categoryRepository;
     private ItemRepository $itemRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(
         Request $request,

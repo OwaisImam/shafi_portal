@@ -19,7 +19,7 @@ class MillController extends Controller
     private MillRepository $millRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, MillRepository $millRepository, DepartmentRepository $departmentRepository)
     {
@@ -28,6 +28,7 @@ class MillController extends Controller
         $this->request = $request;
         $this->department = $this->departmentRepository->getByColumn($this->request->slug, 'slug');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -60,7 +61,7 @@ class MillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-  public function store()
+    public function store()
     {
         try {
             DB::beginTransaction();
@@ -111,7 +112,7 @@ class MillController extends Controller
      */
     public function update(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $validator = Validator::make($this->request->all(), [
                 'name' => 'required',
@@ -143,7 +144,7 @@ class MillController extends Controller
      */
     public function destroy(string $department, string $id)
     {
-         try {
+        try {
             DB::beginTransaction();
             $this->millRepository->deleteById($id);
             DB::commit();

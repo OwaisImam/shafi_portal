@@ -25,7 +25,7 @@ class ClientsController extends Controller
     private ClientRepository $clientRepository;
     private CountryRepository $countryRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
     private DepartmentRepository $departmentRepository;
 
     public function __construct(

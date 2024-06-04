@@ -12,4 +12,9 @@ class PreProductionPlanProcess extends Model
     protected $fillable = [
         'process_id', 'pre_production_plan_id', 'status', 'notes',
     ];
+
+    public function process()
+    {
+        return $this->belongsTo(Process::class);
+    }
 }

@@ -19,7 +19,7 @@ class PaymentTermsController extends Controller
     private PaymentTermsRepository $paymentTermsRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, PaymentTermsRepository $paymentTermsRepository, DepartmentRepository $departmentRepository)
     {

@@ -110,7 +110,8 @@ function loadUserList(datas) {
                 render: function (data, type, full) {
                     var hasEditPermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-edit');
                     var hasDeletePermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-delete');
-                    if (hasDeletePermission || hasEditPermission) {
+                    var hasViewPermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-view');
+                    if (hasDeletePermission || hasEditPermission || hasViewPermission) {
 
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');
                         var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
@@ -123,6 +124,10 @@ function loadUserList(datas) {
 
                         if (hasEditPermission) {
                             actions += '<li><a href="./pre_production_plans/' + full.id + '/edit?order_id=' + full.order_id + '" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
+                        }
+
+                        if (hasViewPermission) {
+                            actions += '<li><a href="./pre_production_plans/' + full.id + '?order_id=' + full.order_id + '" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-eye font-size-16 text-primary me-1"></i> Edit</a></li>';
                         }
 
                         if (hasDeletePermission) {

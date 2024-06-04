@@ -29,7 +29,7 @@ class YarnPurchaseOrderController extends Controller
     private YarnPurchaseOrderRepository $yarnPurchaseOrderRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
     private FabricConstructionRepository $fabricConstructionRepository;
     private JobRepository $jobRepository;
     private ClientRepository $clientRepository;

@@ -33,7 +33,7 @@ class OrderController extends Controller
     private FabricConstructionRepository $fabricConstructionRepository;
     private ClientRepository $clientRepository;
     private RangeRepository $rangeRepository;
-    private Departments $department;
+    private Departments|null $department;
     private PaymentTermsRepository $paymentTermsRepository;
     private JobRepository $jobRepository;
     private ItemRepository $itemRepository;

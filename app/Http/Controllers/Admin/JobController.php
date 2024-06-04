@@ -19,7 +19,7 @@ class JobController extends Controller
     private JobRepository $jobRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, JobRepository $jobRepository, DepartmentRepository $departmentRepository)
     {

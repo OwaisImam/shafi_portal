@@ -20,7 +20,7 @@ class RangeController extends Controller
     private RangeRepository $rangeRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, RangeRepository $rangeRepository, DepartmentRepository $departmentRepository)
     {

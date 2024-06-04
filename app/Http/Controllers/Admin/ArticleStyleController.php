@@ -19,7 +19,7 @@ class ArticleStyleController extends Controller
     private ArticleStyleRepository $articleStyleRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, ArticleStyleRepository $articleStyleRepository, DepartmentRepository $departmentRepository)
     {

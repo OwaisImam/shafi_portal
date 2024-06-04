@@ -19,7 +19,7 @@ class CategoryController extends Controller
     private CategoryRepository $categoryRepository;
     private DepartmentRepository $departmentRepository;
     private Request $request;
-    private Departments $department;
+    private Departments|null $department;
 
     public function __construct(Request $request, CategoryRepository $categoryRepository, DepartmentRepository $departmentRepository)
     {

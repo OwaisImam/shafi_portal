@@ -12,4 +12,9 @@ class PreProductionPlanYarn extends Model
     protected $fillable = [
         'percentage', 'yarn_purchase_order_id', 'pre_production_plan_id', 'kgs', 'qty',
     ];
+
+    public function yarn_purchase_order()
+    {
+        return $this->belongsTo(YarnPurchaseOrder::class);
+    }
 }
