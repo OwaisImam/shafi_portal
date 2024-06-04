@@ -54,7 +54,9 @@ class PurchaseOrderController extends Controller
 
         $department = $this->department;
 
-        return view('admin.department.purchase_orders.index', compact('department'));
+        return view('pages-maintenance-section', compact('department'));
+
+        // return view('admin.department.purchase_orders.index', compact('department'));
     }
 
     /**
@@ -64,7 +66,8 @@ class PurchaseOrderController extends Controller
     {
         $department = $this->department;
 
-        return view('admin.department.purchase_orders.create', compact('department'));
+        return view('pages-maintenance-section', compact('department'));
+        // return view('admin.department.purchase_orders.create', compact('department'));
     }
 
     /**
