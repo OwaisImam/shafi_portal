@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             FiberSeeder::class,
             ProcessSedeer::class,
             SupplierSeeder::class,
+            DyeingSeeder::class,
+            KnittingSeeder::class
         ]);
     }
 }
