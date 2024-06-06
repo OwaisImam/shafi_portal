@@ -23,7 +23,7 @@
                     </a>
                 </li>
 
-                <?php if($department->name == 'Merchandising'): ?>
+                <?php if($department->slug == 'merchandising'): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['category-list', 'category-create'])): ?>
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -84,7 +84,7 @@
                             </ul>
                         </li>
                     <?php endif; ?>
-                <?php elseif($department->name == 'Planning'): ?>
+                <?php elseif($department->slug == 'planning'): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])): ?>
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -189,7 +189,6 @@
                             </ul>
                         </li>
                     <?php endif; ?>
-
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['pre_production_plan-update', 'pre_production_plan-list', 'pre_production_plan-view',
                         'pre_production_plan-delete', 'pre_production_plan-edit'])): ?>
                         <li>
@@ -205,7 +204,7 @@
                             </ul>
                         </li>
                     <?php endif; ?>
-                <?php elseif($department->name == 'Yarn'): ?>
+                <?php elseif($department->slug == 'yarn'): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['count-update', 'count-list', 'count-view', 'count-delete', 'count-edit'])): ?>
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -277,7 +276,6 @@
                             </ul>
                         </li>
                     <?php endif; ?>
-
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['yarn_purchase_order-update', 'yarn_purchase_order-list', 'yarn_purchase_order-view',
                         'yarn_purchase_order-delete', 'yarn_purchase_order-edit'])): ?>
                         <li>
@@ -294,6 +292,35 @@
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_purchase_order-create')): ?>
                                     <li><a href="<?php echo e(route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug])); ?>"
                                             key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                <?php elseif($department->slug == 'fabrication'): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['knitting-update', 'knitting-list', 'knitting-view', 'knitting-delete', 'knitting-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.Knitting'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('knitting-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.knitting.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['dyeing-update', 'dyeing-list', 'dyeing-view', 'dyeing-delete', 'dyeing-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.Dyeing'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dyeing-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.dyeing.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
                                 <?php endif; ?>
                             </ul>
                         </li>

@@ -222,5 +222,7 @@ return [
   "YarnPurchaseOrder" => "Yarn Purchase Order",
   "YarnPurchaseOrders" => "Yarn Purchase Orders",
   "Agents" => "Agents",
-  "Agent" => "Agent"
+  "Agent" => "Agent",
+  "Dyeing" => "Dyeing",
+  "Knitting" => "Knitting"
 ];

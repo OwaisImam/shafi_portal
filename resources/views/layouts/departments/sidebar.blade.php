@@ -23,7 +23,7 @@
                     </a>
                 </li>
 
-                @if ($department->name == 'Merchandising')
+                @if ($department->slug == 'merchandising')
                     @canany(['category-list', 'category-create'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -84,7 +84,7 @@
                             </ul>
                         </li>
                     @endcanany
-                @elseif ($department->name == 'Planning')
+                @elseif ($department->slug == 'planning')
                     @canany(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -189,7 +189,6 @@
                             </ul>
                         </li>
                     @endcanany
-
                     @canany(['pre_production_plan-update', 'pre_production_plan-list', 'pre_production_plan-view',
                         'pre_production_plan-delete', 'pre_production_plan-edit'])
                         <li>
@@ -205,7 +204,7 @@
                             </ul>
                         </li>
                     @endcanany
-                @elseif($department->name == 'Yarn')
+                @elseif($department->slug == 'yarn')
                     @canany(['count-update', 'count-list', 'count-view', 'count-delete', 'count-edit'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -277,7 +276,6 @@
                             </ul>
                         </li>
                     @endcanany
-
                     @canany(['yarn_purchase_order-update', 'yarn_purchase_order-list', 'yarn_purchase_order-view',
                         'yarn_purchase_order-delete', 'yarn_purchase_order-edit'])
                         <li>
@@ -294,6 +292,35 @@
                                 @can('yarn_purchase_order-create')
                                     <li><a href="{{ route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug]) }}"
                                             key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+                @elseif($department->slug == 'fabrication')
+                    @canany(['knitting-update', 'knitting-list', 'knitting-view', 'knitting-delete', 'knitting-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.Knitting')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('knitting-list')
+                                    <li><a href="{{ route('admin.departments.knitting.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+                    @canany(['dyeing-update', 'dyeing-list', 'dyeing-view', 'dyeing-delete', 'dyeing-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.Dyeing')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('dyeing-list')
+                                    <li><a href="{{ route('admin.departments.dyeing.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
                                 @endcan
                             </ul>
                         </li>

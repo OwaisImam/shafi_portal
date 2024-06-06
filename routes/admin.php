@@ -8,11 +8,13 @@ use App\Http\Controllers\Admin\CountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\DropdownController;
+use App\Http\Controllers\Admin\DyeingController;
 use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\FabricContructionController;
 use App\Http\Controllers\Admin\FiberController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\KnittingController;
 use App\Http\Controllers\Admin\MillController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentTermsController;
@@ -114,6 +116,12 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
         Route::resource('processes', ProcessController::class);
         Route::get('processes/{process}/delete', [ProcessController::class, 'destroy'])->name('processes.destroy');
+
+        Route::resource('knitting', KnittingController::class);
+        Route::get('knitting/{knitting}/delete', [KnittingController::class, 'destroy']);
+
+        Route::resource('dyeing', DyeingController::class);
+        Route::get('dyeing/{dyeing}/delete', [DyeingController::class, 'destroy']);
 
     });
 
