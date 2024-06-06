@@ -76,10 +76,18 @@ function loadUserList(datas) {
                 data: "company_name",
             },
             {
-                data: "contact_person",
+                data: "address",
+                className: 'table-address',
+                render: function (data, type, full) {
+                    var maxLength = 80; // Set your desired character limit
+                    if (data.length > maxLength) {
+                        return data.substr(0, maxLength) + '...';
+                    }
+                    return data;
+                }
             },
             {
-                data: "address",
+                data: "contact_person",
             },
             {
                 data: "contact",

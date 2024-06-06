@@ -14,6 +14,22 @@
     <meta name="department" content="<?php echo e($department->slug); ?>">
     <link href="<?php echo e(URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')); ?>"
         rel="stylesheet" type="text/css" />
+    <style>
+        .table-address {
+            white-space: pre-wrap !important;
+            /* CSS3 */
+            white-space: -moz-pre-wrap !important;
+            /* Firefox */
+            white-space: -pre-wrap !important;
+            /* Opera <7 */
+            white-space: -o-pre-wrap !important;
+            /* Opera 7 */
+            word-wrap: break-word !important;
+            /* IE */
+            max-width: 200px;
+            /* Adjust the max-width as needed */
+        }
+    </style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
