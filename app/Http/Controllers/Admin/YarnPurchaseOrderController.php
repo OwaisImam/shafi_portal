@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Departments;
+use App\Models\YarnPurchaseOrder;
 use App\Repositories\AgentRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\CountRepository;
@@ -17,6 +18,7 @@ use App\Repositories\OrderRepository;
 use App\Repositories\TermsOfDeliveryRepository;
 use App\Repositories\YarnPurchaseOrderRepository;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -150,6 +152,8 @@ class YarnPurchaseOrderController extends Controller
             }
             $validated = $validator->validated();
 
+            $validated['remaining_qty'] = $validated['qty'];
+
             if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
@@ -244,6 +248,8 @@ class YarnPurchaseOrderController extends Controller
             }
             $validated = $validator->validated();
 
+            $validated['remaining_qty'] = $validated['qty'];
+
             if (!isset($validated['status'])) {
                 $validated['status'] = 0;
             }
@@ -287,5 +293,31 @@ class YarnPurchaseOrderController extends Controller
 
             return redirect()->back()->with('error', 'Something went wrong.');
         }
+    }
+
+    public function print(YarnPurchaseOrder $yarn_po)
+    {
+
+        // Fetch data or prepare HTML content for PDF
+        $data = [
+            'title' => 'Sample PDF Document - ITCODSTUFF.COM',
+            'content' => 'This is just a sample PDF document generated using DomPDF in Laravel.',
+        ];
+
+        // Load HTML content
+        $html = view('pdfs.yarn_purchase_order', $data)->render();
+
+        // Instantiate Dompdf
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render PDF (important step!)
+        $dompdf->render();
+
+        // Output PDF to browser
+        return $dompdf->stream('document.pdf', ['Attachment' => false]);
     }
 }

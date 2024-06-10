@@ -45,13 +45,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <a href="<?php echo e(route('admin.departments.orders.create', ['slug' => $department->slug])); ?>"
-                                    class="btn btn-success btn-rounded waves-effect waves-light addOrder-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Order</a>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('orders-create')): ?>
+                            <div class="col-sm-8">
+                                <div class="text-sm-end">
+                                    <a href="<?php echo e(route('admin.departments.orders.create', ['slug' => $department->slug])); ?>"
+                                        class="btn btn-success btn-rounded waves-effect waves-light addOrder-modal mb-2"><i
+                                            class="mdi mdi-plus me-1"></i> New Order</a>
+                                </div>
                             </div>
-                        </div><!-- end col-->
+                        <?php endif; ?>
                     </div>
                     <!-- end row -->
                     <div class="table-responsive">

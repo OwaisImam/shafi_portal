@@ -96,8 +96,9 @@ function loadUserList(datas) {
                 render: function (data, type, full) {
                     var hasEditPermission = datas.permissions.some(permission => permission.name === 'orders-edit');
                     var hasDeletePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
+                    var hasViewPermission = datas.permissions.some(permission => permission.name === 'orders-view');
                     var hasPreProdoctionPlanCreatePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
-                    if (hasDeletePermission || hasEditPermission) {
+                    if (hasDeletePermission || hasEditPermission || hasViewPermission) {
 
                         var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
                         <li class="list-inline-item">\
@@ -113,6 +114,10 @@ function loadUserList(datas) {
 
                         if (hasDeletePermission) {
                             actions += '<li><a href="#removeOrderModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
+                        }
+
+                        if (hasDeletePermission) {
+                            actions += '<li><a href="./orders/' + full.id + '" class="dropdown-item remove-list" data-view-id="' + full.id + '"><i class="mdi mdi-eye font-size-16 text-primary me-1"></i> View</a></li>';
                         }
 
                         if (hasPreProdoctionPlanCreatePermission) {

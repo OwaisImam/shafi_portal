@@ -17,11 +17,28 @@ class ProcessSedeer extends Seeder
             $exist = Process::where('name', $process)->first();
 
             if (!$exist) {
-                Process::create([
-                    'name' => $process,
-                    'status' => 1,
-                    'is_default' => 1,
-                ]);
+                if($process == 'Printing') {
+                    Process::create([
+                        'name' => $process,
+                        'status' => 1,
+                        'is_default' => 1,
+                        'parent_id' => Process::where('name', 'Embellishment')->first()->id
+                    ]);
+                } else if ($process == 'Embroidery'){
+                    Process::create([
+                        'name' => $process,
+                        'status' => 1,
+                        'is_default' => 1,
+                        'parent_id' => Process::where('name', 'Embellishment')->first()->id
+                    ]);
+                } else {
+                    Process::create([
+                        'name' => $process,
+                        'status' => 1,
+                        'is_default' => 1,
+                    ]);
+                }
+
             }
         }
     }

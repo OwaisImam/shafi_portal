@@ -118,6 +118,8 @@ function loadUserList(datas) {
                             actions += '<li><a href="#removeYarnPurchaseOrderModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
                         }
 
+                        actions += '<li><a href="./yarn_purchase_order/' + full.id + '/print" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-primary me-1"></i> Print</a></li>';
+
                         actions += '</ul>\
                     </div>\
                         </li>\

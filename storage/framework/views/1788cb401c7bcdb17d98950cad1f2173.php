@@ -231,9 +231,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="consent" value="1"
                                 id="invalidCheck" required <?php echo e(old('consent') == 1 ? 'checked' : ''); ?>>
@@ -245,7 +243,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </form>
                 </div>

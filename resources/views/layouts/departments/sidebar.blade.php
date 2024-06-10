@@ -24,48 +24,56 @@
                 </li>
 
                 @if ($department->slug == 'merchandising')
-                    @canany(['category-list', 'category-create'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-spreadsheet"></i>
-                                <span key="t-users">@lang('translation.Category')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('category-list')
-                                    <li><a href="{{ route('admin.departments.category.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['items-list', 'items-create'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-list-ul"></i>
-                                <span key="t-users">@lang('translation.Items')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('items-list')
-                                    <li><a href="{{ route('admin.departments.items.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['suppliers-list', 'suppliers-create'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-run"></i>
-                                <span key="t-users">@lang('translation.Supplier')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('suppliers-list')
-                                    <li><a href="{{ route('admin.departments.suppliers.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span key="t-layouts">@lang('translation.Settings')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @canany(['category-list', 'category-create'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-spreadsheet"></i>
+                                        <span key="t-users">@lang('translation.Category')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('category-list')
+                                            <li><a href="{{ route('admin.departments.category.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['items-list', 'items-create'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-list-ul"></i>
+                                        <span key="t-users">@lang('translation.Items')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('items-list')
+                                            <li><a href="{{ route('admin.departments.items.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['suppliers-list', 'suppliers-create'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-run"></i>
+                                        <span key="t-users">@lang('translation.Supplier')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('suppliers-list')
+                                            <li><a href="{{ route('admin.departments.suppliers.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </li>
                     @canany(['purchase_order-list', 'purchase_order-create'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -85,92 +93,102 @@
                         </li>
                     @endcanany
                 @elseif ($department->slug == 'planning')
-                    @canany(['clients-update', 'clients-list', 'clients-view', 'clients-delete', 'clients-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Clients')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('clients-list')
-                                    <li><a href="{{ route('admin.departments.clients.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['range-update', 'range-list', 'range-view', 'range-delete', 'range-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Range')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('range-list')
-                                    <li><a href="{{ route('admin.departments.range.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['fabric_construction-update', 'fabric_construction-list', 'fabric_construction-view',
-                        'fabric_construction-delete', 'fabric_construction-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Fabric_Construction')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('fabric_construction-list')
-                                    <li><a href="{{ route('admin.departments.fabric_construction.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['payment_terms-update', 'payment_terms-list', 'payment_terms-view', 'payment_terms-delete',
-                        'payment_terms-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Payment_Terms')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('payment_terms-list')
-                                    <li><a href="{{ route('admin.departments.payment_terms.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['article-update', 'article-list', 'article-view', 'article-delete', 'article-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Article_Style')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('article-list')
-                                    <li><a href="{{ route('admin.departments.article.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['job-update', 'job-list', 'job-view', 'job-delete', 'job-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-group"></i>
-                                <span key="t-users">@lang('translation.Jobs')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('job-list')
-                                    <li><a href="{{ route('admin.departments.jobs.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span key="t-layouts">@lang('translation.Settings')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @canany(['clients-update', 'clients-list', 'clients-view', 'clients-delete',
+                                'clients-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Clients')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('clients-list')
+                                            <li><a href="{{ route('admin.departments.clients.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['range-update', 'range-list', 'range-view', 'range-delete', 'range-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Range')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('range-list')
+                                            <li><a href="{{ route('admin.departments.range.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['fabric_construction-update', 'fabric_construction-list',
+                                'fabric_construction-view', 'fabric_construction-delete', 'fabric_construction-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Fabric_Construction')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('fabric_construction-list')
+                                            <li><a href="{{ route('admin.departments.fabric_construction.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['payment_terms-update', 'payment_terms-list', 'payment_terms-view',
+                                'payment_terms-delete', 'payment_terms-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Payment_Terms')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('payment_terms-list')
+                                            <li><a href="{{ route('admin.departments.payment_terms.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['article-update', 'article-list', 'article-view', 'article-delete',
+                                'article-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Article_Style')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('article-list')
+                                            <li><a href="{{ route('admin.departments.article.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['job-update', 'job-list', 'job-view', 'job-delete', 'job-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-group"></i>
+                                        <span key="t-users">@lang('translation.Jobs')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('job-list')
+                                            <li><a href="{{ route('admin.departments.jobs.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </li>
                     @canany(['orders-update', 'orders-list', 'orders-view', 'orders-delete', 'orders-edit'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -205,77 +223,85 @@
                         </li>
                     @endcanany
                 @elseif($department->slug == 'yarn')
-                    @canany(['count-update', 'count-list', 'count-view', 'count-delete', 'count-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Count')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('count-list')
-                                    <li><a href="{{ route('admin.departments.count.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['fiber-update', 'fiber-list', 'fiber-view', 'fiber-delete', 'fiber-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Fiber')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('fiber-list')
-                                    <li><a href="{{ route('admin.departments.fiber.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['terms_of_delivery-update', 'terms_of_delivery-list', 'terms_of_delivery-view',
-                        'terms_of_delivery-delete', 'terms_of_delivery-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.TermsOfDelivery')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('terms_of_delivery-list')
-                                    <li><a href="{{ route('admin.departments.terms_of_delivery.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['mills-update', 'mills-list', 'mills-view', 'mills-delete', 'mills-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Mills')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('mills-list')
-                                    <li><a href="{{ route('admin.departments.mill.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['agents-update', 'agents-list', 'agents-view', 'agents-delete', 'agents-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Agents')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('agents-list')
-                                    <li><a href="{{ route('admin.departments.agents.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span key="t-layouts">@lang('translation.Settings')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @canany(['count-update', 'count-list', 'count-view', 'count-delete', 'count-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Count')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('count-list')
+                                            <li><a href="{{ route('admin.departments.count.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['fiber-update', 'fiber-list', 'fiber-view', 'fiber-delete', 'fiber-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Fiber')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('fiber-list')
+                                            <li><a href="{{ route('admin.departments.fiber.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['terms_of_delivery-update', 'terms_of_delivery-list', 'terms_of_delivery-view',
+                                'terms_of_delivery-delete', 'terms_of_delivery-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.TermsOfDelivery')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('terms_of_delivery-list')
+                                            <li><a href="{{ route('admin.departments.terms_of_delivery.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['mills-update', 'mills-list', 'mills-view', 'mills-delete', 'mills-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Mills')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('mills-list')
+                                            <li><a href="{{ route('admin.departments.mill.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['agents-update', 'agents-list', 'agents-view', 'agents-delete', 'agents-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Agents')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('agents-list')
+                                            <li><a href="{{ route('admin.departments.agents.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </li>
                     @canany(['yarn_purchase_order-update', 'yarn_purchase_order-list', 'yarn_purchase_order-view',
                         'yarn_purchase_order-delete', 'yarn_purchase_order-edit'])
                         <li>
@@ -297,30 +323,58 @@
                         </li>
                     @endcanany
                 @elseif($department->slug == 'fabrication')
-                    @canany(['knitting-update', 'knitting-list', 'knitting-view', 'knitting-delete', 'knitting-edit'])
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span key="t-layouts">@lang('translation.Settings')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @canany(['knitting-update', 'knitting-list', 'knitting-view', 'knitting-delete',
+                                'knitting-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Knitting')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('knitting-list')
+                                            <li><a href="{{ route('admin.departments.knitting.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                            @canany(['dyeing-update', 'dyeing-list', 'dyeing-view', 'dyeing-delete', 'dyeing-edit'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-user"></i>
+                                        <span key="t-users">@lang('translation.Dyeing')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        @can('dyeing-list')
+                                            <li><a href="{{ route('admin.departments.dyeing.index', ['slug' => $department->slug]) }}"
+                                                    key="t-default">@lang('translation.List')</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </li>
+
+                    @canany(['orders-update', 'orders-list', 'orders-view', 'orders-delete', 'orders-edit'])
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
                                 <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Knitting')</span>
+                                <span key="t-users">@lang('translation.Orders')</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                @can('knitting-list')
-                                    <li><a href="{{ route('admin.departments.knitting.index', ['slug' => $department->slug]) }}"
+                                @can('orders-list')
+                                    <li><a href="{{ route('admin.departments.orders.index', ['slug' => $department->slug]) }}"
                                             key="t-default">@lang('translation.List')</a></li>
                                 @endcan
-                            </ul>
-                        </li>
-                    @endcanany
-                    @canany(['dyeing-update', 'dyeing-list', 'dyeing-view', 'dyeing-delete', 'dyeing-edit'])
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user"></i>
-                                <span key="t-users">@lang('translation.Dyeing')</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                @can('dyeing-list')
-                                    <li><a href="{{ route('admin.departments.dyeing.index', ['slug' => $department->slug]) }}"
-                                            key="t-default">@lang('translation.List')</a></li>
+                                @can('orders-create')
+                                    <li><a href="{{ route('admin.departments.orders.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
                                 @endcan
                             </ul>
                         </li>

@@ -15,123 +15,6 @@
     <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.css')); ?>">
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row ">
-                        <div class="col-md-1">
-                            <div class="mb-3">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        Header <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-header noti-title">
-                                            <h5 class="font-size-13 text-muted text-truncate mn-0">Welcome Jessie!</h5>
-                                        </div>
-                                        <!-- item-->
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="mb-3">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        Header <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-header noti-title">
-                                            <h5 class="font-size-13 text-muted text-truncate mn-0">Welcome Jessie!</h5>
-                                        </div>
-                                        <!-- item-->
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="mb-3">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        Header <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-header noti-title">
-                                            <h5 class="font-size-13 text-muted text-truncate mn-0">Welcome Jessie!</h5>
-                                        </div>
-                                        <!-- item-->
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="mb-3">
-
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        Header <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-header noti-title">
-                                            <h5 class="font-size-13 text-muted text-truncate mn-0">Welcome Jessie!</h5>
-                                        </div>
-                                        <!-- item-->
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="mb-3">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Header <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-header noti-title">
-                                            <h5 class="font-size-13 text-muted text-truncate mn-0">Welcome Jessie!</h5>
-                                        </div>
-                                        <!-- item-->
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <?php $__env->startComponent('components.breadcrumb'); ?>
         <?php $__env->slot('li_1'); ?>
             <?php echo app('translator')->get('translation.Departments'); ?>
@@ -373,17 +256,13 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="gst_no" class="form-label">Terms of Delivery</label>
-                                    <select name="terms_of_delivery_id" class="form-control select2">
-                                        <option value="">Select</option>
-                                        <?php $__currentLoopData = $termsOfDelivery; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $termsOfDeliver): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($termsOfDeliver->id); ?>"
-                                                <?php echo e(old('terms_of_delivery_id') == $termsOfDeliver->id ? 'selected' : ''); ?>>
-                                                <?php echo e($termsOfDeliver->name); ?>
-
-                                            </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
+                                    <label for="gst_no" class="form-label">Terms of Payment</label>
+                                    <div class="input-group">
+                                        <input type="number" value="<?php echo e(old('terms_of_payment')); ?>"
+                                            name="terms_of_payment" class="form-control"
+                                            placeholder="Enter terms of payment">
+                                        <span class="input-group-text">Days</span>
+                                    </div>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -538,29 +417,18 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3 border-end">
                                 <div class="mb-3">
-                                    <label for="gst_no" class="form-label">Terms of Payment</label>
-                                    <div class="input-group">
-                                        <input type="number" value="<?php echo e(old('terms_of_payment')); ?>"
-                                            name="terms_of_payment" class="form-control"
-                                            placeholder="Enter terms of payment">
-                                        <span class="input-group-text">Days</span>
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid payment terms.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
                                     <label for="delivered" class="form-label">Delivered</label>
-                                    <input type="number" class="form-control" onchange="calculateBalance(this)"
-                                        placeholder="Enter delivered" value="<?php echo e(old('delivered')); ?>" name="delivered"
-                                        step="0.01" required>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" onchange="calculateBalance(this)"
+                                            placeholder="Enter delivered" value="<?php echo e(old('delivered')); ?>"
+                                            name="delivered" step="0.01" required>
+                                        <div class="input-group-text unit">
+                                            Bags
+                                        </div>
+                                    </div>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -572,9 +440,14 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="balance" class="form-label">Balance</label>
-                                    <input type="number" placeholder="Enter balance" name="balance"
-                                        class="form-control" id="balance" value="<?php echo e(old('balance')); ?>" readonly
-                                        required>
+                                    <div class="input-group">
+                                        <input type="number" placeholder="Enter balance" name="balance"
+                                            class="form-control" id="balance" value="<?php echo e(old('balance')); ?>" readonly
+                                            required>
+                                        <div class="input-group-text unit">
+                                            Bags
+                                        </div>
+                                    </div>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -583,9 +456,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="invoice_of" class="form-label">Invoice of</label>
@@ -600,7 +470,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-3 border-end">
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label">Remarks</label>
                                     <textarea type="number" placeholder="Enter remarks" name="remarks" class="form-control" id="remarks"><?php echo e(old('remarks')); ?></textarea>
@@ -715,6 +589,9 @@
                 var selectedUnit = $(this).data('unit');
                 $('#unit').val(selectedUnit);
                 $('#unitButton').text(selectedUnit);
+                $('.unit').each(function() {
+                    $(this).text(selectedUnit);
+                });
             });
         });
     </script>

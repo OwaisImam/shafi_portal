@@ -89,7 +89,7 @@ class PreProductionPlanController extends Controller
         $department = $this->department;
         $order = $this->orderRepository->getById($this->request->order_id);
         $yarn_purchase_orders = $this->yarnPurchaseOrderRepository->where('job_id', $order->job_id)->get();
-        $processes = $this->processRepository->where('status', 1)->where('is_default', 1)->get();
+        $processes = $this->processRepository->where('status', 1)->where('parent_id', null)->where('is_default', 1)->get();
         $items = $this->itemRepository->where('status', 1)->get();
 
         return view('admin.department.pre_production_plan.create', compact('department', 'items', 'processes', 'yarn_purchase_orders', 'order'));
@@ -261,7 +261,6 @@ class PreProductionPlanController extends Controller
 
         try {
             DB::beginTransaction();
-
             $validator = Validator::make(
                 $this->request->all(),
                 [
@@ -281,7 +280,7 @@ class PreProductionPlanController extends Controller
                     'accessories.*.item_id' => 'required|integer',
                     'accessories.*.qty' => 'required|numeric',
                     'accessories.*.notes' => 'nullable|string',
-                       ]
+                ]
             );
 
             if ($validator->fails()) {

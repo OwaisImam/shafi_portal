@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
         Route::resource('yarn_purchase_order', YarnPurchaseOrderController::class);
         Route::get('yarn_purchase_order/{yarn_purchase_order}/delete', [YarnPurchaseOrderController::class, 'destroy']);
+        Route::get('yarn_purchase_order/{yarn_purchase_order}/print', [YarnPurchaseOrderController::class, 'print']);
 
         Route::resource('agents', AgentController::class);
         Route::get('agents/{agent}/delete', [AgentController::class, 'destroy']);

@@ -180,7 +180,7 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
         SettingsServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-    ],
+  ],
 
     /*
     |--------------------------------------------------------------------------

@@ -23,6 +23,8 @@ class DefaultValues
         'Dyeing',
         'Cutting',
         'Embellishment',
+        'Embroidery',
+        'Printing',
         'Stitching',
         'Finishing',
     ];

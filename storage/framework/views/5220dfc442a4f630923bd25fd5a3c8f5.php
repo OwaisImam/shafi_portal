@@ -146,26 +146,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="credit_days" class="form-label">Range</label>
-                                    <select name="range_id" class="form-control select2">
-                                        <option>Select</option>
-                                        <?php $__currentLoopData = $ranges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $range): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($range->id); ?>"
-                                                <?php echo e($order->range_id == $range->id ? 'selected' : ''); ?>><?php echo e($range->name); ?>
 
-                                            </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid range.
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Fabric Construction</label>
@@ -187,23 +168,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="delivery_address" class="form-label">GSM</label>
-                                    <input type="number" class="form-control" id="delivery_address" placeholder="GSM"
-                                        value="<?php echo e($order->gsm ? $order->gsm : old('gsm')); ?>" required name="gsm">
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Enter the valid gsm.
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -220,6 +184,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div data-repeater-list="group-a">
@@ -228,7 +193,7 @@
                             ?>
                             <?php $__currentLoopData = $order->order_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order_item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div data-repeater-item class="row data-repeater-item">
-                                    <div class="mb-3 col-lg-2">
+                                    <div class="mb-3 col-lg-1">
                                         <label for="article_style_no-<?php echo e($key); ?>">Article No</label>
                                         <input type="text" id="article_style_no-<?php echo e($key); ?>"
                                             value="<?php echo e($order_item->article_style_no ? $order_item->article_style_no : old('article_style_no')); ?>"
@@ -255,6 +220,20 @@
                                         <input type="text" id="description-<?php echo e($key); ?>" name="description"
                                             value="<?php echo e($order_item->description); ?>" class="form-control"
                                             placeholder="Description" />
+                                    </div>
+
+                                    <div class="mb-3 col-lg-1">
+                                        <label for="range_id-<?php echo e($key); ?>" class="form-label">Range</label>
+                                        <select name="range_id" class="form-control select2">
+                                            <option>Select</option>
+                                            <?php $__currentLoopData = $ranges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $range): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($range->id); ?>"
+                                                    <?php echo e($order_item->range_id == $range->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($range->name); ?>
+
+                                                </option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
                                     </div>
 
                                     <div class="mb-3 col-lg-1">
@@ -295,8 +274,9 @@
 
                                     <div class="col-lg-1 align-self-center">
                                         <div class="d-grid">
-                                            <input data-repeater-delete type="button" class="btn btn-primary"
-                                                value="Delete" />
+                                            <span data-repeater-delete type="button"><i
+                                                    class="bx bx-trash-alt font-size-20 text-danger verti-timeline"></i></span>
+
                                         </div>
                                     </div>
                                 </div>

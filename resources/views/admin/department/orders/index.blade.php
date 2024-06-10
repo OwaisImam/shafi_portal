@@ -46,13 +46,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <a href="{{ route('admin.departments.orders.create', ['slug' => $department->slug]) }}"
-                                    class="btn btn-success btn-rounded waves-effect waves-light addOrder-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Order</a>
+                        @can('orders-create')
+                            <div class="col-sm-8">
+                                <div class="text-sm-end">
+                                    <a href="{{ route('admin.departments.orders.create', ['slug' => $department->slug]) }}"
+                                        class="btn btn-success btn-rounded waves-effect waves-light addOrder-modal mb-2"><i
+                                            class="mdi mdi-plus me-1"></i> New Order</a>
+                                </div>
                             </div>
-                        </div><!-- end col-->
+                        @endcan
                     </div>
                     <!-- end row -->
                     <div class="table-responsive">

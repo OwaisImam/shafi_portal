@@ -119,14 +119,14 @@ class OrderController extends Controller
                 'po_receive_date' => 'required|date',
                 'delivery_date' => 'required|date|after_or_equal:po_receive_date',
                 'payment_term_id' => 'required|integer|exists:payment_terms,id',
-                'range_id' => 'required|integer|exists:ranges,id',
                 'fabric_construction_id' => 'required|integer|exists:fabric_constructions,id',
-                'gsm' => 'required|integer|min:1',
                 'order_quantity' => 'required|integer|min:1',
                 'group-a.*.article_style_no' => 'required|string|max:255',
                 'group-a.*.article_style_id' => 'required|integer|exists:article_styles,id',
                 'group-a.*.description' => 'required|string|max:255',
                 'group-a.*.size' => 'required|array',
+                'group-a.*.range_id' => 'required|integer|exists:ranges,id', // Adjust as per your size validation needs
+                'group-a.*.gsm' => 'required|integer|min:1',
                 'group-a.*.size.*' => 'required|string|max:255', // Adjust as per your size validation needs
                 'group-a.*.color' => 'required|string|max:7', // Assuming it's a hex code for the color
                 'group-a.*.qty' => 'required|integer|min:1',
@@ -140,14 +140,14 @@ class OrderController extends Controller
                 'delivery_date.required' => 'The delivery date is required.',
                 'delivery_date.after_or_equal' => 'The delivery date must be after or equal to the PO receive date.',
                 'payment_term_id.required' => 'The payment term ID is required.',
-                'range_id.required' => 'The range ID is required.',
                 'fabric_construction_id.required' => 'The fabric construction ID is required.',
-                'gsm.required' => 'The GSM is required.',
                 'order_quantity.required' => 'The order quantity is required.',
                 'group-a.*.article_style_no.required' => 'The article style number is required.',
                 'group-a.*.article_style_id.required' => 'The article style ID is required.',
                 'group-a.*.description.required' => 'The description is required.',
                 'group-a.*.size.required' => 'The size is required.',
+                'group-a.*.range_id.required' => 'The range ID is required.',
+                'group-a.*.gsm.required' => 'The GSM is required.',
                 'group-a.*.color.required' => 'The color is required.',
                 'group-a.*.qty.required' => 'The quantity is required.',
                 'group-a.*.unit.required' => 'The unit is required.',
@@ -159,6 +159,7 @@ class OrderController extends Controller
             }
 
             $validated = $validator->validated();
+
             $validated['article_style_count'] = count($validated['group-a']);
 
             $customer = $this->clientRepository->getById($validated['customer_id']);
@@ -183,16 +184,20 @@ class OrderController extends Controller
             DB::rollBack();
             Log::error($e);
 
-            return JsonResponse::fail('Something went wrong.');
+            return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(string $department, Order $order)
     {
-        //
+        $department = $this->department;
+        $order = $this->orderRepository->getById($order->id);
+
+        return view('admin.department.orders.view', compact('department', 'order'));
+
     }
 
     /**
@@ -217,6 +222,7 @@ class OrderController extends Controller
      */
     public function update(string $department, string $id)
     {
+
         try {
             DB::beginTransaction();
             $validator = Validator::make(
@@ -228,14 +234,14 @@ class OrderController extends Controller
                 'po_receive_date' => 'required|date',
                 'delivery_date' => 'required|date|after_or_equal:po_receive_date',
                 'payment_term_id' => 'required|integer|exists:payment_terms,id',
-                'range_id' => 'required|integer|exists:ranges,id',
                 'fabric_construction_id' => 'required|integer|exists:fabric_constructions,id',
-                'gsm' => 'required|integer|min:1',
                 'order_quantity' => 'required|integer|min:1',
                 'group-a.*.article_style_no' => 'required|string|max:255',
                 'group-a.*.article_style_id' => 'required|integer|exists:article_styles,id',
                 'group-a.*.description' => 'required|string|max:255',
                 'group-a.*.size' => 'required|array',
+                'group-a.*.range_id' => 'required|integer|exists:ranges,id', // Adjust as per your size validation needs
+                'group-a.*.gsm' => 'required|integer|min:1',
                 'group-a.*.size.*' => 'required|string|max:255', // Adjust as per your size validation needs
                 'group-a.*.color' => 'required|string|max:7', // Assuming it's a hex code for the color
                 'group-a.*.qty' => 'required|integer|min:1',
@@ -250,14 +256,14 @@ class OrderController extends Controller
                 'delivery_date.required' => 'The delivery date is required.',
                 'delivery_date.after_or_equal' => 'The delivery date must be after or equal to the PO receive date.',
                 'payment_term_id.required' => 'The payment term ID is required.',
-                'range_id.required' => 'The range ID is required.',
                 'fabric_construction_id.required' => 'The fabric construction ID is required.',
-                'gsm.required' => 'The GSM is required.',
                 'order_quantity.required' => 'The order quantity is required.',
                 'group-a.*.article_style_no.required' => 'The article style number is required.',
                 'group-a.*.article_style_id.required' => 'The article style ID is required.',
                 'group-a.*.description.required' => 'The description is required.',
                 'group-a.*.size.required' => 'The size is required.',
+                'group-a.*.range_id.required' => 'The range ID is required.',
+                'group-a.*.gsm.required' => 'The GSM is required.',
                 'group-a.*.color.required' => 'The color is required.',
                 'group-a.*.qty.required' => 'The quantity is required.',
                 'group-a.*.unit.required' => 'The unit is required.',
@@ -288,7 +294,7 @@ class OrderController extends Controller
             DB::rollBack();
             Log::error($e);
 
-            return JsonResponse::fail('Something went wrong.');
+            return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
 

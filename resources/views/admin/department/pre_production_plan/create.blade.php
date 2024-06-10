@@ -69,18 +69,14 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th>Range</th>
                                 <th>Fabric Construction</th>
-                                <th>GSM</th>
                                 <th>Total Order Quantity</th>
                                 <th>Total Article Style</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ $order->range->name }}</td>
                                 <td>{{ $order->fabric_construction->name }}</td>
-                                <td>{{ $order->gsm }}</td>
                                 <td>{{ $order->order_quantity . ' ' . $order->order_items->first()->unit }}</td>
                                 <td>{{ $order->article_style_count }}</td>
                             </tr>
@@ -191,7 +187,9 @@
                                             <tbody class="process-list" id="processes">
                                                 @foreach ($processes as $key => $process)
                                                     <tr class="align-middle" id="NewprocessForm{{ $process->id }}">
-                                                        <th>{{ $process->name }}
+                                                        <th
+                                                            {{ $process->child->count() > 0 ? 'rowspan="' . $process->child->count() . '"' : '' }}>
+                                                            {{ $process->name }}
                                                         </th>
                                                         <td>
                                                             <div class="col-lg-12">
@@ -218,12 +216,47 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    @if ($process->child->count() > 0)
+                                                        @foreach ($process->child as $key_child => $child)
+                                                            <tr class="align-middle"
+                                                                id="NewprocessForm{{ $child->id }}">
+                                                                <th style="padding-left:35px">{{ $child->name }}
+                                                                </th>
+                                                                <td>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="form-check form-check-primary">
+                                                                            <input type="hidden"
+                                                                                name="processes[{{ $key . '' . $key_child }}][parent_process_id]"
+                                                                                value="{{ $process->id }}">
+                                                                            <input class="form-check-input"
+                                                                                type="checkbox"
+                                                                                name="processes[{{ $key . '' . $key_child }}][id]"
+                                                                                value="{{ $child->id }}"
+                                                                                id="formCheckcolor{{ $key . '' . $key_child }}">
+                                                                            <label class="form-check-label"
+                                                                                for="formCheckcolor{{ $key . '' . $key_child }}">
+                                                                                Yes
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class=" col-lg-12">
+                                                                        <input type="text"
+                                                                            id="notes{{ $key . '' . $key_child }}"
+                                                                            name="processes[{{ $key . '' . $key_child }}][notes]"
+                                                                            class="form-control" placeholder="Notes" />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+
                                                     @if ($loop->last)
                                                         <input type="hidden" id="last_index"
                                                             value="{{ $key }}">
                                                     @endif
                                                 @endforeach
-
                                             </tbody>
                                         </table>
                                         <div class="text-center d-grid col-3">

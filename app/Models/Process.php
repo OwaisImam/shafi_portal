@@ -12,4 +12,8 @@ class Process extends Model
     protected $fillable = [
         'name', 'status', 'parent_id', 'pre_production_plan_id', 'is_default',
     ];
+
+    public function child() {
+        return $this->hasMany(Process::class,'parent_id');
+    }
 }

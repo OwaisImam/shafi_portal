@@ -67,18 +67,14 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th>Range</th>
                                 <th>Fabric Construction</th>
-                                <th>GSM</th>
                                 <th>Total Order Quantity</th>
                                 <th>Total Article Style</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><?php echo e($order->range->name); ?></td>
                                 <td><?php echo e($order->fabric_construction->name); ?></td>
-                                <td><?php echo e($order->gsm); ?></td>
                                 <td><?php echo e($order->order_quantity . ' ' . $order->order_items->first()->unit); ?></td>
                                 <td><?php echo e($order->article_style_count); ?></td>
                             </tr>
@@ -236,6 +232,44 @@
                                                         <input type="hidden" id="last_index"
                                                             value="<?php echo e($key); ?>">
                                                     <?php endif; ?>
+                                                    <?php if($process->child->count() > 0): ?>
+                                                        <?php $__currentLoopData = $process->child; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child_key => $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <tr class="align-middle"
+                                                                id="NewprocessForm<?php echo e($child->id); ?>">
+                                                                <th style="padding-left:35px"><?php echo e($child->name); ?>
+
+                                                                </th>
+                                                                <td>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="form-check form-check-primary">
+                                                                            <input type="hidden"
+                                                                                name="processes[<?php echo e($child_key . '' . $key); ?>][parent_process_id]"
+                                                                                value="">
+                                                                            <input class="form-check-input"
+                                                                                type="checkbox"
+                                                                                <?php echo e($preProductionPlan->processes->where('process_id', $child->id)->first() ? 'checked' : ''); ?>
+
+                                                                                name="processes[<?php echo e($child_key . '' . $key); ?>][id]"
+                                                                                value="<?php echo e($child->id); ?>"
+                                                                                id="formCheckcolor<?php echo e($child_key . '' . $key); ?>">
+                                                                            <label class="form-check-label"
+                                                                                for="formCheckcolor<?php echo e($child_key . '' . $key); ?>">
+                                                                                Yes
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class=" col-lg-12">
+                                                                        <input type="text"
+                                                                            id="notes<?php echo e($child_key . '' . $key); ?>"
+                                                                            name="processes[<?php echo e($child_key . '' . $key); ?>][notes]"
+                                                                            class="form-control" placeholder="Notes" />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php endif; ?>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                             </tbody>
@@ -322,7 +356,7 @@
 
                         </div>
                         <div class="mt-4">
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </div>
                 </div>
