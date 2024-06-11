@@ -314,7 +314,6 @@ class OrderController extends Controller
                 return JsonResponse::success(null, 'Order deleted successfully.');
             }
         } catch (Exception $e) {
-            dd($e);
             DB::rollBack();
             Log::error($e);
 
