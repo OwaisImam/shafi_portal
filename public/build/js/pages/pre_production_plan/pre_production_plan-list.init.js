@@ -99,9 +99,10 @@ function loadUserList(datas) {
                         full.yarn_purchase_orders.forEach(item => {
                             totalKgs += item.kgs || 0; // Ensure kgs is a number and not undefined
                         });
+                        return totalKgs.toFixed(2);
+                    } else {
+                        return totalKgs;
                     }
-
-                    return totalKgs;
                 }
             },
             {
