@@ -101,7 +101,7 @@ function loadUserList(datas) {
                         });
                     }
 
-                    return totalKgs.toFixed(2);
+                    return totalKgs;
                 }
             },
             {
