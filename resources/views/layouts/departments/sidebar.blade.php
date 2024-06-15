@@ -379,6 +379,26 @@
                             </ul>
                         </li>
                     @endcanany
+
+                    @canany(['cartage_slip-update', 'cartage_slip-list', 'cartage_slip-view', 'cartage_slip-delete',
+                        'cartage_slip-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.CartageSlips')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('cartage_slip-list')
+                                    <li><a href="{{ route('admin.departments.cartage_slip.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                                @can('cartage_slip-create')
+                                    <li><a href="{{ route('admin.departments.cartage_slip.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                 @endif
 
                 {{-- <li>

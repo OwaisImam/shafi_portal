@@ -224,5 +224,6 @@ return [
   "Agents" => "Agents",
   "Agent" => "Agent",
   "Dyeing" => "Dyeing",
-  "Knitting" => "Knitting"
+  "Knitting" => "Knitting",
+  "CartageSlips" => "Cartage Slips"
 ];

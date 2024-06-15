@@ -53,7 +53,8 @@ class CreateRoutePermissionsCommand extends Command
                   'agents',
                   'pre_production_plan',
                   'dyeing',
-                  'knitting'
+                  'knitting',
+                  'cartage_slip'
 
               ];
 
@@ -69,6 +70,10 @@ class CreateRoutePermissionsCommand extends Command
 
             if ($permission == 'clients') {
                 $permissionList[] = $permission . '-generate-credentials';
+            }
+
+            if($permission == 'orders') {
+                $permissionList[] = $permission. '-update-status';
             }
         }
 

@@ -320,4 +320,16 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }
+
+    public function getDetails(string $department, string $orderID)
+    {
+        try {
+            $order = $this->orderRepository->with(['order_items'])->where('id', $orderID)->first();
+
+            return JsonResponse::success($order, 'Order fetched successfully.');
+        } catch (Exception $e) {
+            Log::error($e);
+            return JsonResponse::fail('Something went wrong.');
+        }
+    }
 }

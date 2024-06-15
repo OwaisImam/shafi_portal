@@ -13,6 +13,7 @@ var editList = false;
 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 var department = $('meta[name="department"]').attr('content');
 
+
 //contact user list by json
 var getJSON = function (jsonurl, callback) {
 
@@ -97,8 +98,9 @@ function loadUserList(datas) {
                     var hasEditPermission = datas.permissions.some(permission => permission.name === 'orders-edit');
                     var hasDeletePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
                     var hasViewPermission = datas.permissions.some(permission => permission.name === 'orders-view');
+                    var hasUpdateOrderStatus = datas.permissions.some(permission => permission.name === 'orders-update-status');
                     var hasPreProdoctionPlanCreatePermission = datas.permissions.some(permission => permission.name === 'orders-delete');
-                    if (hasDeletePermission || hasEditPermission || hasViewPermission) {
+                    if (hasDeletePermission || hasEditPermission || hasViewPermission || hasUpdateOrderStatus) {
 
                         var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
                         <li class="list-inline-item">\
@@ -109,7 +111,7 @@ function loadUserList(datas) {
                         <ul class="dropdown-menu dropdown-menu-end">';
 
                         if (hasEditPermission) {
-                            actions += '<li><a href="./orders/' + full.id + '/edit" class="dropdown-item edit-list"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
+                            actions += '<li><a href="./orders/' + full.id + '/edit" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
                         }
 
                         if (hasDeletePermission) {
@@ -122,6 +124,10 @@ function loadUserList(datas) {
 
                         if (hasPreProdoctionPlanCreatePermission) {
                             actions += '<li><a href="./pre_production_plans/create?order_id=' + full.id + '" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-warning me-1"></i> Pre Production Plan</a></li>';
+                        }
+
+                        if (hasUpdateOrderStatus) {
+                            actions += '<li><a href="#updateOrderStatusModal" data-order-id="' + full.id + '" data-bs-toggle="modal" class="dropdown-item update-order-status"><i class="bx bxs-ship font-size-16 text-pink me-1"></i> Update Status</a></li>';
                         }
 
                         actions += '</ul>\
@@ -138,6 +144,7 @@ function loadUserList(datas) {
         ],
         drawCallback: function (oSettings) {
             removeOrder();
+            updateOrderStatus();
         },
     });
 
@@ -173,6 +180,61 @@ function generateSlug() {
     // Set the slug value in the slug field
     document.getElementById('slug-input').value = slug;
 }
+
+function updateOrderStatus() {
+    var getOrderid = 0;
+    Array.from(document.querySelectorAll(".update-order-status")).forEach(function (elem) {
+        elem.addEventListener('click', function (event) {
+            getOrderid = elem.getAttribute('data-order-id');
+            editList = true;
+            $('#items-input').empty();
+            document.getElementById("updateOrder-form").classList.remove("was-validated");
+            orderListData.data = orderListData.data.map(function (order) {
+                if (order.id == getOrderid) {
+                    $.ajax({
+                        url: url + "admin/department/" + department + "/orders/" + getOrderid + "/details",
+                        type: 'GET',
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function (data, status, xhr) {
+                            $.each(data.result.order_items, function (key, value) {
+                                $("#items-input").append('<option selected value="' +
+                                    value.id + ' ">' + value.article_style_no + '</option>');
+                            });
+
+                            $('#items-input').select2();
+                        },
+                        error: function (xhr, status, error) {
+                            // callback(xhr.status, xhr.responseJSON);
+                        }
+                    });
+
+                    var form = document.getElementById('updateOrder-form');
+                    var currentAction = form.action;
+
+                    // Append the value to the current action
+                    var newAction = currentAction + '/' + order.id; // Replace 'your-value' with the value you want to append
+
+                    // Update the form action with the new value
+                    form.action = newAction;
+
+                    // Create a hidden input element for the _method field
+                    var methodField = document.createElement('input');
+                    methodField.type = 'hidden';
+                    methodField.name = '_method';
+                    methodField.value = 'PUT';
+
+                    // Append the _method field to the form
+                    form.appendChild(methodField);
+                }
+                return order;
+            });
+        });
+    });
+}
+
 
 // remove order
 function removeOrder() {

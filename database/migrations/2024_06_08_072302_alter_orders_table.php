@@ -11,25 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasColumn('orders', 'range_id')) {
+        if(Schema::hasColumn('orders', 'range_id')) {
             Schema::table('orders', function (Blueprint $table) {
                 $table->dropColumn('range_id');
             });
         }
 
-        if(!Schema::hasColumn('orders', 'gsm')) {
+        if(Schema::hasColumn('orders', 'gsm')) {
             Schema::table('orders', function (Blueprint $table) {
                 $table->dropColumn('gsm');
             });
         }
 
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->integer('range_id');
-        });
-
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->integer('gsm');
-        });
+        if(!Schema::hasColumn('order_items', 'range_id')) {
+            Schema::table('order_items', function (Blueprint $table) {
+                $table->integer('range_id');
+            });
+        }
+        if(!Schema::hasColumn('order_items', 'gsm')) {
+            Schema::table('order_items', function (Blueprint $table) {
+                $table->integer('gsm');
+            });
+        }
     }
 
     /**
@@ -37,24 +40,29 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if(!Schema::hasColumn('orders', 'range_id')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->integer('range_id');
+            });
+        }
+
+         if(!Schema::hasColumn('orders', 'gsm')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->integer('gsm');
+            });
+        }
+
         if(Schema::hasColumn('order_items', 'range_id')) {
             Schema::table('order_items', function (Blueprint $table) {
                 $table->dropColumn('range_id');
             });
         }
 
-         if(Schema::hasColumn('order_items', 'gsm')) {
+        if(Schema::hasColumn('order_items', 'range_id')) {
             Schema::table('order_items', function (Blueprint $table) {
                 $table->dropColumn('gsm');
             });
         }
 
-        Schema::table('orders', function (Blueprint $table) {
-            $table->integer('range_id');
-        });
-
-         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('gsm');
-        });
     }
 };

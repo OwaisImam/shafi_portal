@@ -29,7 +29,7 @@
         @endslot
     @endcomponent
 
-    <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST"
+    <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST" id="yarnPurchaseOrder-form"
         action="{{ route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug]) }}">
         @csrf
         <div class="row">
@@ -516,6 +516,7 @@
     <script src="{{ URL::asset('build/js/pages/order-form-repeaterr.int.js') }}"></script>
     <script src="{{ URL::asset('build/libs/table-edits/build/table-edits.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/table-editable.int.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         function calculateKGsBags(input) {
             var kgs = 0;
@@ -587,6 +588,71 @@
                 });
             });
         });
+
+        function saveFormState() {
+            let form = document.getElementById('yarnPurchaseOrder-form');
+            let formData = new FormData(form);
+            // Convert FormData to an object
+            let data = {};
+            formData.forEach((value, key) => {
+                if (!data[key]) {
+                    data[key] = value;
+                    return;
+                }
+                if (!Array.isArray(data[key])) {
+                    data[key] = [data[key]];
+                }
+                data[key].push(value);
+            });
+            data['form_id'] = 'yarnPurchaseOrder-form';
+
+            axios.post('{{ route('admin.save.form.state') }}', data)
+                .then(response => {
+                    form.submit();
+                })
+                .catch(error => {
+                    console.error('Error saving form state:', error);
+                });
+        }
+
+        function getFormState() {
+            axios.get('{{ route('admin.get.form.state', ['form_id' => 'yarnPurchaseOrder-form']) }}')
+                .then(response => {
+                    if (response.data.form_state) {
+                        // Populate form fields with saved state
+                        let formState = response.data.form_state;
+                        for (let key in formState) {
+                            if (formState.hasOwnProperty(key)) {
+
+                                let field = document.querySelector(`[name="${key}"]`);
+                                if (field) {
+                                    if (field.type === 'checkbox') {
+                                        field.checked = formState[key] === '1' ? true : false;
+                                    } else if (field.tagName === 'SELECT') {
+                                        field.value = formState[key];
+                                    } else {
+                                        field.value = formState[key];
+                                    }
+                                }
+                            }
+                        }
+                        $('#from-type-input').trigger('change');
+                        $('#to-type-input').trigger('change');
+                        $('#job-id-input').trigger('change');
+                        $(".select2").select2();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error retrieving form state:', error);
+                });
+        }
+
+        $("#yarnPurchaseOrder-form").submit(function(e) {
+            e.preventDefault();
+            saveFormState();
+        });
+
+        window.onload = getFormState;
     </script>
     @if ($errors->any())
         <script>

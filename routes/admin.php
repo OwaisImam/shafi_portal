@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TermsOfDeliveryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\YarnPurchaseOrderController;
+use App\Http\Controllers\Admin\CartageSlipController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\ProcessController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +94,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
 
         Route::resource('orders', OrderController::class);
         Route::get('orders/{order}/delete', [OrderController::class, 'destroy']);
+        Route::get('orders/{order}/details', [OrderController::class, 'getDetails']);
 
         Route::resource('pre_production_plans', PreProductionPlanController::class);
         Route::get('pre_production_plans/{pre_production_plan}/delete', [PreProductionPlanController::class, 'destroy']);
@@ -124,6 +127,13 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::resource('dyeing', DyeingController::class);
         Route::get('dyeing/{dyeing}/delete', [DyeingController::class, 'destroy']);
 
+        Route::resource('cartage_slip', CartageSlipController::class);
     });
+
+    Route::get('/fetch-data-by-type', [DropdownController::class, 'fetchDataByType']);
+    Route::get('/fetch-orders-by-job-id', [DropdownController::class, 'getOrdersByJobID']);
+    Route::get('/fetch-order-items-by-order-id', [DropdownController::class, 'getOrderItemsByOrderID']);
+    Route::post('/save-form-state', [FormController::class, 'saveFormState'])->name('save.form.state');
+    Route::get('/get-form-state', [FormController::class, 'getFormState'])->name('get.form.state');
 
 });

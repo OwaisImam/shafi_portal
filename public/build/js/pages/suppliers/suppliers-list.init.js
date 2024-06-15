@@ -52,6 +52,7 @@ getJSON("admin/department/" + department + "/suppliers", function (err, data) {
     }
 });
 
+
 // load table list data
 function loadUserList(datas) {
     $('#userList-table').DataTable({

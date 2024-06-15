@@ -379,6 +379,26 @@
                             </ul>
                         </li>
                     <?php endif; ?>
+
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['cartage_slip-update', 'cartage_slip-list', 'cartage_slip-view', 'cartage_slip-delete',
+                        'cartage_slip-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.CartageSlips'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('cartage_slip-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.cartage_slip.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('cartage_slip-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.cartage_slip.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 

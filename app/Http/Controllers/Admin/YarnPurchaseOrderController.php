@@ -166,7 +166,7 @@ class YarnPurchaseOrderController extends Controller
                 $validated['date_of_purchase'] = Carbon::parse($validated['date_of_purchase']);
             }
 
-            $this->yarnPurchaseOrderRepository->create($validated);
+            // $this->yarnPurchaseOrderRepository->create($validated);
             DB::commit();
 
             return redirect()->route('admin.departments.yarn_purchase_order.index', ['slug' => $this->department->slug])->with('success', 'Yarn Purchase Order created successfully.');
