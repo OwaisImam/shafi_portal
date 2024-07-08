@@ -301,7 +301,7 @@
                 success: function(data, status, xhr) {
                     $('#delivery-from-input').html(
                         '<option value="">Select delivery from</option>');
-                    if (selected == "department") {
+                    if (selected == "departments") {
                         $.each(data.result, function(key, value) {
                             $("#delivery-from-input").append('<option value="' +
                                 value.id + '">' + value.name + '</option>');
@@ -341,7 +341,7 @@
                 success: function(data, status, xhr) {
                     $('#delivery-to-input').html(
                         '<option value="">Select delivery to</option>');
-                    if (selected == "department") {
+                    if (selected == "departments") {
                         $.each(data.result, function(key, value) {
                             $("#delivery-to-input").append('<option value="' +
                                 value.id + '">' + value.name + '</option>');
@@ -385,10 +385,19 @@
                 success: function(data, status, xhr) {
                     $('#orders-input').html(
                         '<option value="">Select order</option>');
+
+                    var selectedOrders = <?php echo json_encode($slip->items->pluck('order_item.order_id')->toArray(), 15, 512) ?>;
+
                     $.each(data.result, function(key, value) {
-                        $("#orders-input").append('<option value="' +
-                            value.id + '" >' + value.code + '</option>');
+                        var selected = selectedOrders.includes(value.id) ? 'selected' : '';
+                        $("#orders-input").append('<option value="' + value.id + '" ' +
+                            selected + '>' + value.code + '</option>');
                     });
+
+                    // $.each(data.result, function(key, value) {
+                    //     $("#orders-input").append('<option value="' +
+                    //         value.id + '" >' + value.code + '</option>');
+                    // });
                 },
                 error: function(xhr, status, error) {
                     callback(xhr.status, xhr.responseJSON);
@@ -481,10 +490,6 @@
             var words = numberToWords(amount);
             $('#amount-in-words-input').val(words);
         });
-
-
-        // Load form state on page load
-        window.onload = getFormState;
     </script>
     <?php if($errors->any()): ?>
         <script>

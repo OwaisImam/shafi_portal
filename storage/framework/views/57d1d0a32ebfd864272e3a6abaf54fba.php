@@ -426,7 +426,7 @@
                             <div class="col-md-3 border-end">
                                 <div class="mb-3">
                                     <label for="delivered" class="form-label">Delivered</label>
-                                    <input type="number" class="form-control" inputmode="numeric"
+                                    <input type="number" class="form-control" inputmode="kana"
                                         onchange="calculateBalance(this)" placeholder="Enter delivered"
                                         value="<?php echo e($yarn_po->delivered); ?>" name="delivered" step="0.01" required>
                                     <div class="valid-feedback">

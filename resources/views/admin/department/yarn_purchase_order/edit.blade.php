@@ -320,7 +320,7 @@
                             </div>
                             <div class="col-md-2 border-end">
                                 <div class="mb-3">
-                                    <label for="credit_days" class="form-label">Bags</label>
+                                    <label for="credit_days" class="form-label">Qty</label>
                                     <div class="btn-group dropup">
                                         <input type="hidden" name="unit" id="unit"
                                             value="{{ $yarn_po->unit }}">

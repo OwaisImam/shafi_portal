@@ -77,9 +77,8 @@ class YarnPurchaseOrderController extends Controller
     public function index()
     {
         $yarnpo = $this->yarnPurchaseOrderRepository->with([
-            'job',
+            'job', 'receiving', 'order'
         ])->get();
-
         $response = [
            'data' => $yarnpo,
            'permissions' => Auth::user()->role->permissions,
@@ -181,9 +180,12 @@ class YarnPurchaseOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $department, string $id)
     {
-        //
+        $department = $this->department;
+        $yarn_po = $this->yarnPurchaseOrderRepository->getById($id);
+
+        return view('admin.department.yarn_purchase_order.receiving.create', compact('yarn_po', 'department'));
     }
 
     /**

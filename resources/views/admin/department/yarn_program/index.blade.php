@@ -1,7 +1,7 @@
 @extends('layouts.departments.master')
 
 @section('title')
-    @lang('translation.YarnPurchaseOrders')
+    @lang('translation.Orders')
 @endsection
 
 @section('css')
@@ -17,6 +17,17 @@
         rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
+
+    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
+
     <meta name="department" content="{{ $department->slug }}">
 @endsection
 
@@ -29,7 +40,7 @@
             {{ $department->name }}
         @endslot
         @slot('title')
-            Yarn Purchase Orders
+            @lang('translation.YarnProgram')
         @endslot
     @endcomponent
 
@@ -46,12 +57,12 @@
                                 </div>
                             </div>
                         </div>
-                        @can('yarn_purchase_order-create')
+                        @can('orders-create')
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
-                                    <a href="{{ route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug]) }}"
-                                        class="btn btn-success btn-rounded waves-effect waves-light addYarnPurchaseOrder-modal mb-2"><i
-                                            class="mdi mdi-plus me-1"></i> New Yarn Purchase Order</a>
+                                    <a href="{{ route('admin.departments.yarn_program.create', ['slug' => $department->slug]) }}"
+                                        class="btn btn-success btn-rounded waves-effect waves-light mb-2"><i
+                                            class="mdi mdi-plus me-1"></i> Add Yarn Program</a>
                                 </div>
                             </div>
                         @endcan
@@ -63,15 +74,11 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
-                                    <th scope="col">Job ID</th>
-                                    <th scope="col">Order Code</th>
-                                    <th scope="col">Kg's</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Qty</th>
-                                    <th scope="col">Delivered</th>
-                                    <th scope="col">Balance</th>
-                                    <th scope="col">Amount With GST</th>
-                                    <th scope="col">Received Qty</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">PO Receive Date</th>
+                                    <th scope="col">Delivery Date</th>
+                                    <th scope="col">Order Quantity</th>
                                     <th scope="col">Status</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
@@ -85,61 +92,8 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="newYarnPurchaseOrderModal" tabindex="-1" aria-labelledby="newYarnPurchaseOrderModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newYarnPurchaseOrderModalLabel">Add Yarn Purchase Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form autocomplete="off" method="POST" class="needs-validation createYarnPurchaseOrder-form"
-                        enctype="multipart/form-data" id="createYarnPurchaseOrder-form"
-                        action="{{ route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug]) }}"
-                        novalidate>
-                        @csrf
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <input type="hidden" class="form-control" id="yarn_purchase_orderId-input">
-                                <div class="mb-3">
-                                    <label for="name-input" class="form-label">Name</label>
-                                    <input type="text" name="name" id="name-input" class="form-control"
-                                        placeholder="Enter name" required />
-                                    <div class="invalid-feedback">Please enter a name.</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="name-input" class="form-label">Status</label>
-                                    <div>
-                                        <input type="checkbox" name="status" value="1" id="switch6"
-                                            switch="primary" />
-                                        <label for="switch6" data-on-label="Yes" data-off-label="No"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" id="addYarnPurchaseOrder-btn" class="btn btn-success">Add
-                                        Yarn Purchase Order</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- end modal body -->
-            </div>
-            <!-- end modal-content -->
-        </div>
-        <!-- end modal-dialog -->
-    </div>
-
-    <!-- removeYarnPurchaseOrderModal -->
-    <div class="modal fade" id="removeYarnPurchaseOrderModal" tabindex="-1" aria-hidden="true">
+    <!-- removeOrderModal -->
+    <div class="modal fade" id="removeOrderModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body px-4 py-5 text-center">
@@ -150,22 +104,36 @@
                             <i class="mdi mdi-trash-can-outline"></i>
                         </div>
                     </div>
-                    <p class="text-muted font-size-16 mb-4">Are you Sure You Want To Remove This Record ?</p>
+                    <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this Record ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
-                        <button type="button" class="btn btn-danger" id="remove-yarn_purchase_order">Remove Now</button>
+                        <button type="button" class="btn btn-danger" id="remove-order">Remove Now</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end removeYarnPurchaseOrderModal -->
+
+    <!-- end removeOrderModal -->
 @endsection
 @section('script')
-    <!-- select2 js -->
+    <script src="{{ URL::asset('build/libs/inputmask/inputmask.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/js/pages/form-mask.init.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/parsleyjs/parsley.min.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
     <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/moment/min/moment.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
 
     <!-- Required datatable js -->
     <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -175,7 +143,7 @@
     <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
-    <script src="{{ URL::asset('build/js/pages/yarn_purchase_orders/yarn_purchase_orders-list.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/orders/yarn_program-list.init.js') }}"></script>
 
     <!-- toastr plugin -->
     <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>

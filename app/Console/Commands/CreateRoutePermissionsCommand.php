@@ -54,26 +54,35 @@ class CreateRoutePermissionsCommand extends Command
                   'pre_production_plan',
                   'dyeing',
                   'knitting',
-                  'cartage_slip'
-
+                  'cartage_slip',
+                  'yarn_stock',
+                  'yarn_program',
+                  'knitting_program'
               ];
 
         $permissionList = [];
 
         foreach ($permissions as $permission) {
-            // Generate permission names for CRUD operations
-            $permissionList[] = $permission . '-list';
-            $permissionList[] = $permission . '-create';
-            $permissionList[] = $permission . '-edit';
-            $permissionList[] = $permission . '-view';
-            $permissionList[] = $permission . '-delete';
-
+            if(in_array($permission, ['yarn_stock'])) {
+                $permissionList[] = $permission . '-list';
+            } else {
+                // Generate permission names for CRUD operations
+                $permissionList[] = $permission . '-list';
+                $permissionList[] = $permission . '-create';
+                $permissionList[] = $permission . '-edit';
+                $permissionList[] = $permission . '-view';
+                $permissionList[] = $permission . '-delete';
+            }
             if ($permission == 'clients') {
                 $permissionList[] = $permission . '-generate-credentials';
             }
 
             if($permission == 'orders') {
                 $permissionList[] = $permission. '-update-status';
+            }
+
+            if($permission == 'yarn_purchase_order') {
+                $permissionList[] = $permission. '-receiving';
             }
         }
 

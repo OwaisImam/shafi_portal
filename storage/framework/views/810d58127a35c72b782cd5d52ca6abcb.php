@@ -314,7 +314,7 @@
                 success: function(data, status, xhr) {
                     $('#delivery-to-input').html(
                         '<option value="">Select delivery to</option>');
-                    if (selected == "department") {
+                    if (selected == "departments") {
                         $.each(data.result, function(key, value) {
                             $("#delivery-to-input").append('<option value="' +
                                 value.id + '">' + value.name + '</option>');
@@ -354,6 +354,7 @@
                 success: function(data, status, xhr) {
                     $('#orders-input').html(
                         '<option value="">Select order</option>');
+
                     $.each(data.result, function(key, value) {
                         $("#orders-input").append('<option value="' +
                             value.id + '">' + value.code + '</option>');

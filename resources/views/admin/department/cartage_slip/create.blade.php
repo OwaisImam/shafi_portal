@@ -356,6 +356,7 @@
                 success: function(data, status, xhr) {
                     $('#orders-input').html(
                         '<option value="">Select order</option>');
+
                     $.each(data.result, function(key, value) {
                         $("#orders-input").append('<option value="' +
                             value.id + '">' + value.code + '</option>');

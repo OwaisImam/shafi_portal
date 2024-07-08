@@ -386,10 +386,19 @@
                 success: function(data, status, xhr) {
                     $('#orders-input').html(
                         '<option value="">Select order</option>');
+
+                    var selectedOrders = @json($slip->items->pluck('order_item.order_id')->toArray());
+
                     $.each(data.result, function(key, value) {
-                        $("#orders-input").append('<option value="' +
-                            value.id + '" >' + value.code + '</option>');
+                        var selected = selectedOrders.includes(value.id) ? 'selected' : '';
+                        $("#orders-input").append('<option value="' + value.id + '" ' +
+                            selected + '>' + value.code + '</option>');
                     });
+
+                    // $.each(data.result, function(key, value) {
+                    //     $("#orders-input").append('<option value="' +
+                    //         value.id + '" >' + value.code + '</option>');
+                    // });
                 },
                 error: function(xhr, status, error) {
                     callback(xhr.status, xhr.responseJSON);
@@ -482,10 +491,6 @@
             var words = numberToWords(amount);
             $('#amount-in-words-input').val(words);
         });
-
-
-        // Load form state on page load
-        window.onload = getFormState;
     </script>
     @if ($errors->any())
         <script>

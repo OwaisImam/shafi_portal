@@ -33,7 +33,7 @@ var getJSON = function (jsonurl, callback) {
 };
 
 // get json
-getJSON("admin/department/" + department + "/yarn_purchase_order", function (err, data) {
+getJSON("admin/department/" + department + "/yarn_stock", function (err, data) {
     if (err !== null) {
         console.log("Something went wrong: " + err);
     } else {
@@ -63,10 +63,7 @@ function loadUserList(datas) {
                 }
             },
             {
-                data: "job.number",
-            },
-            {
-                data: "order.code",
+                data: "receiving.yarn_po.order.code",
             },
             {
                 data: "kgs",
@@ -78,82 +75,8 @@ function loadUserList(datas) {
                 data: "qty",
             },
             {
-                data: "delivered"
-            },
-            {
-                data: "balance",
-            },
-            // {
-            //     data: "amount",
-            //     render: function (data, type, full) {
-            //         return full.amount.toLocaleString('en-US', { style: 'currency', currency: 'PKR' });
-            //     }
-            // },
-            {
-                data: "with_gst",
-                render: function (data, type, full) {
-                    return full.with_gst.toLocaleString('en-US', { style: 'currency', currency: 'PKR' });
-                }
-            },
-            {
-                data: "receiving",
-                render: function (data, type, full) {
-                    return full?.receiving?.received_qty ?? 'N/A';
-                }
-            },
-            {
-                data: "status",
-                render: function (data, type, full) {
-                    if (full.status == 1) {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Done</a>';
-                    } else {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Pending</a>';
-                    }
-                }
-            },
-            {
-                data: null,
-                'bSortable': false,
-                render: function (data, type, full) {
-                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'yarn_purchase_order-edit');
-                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'yarn_purchase_order-delete');
-                    var hasReceivingPermission = datas.permissions.some(permission => permission.name === 'yarn_purchase_order-receiving');
-                    if (hasDeletePermission || hasEditPermission) {
-
-                        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                        var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
-                        <li class="list-inline-item">\
-                        <div class="dropdown">\
-                        <a href="javascript: void(0);" class="dropdown-toggle card-drop px-2" data-bs-toggle="dropdown" aria-expanded="false">\
-                            <i class="mdi mdi-dots-horizontal font-size-18"></i>\
-                        </a>\
-                        <ul class="dropdown-menu dropdown-menu-end">';
-
-                        if (hasEditPermission) {
-                            actions += '<li><a href="./yarn_purchase_order/' + full.id + '/edit" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
-                        }
-
-                        if (hasDeletePermission) {
-                            actions += '<li><a href="#removeYarnPurchaseOrderModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
-                        }
-
-                        if (hasReceivingPermission) {
-                            actions += '<li><a href="./yarn_purchase_order/' + full.id + '" class="dropdown-item"><i class="mdi mdi-call-received font-size-16 text-warning me-1"></i> Add Receiving</a></li>';
-                        }
-
-                        actions += '<li><a href="./yarn_purchase_order/' + full.id + '/print" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-primary me-1"></i> Print</a></li>';
-
-                        actions += '</ul>\
-                    </div>\
-                        </li>\
-                    </ul>';
-                    } else {
-                        actions = "";
-                    }
-
-                    return actions;
-                },
-            },
+                data: "receiving.received_qty"
+            }
         ],
         drawCallback: function (oSettings) {
             editContactList();

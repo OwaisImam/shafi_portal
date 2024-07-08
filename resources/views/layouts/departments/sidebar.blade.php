@@ -222,6 +222,44 @@
                             </ul>
                         </li>
                     @endcanany
+                    @canany(['yarn_program-update', 'yarn_program-list', 'yarn_program-view', 'yarn_program-delete',
+                        'yarn_program-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users">@lang('translation.YarnProgram')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('yarn_program-list')
+                                    <li><a href="{{ route('admin.departments.yarn_program.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                                @can('yarn_program-create')
+                                    <li><a href="{{ route('admin.departments.yarn_program.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+                    @canany(['knitting_program-update', 'knitting_program-list', 'knitting_program-view',
+                        'knitting_program-delete', 'knitting_program-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users">@lang('translation.KnittingProgram')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('knitting_program-list')
+                                    <li><a href="{{ route('admin.departments.knitting_program.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+                                @can('knitting_program-create')
+                                    <li><a href="{{ route('admin.departments.knitting_program.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                 @elseif($department->slug == 'yarn')
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -395,6 +433,42 @@
                                 @can('cartage_slip-create')
                                     <li><a href="{{ route('admin.departments.cartage_slip.create', ['slug' => $department->slug]) }}"
                                             key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+                @elseif($department->slug == 'general-store')
+                    @canany(['yarn_purchase_order-update', 'yarn_purchase_order-list', 'yarn_purchase_order-view',
+                        'yarn_purchase_order-delete', 'yarn_purchase_order-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.YarnPurchaseOrder')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('yarn_purchase_order-list')
+                                    <li><a href="{{ route('admin.departments.yarn_purchase_order.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+
+                                @can('yarn_purchase_order-create')
+                                    <li><a href="{{ route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+                    @canany(['yarn_stock-update', 'yarn_stock-list', 'yarn_stock-view', 'yarn_stock-delete',
+                        'yarn_stock-edit'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.YarnStock')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('yarn_stock-list')
+                                    <li><a href="{{ route('admin.departments.yarn_stock.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
                                 @endcan
                             </ul>
                         </li>

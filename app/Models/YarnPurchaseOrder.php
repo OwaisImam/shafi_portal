@@ -56,4 +56,30 @@ class YarnPurchaseOrder extends Model
     {
         return $this->belongsTo(Count::class);
     }
+
+    public function fabric_construction()
+    {
+        return $this->belongsTo(FabricConstruction::class);
+    }
+
+    public function terms_of_delivery()
+    {
+        return $this->belongsTo(TermsOfDelivery::class);
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
+    public function mill()
+    {
+        return $this->belongsTo(Mill::class);
+    }
+
+    public function receiving()
+    {
+        return $this->hasOne(YarnPoReceiving::class, 'yarn_po_id', 'id');
+    }
+
 }

@@ -10,7 +10,9 @@ use App\Models\Dyeing;
 use App\Models\Knitting;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\Models\PurchaseOrder;
 use App\Models\State;
+use App\Models\YarnPurchaseOrder;
 use Illuminate\Http\Request;
 
 class DropdownController extends Controller
@@ -63,5 +65,12 @@ class DropdownController extends Controller
         $orderItems = OrderItems::whereIN('order_id', $request->order_id)->get();
 
         return JsonResponse::success($orderItems, 'Order items fetched successfully.');
+    }
+
+    public function getPurchaseOrdersByJobID(Request $request)
+    {
+        $purchaseOrders = YarnPurchaseOrder::where('job_id', $request->job_id)->get();
+
+        return JsonResponse::success($purchaseOrders, 'Yarn purchase order fetched successfully.');
     }
 }

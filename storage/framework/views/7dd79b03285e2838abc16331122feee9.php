@@ -222,6 +222,44 @@
                             </ul>
                         </li>
                     <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['yarn_program-update', 'yarn_program-list', 'yarn_program-view', 'yarn_program-delete',
+                        'yarn_program-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.YarnProgram'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_program-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_program.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_program-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_program.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['knitting_program-update', 'knitting_program-list', 'knitting_program-view',
+                        'knitting_program-delete', 'knitting_program-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-group"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.KnittingProgram'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('knitting_program-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.knitting_program.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('knitting_program-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.knitting_program.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 <?php elseif($department->slug == 'yarn'): ?>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -395,6 +433,42 @@
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('cartage_slip-create')): ?>
                                     <li><a href="<?php echo e(route('admin.departments.cartage_slip.create', ['slug' => $department->slug])); ?>"
                                             key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                <?php elseif($department->slug == 'general-store'): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['yarn_purchase_order-update', 'yarn_purchase_order-list', 'yarn_purchase_order-view',
+                        'yarn_purchase_order-delete', 'yarn_purchase_order-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.YarnPurchaseOrder'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_purchase_order-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_purchase_order.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_purchase_order-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['yarn_stock-update', 'yarn_stock-list', 'yarn_stock-view', 'yarn_stock-delete',
+                        'yarn_stock-edit'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.YarnStock'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_stock-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_stock.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
                                 <?php endif; ?>
                             </ul>
                         </li>

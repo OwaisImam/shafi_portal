@@ -45,13 +45,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <a href="<?php echo e(route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug])); ?>"
-                                    class="btn btn-success btn-rounded waves-effect waves-light addYarnPurchaseOrder-modal mb-2"><i
-                                        class="mdi mdi-plus me-1"></i> New Yarn Purchase Order</a>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_purchase_order-create')): ?>
+                            <div class="col-sm-8">
+                                <div class="text-sm-end">
+                                    <a href="<?php echo e(route('admin.departments.yarn_purchase_order.create', ['slug' => $department->slug])); ?>"
+                                        class="btn btn-success btn-rounded waves-effect waves-light addYarnPurchaseOrder-modal mb-2"><i
+                                            class="mdi mdi-plus me-1"></i> New Yarn Purchase Order</a>
+                                </div>
                             </div>
-                        </div><!-- end col-->
+                        <?php endif; ?>
                     </div>
                     <!-- end row -->
                     <div class="table-responsive">
@@ -61,10 +63,14 @@
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
                                     <th scope="col">Job ID</th>
+                                    <th scope="col">Order Code</th>
                                     <th scope="col">Kg's</th>
                                     <th scope="col">Unit</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Delivered</th>
+                                    <th scope="col">Balance</th>
                                     <th scope="col">Amount With GST</th>
+                                    <th scope="col">Received Qty</th>
                                     <th scope="col">Status</th>
                                     <th scope="col" style="width: 200px;">Action</th>
                                 </tr>
@@ -130,8 +136,6 @@
         </div>
         <!-- end modal-dialog -->
     </div>
-
-    <!-- end newContactModal -->
 
     <!-- removeYarnPurchaseOrderModal -->
     <div class="modal fade" id="removeYarnPurchaseOrderModal" tabindex="-1" aria-hidden="true">

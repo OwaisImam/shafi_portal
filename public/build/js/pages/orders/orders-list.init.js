@@ -126,9 +126,9 @@ function loadUserList(datas) {
                             actions += '<li><a href="./pre_production_plans/create?order_id=' + full.id + '" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-warning me-1"></i> Pre Production Plan</a></li>';
                         }
 
-                        if (hasUpdateOrderStatus) {
-                            actions += '<li><a href="#updateOrderStatusModal" data-order-id="' + full.id + '" data-bs-toggle="modal" class="dropdown-item update-order-status"><i class="bx bxs-ship font-size-16 text-pink me-1"></i> Update Status</a></li>';
-                        }
+                        // if (hasUpdateOrderStatus) {
+                        //     actions += '<li><a href="#updateOrderStatusModal" data-order-id="' + full.id + '" data-bs-toggle="modal" class="dropdown-item update-order-status"><i class="bx bxs-ship font-size-16 text-pink me-1"></i> Update Status</a></li>';
+                        // }
 
                         actions += '</ul>\
                     </div>\

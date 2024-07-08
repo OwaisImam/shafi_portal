@@ -11,4 +11,9 @@ class YarnPurchaseOrderRepository extends BaseRepository
     {
         return YarnPurchaseOrder::class;
     }
+
+    public function getYarnPOWhereHasReceiving()
+    {
+        return $this->model->whereHas('receiving')->with('receiving.yarn_po.order')->get();
+    }
 }
