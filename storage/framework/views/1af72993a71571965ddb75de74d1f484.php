@@ -67,18 +67,14 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th>Range</th>
                                 <th>Fabric Construction</th>
-                                <th>GSM</th>
                                 <th>Total Order Quantity</th>
                                 <th>Total Article Style</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><?php echo e($preProductionPlan->order->range->name); ?></td>
                                 <td><?php echo e($preProductionPlan->order->fabric_construction->name); ?></td>
-                                <td><?php echo e($preProductionPlan->order->gsm); ?></td>
                                 <td><?php echo e($preProductionPlan->order->order_quantity . ' ' . $preProductionPlan->order->order_items->first()->unit); ?>
 
                                 </td>

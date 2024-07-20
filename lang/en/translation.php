@@ -228,5 +228,6 @@ return [
   "CartageSlips" => "Cartage Slips",
   "YarnStock" => "Yarn Stock",
   "YarnProgram" =>"Yarn Program",
+  "YarnPrograms" =>"Yarn Programs",
   "KnittingProgram" => "Knitting Program"
 ];

@@ -8,7 +8,7 @@ File: contact user list Js File
 
 
 var url = "/";
-var yarn_purchase_orderListData = '';
+var yarn_programListData = '';
 var editList = false;
 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 var department = $('meta[name="department"]').attr('content');
@@ -33,12 +33,12 @@ var getJSON = function (jsonurl, callback) {
 };
 
 // get json
-getJSON("admin/department/" + department + "/pre_production_plans", function (err, data) {
+getJSON("admin/department/" + department + "/yarn_program", function (err, data) {
     if (err !== null) {
         console.log("Something went wrong: " + err);
     } else {
-        yarn_purchase_orderListData = data.result;
-        loadUserList(yarn_purchase_orderListData)
+        yarn_programListData = data.result;
+        loadUserList(yarn_programListData)
     }
 });
 
@@ -63,56 +63,35 @@ function loadUserList(datas) {
                 }
             },
             {
-                data: "order.job.number",
+                data: "job.number",
             },
             {
-                data: "order.code",
-            },
-            {
-                data: "status",
-                render: function (data, type, full) {
-                    if (full.status == 1) {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-success font-size-11 m-1">Active</a>';
-                    } else {
-                        return '<a href="javascript: void (0);" class="badge badge-soft-danger font-size-11 m-1">Inactive</a>';
+                data: "job.orders",
+                render: function (data, type, full, meta) {
+                    var orders = full.job.orders;
+                    var tagHtml = '';
+                    var tabShowSize = 2;
+                    Array.from(orders.slice(0, tabShowSize)).forEach(function (tag, index) {
+                        tagHtml += '<a href="javascript: void(0);" class="badge badge-soft-primary font-size-11 m-1">' + tag.code + '</a>';
+                    });
+                    if (orders.length > tabShowSize) {
+                        var tabsLength = orders.length - tabShowSize;
+                        tagHtml += '<a href="javascript: void(0);" class="badge badge-soft-primary font-size-11 m-1">' + tabsLength + ' more</a>';
                     }
-                }
-            },
-            {
-                data: "processes",
-                render: function (data, type, full) {
-                    return full.processes.length;
-                }
-            },
-            {
-                data: "accessories",
-                render: function (data, type, full) {
-                    return full.accessories.length;
-                }
-            },
-            {
-                data: "yarn_purchase_orders",
-                render: function (data, type, full) {
-                    let totalKgs = 0;
 
-                    if (Array.isArray(full.yarn_purchase_orders)) {
-                        full.yarn_purchase_orders.forEach(item => {
-                            totalKgs += item.kgs || 0; // Ensure kgs is a number and not undefined
-                        });
-                        return totalKgs.toFixed(2);
-                    } else {
-                        return totalKgs;
-                    }
+                    return tagHtml;
                 }
+            },
+            {
+                data: "name",
             },
             {
                 data: null,
                 'bSortable': false,
                 render: function (data, type, full) {
-                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-edit');
-                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-delete');
-                    var hasViewPermission = datas.permissions.some(permission => permission.name === 'pre_production_plan-view');
-                    if (hasDeletePermission || hasEditPermission || hasViewPermission) {
+                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'yarn_program-edit');
+                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'yarn_program-delete');
+                    if (hasDeletePermission || hasEditPermission) {
 
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');
                         var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
@@ -124,16 +103,14 @@ function loadUserList(datas) {
                         <ul class="dropdown-menu dropdown-menu-end">';
 
                         if (hasEditPermission) {
-                            actions += '<li><a href="./pre_production_plans/' + full.id + '/edit?order_id=' + full.order_id + '" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
-                        }
-
-                        if (hasViewPermission) {
-                            actions += '<li><a href="./pre_production_plans/' + full.id + '?order_id=' + full.order_id + '" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-eye font-size-16 text-primary me-1"></i> View</a></li>';
+                            actions += '<li><a href="./yarn_program/' + full.id + '/edit" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
                         }
 
                         if (hasDeletePermission) {
-                            actions += '<li><a href="#removePreProductionPlanModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
+                            actions += '<li><a href="#removeYarnProgramModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
                         }
+
+                        actions += '<li><a href="./yarn_program/' + full.id + '/" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-primary me-1"></i> View</a></li>';
 
                         actions += '</ul>\
                     </div>\
@@ -149,7 +126,7 @@ function loadUserList(datas) {
         ],
         drawCallback: function (oSettings) {
             editContactList();
-            removePreProductionPlan();
+            removeYarnProgram();
         },
     });
 
@@ -163,7 +140,7 @@ function loadUserList(datas) {
 
 
 // create user modal form
-var createContactForms = document.querySelectorAll('.createPreProductionPlan-form')
+var createContactForms = document.querySelectorAll('.createYarnProgram-form')
 Array.prototype.slice.call(createContactForms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
@@ -176,7 +153,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
             var status = document.getElementById('switch6').checked ? 1 : 0;
 
             if (name !== "" && status !== "" && !editList) {
-                console.log(yarn_purchase_orderListData);
+                console.log(yarn_programListData);
                 var newUserId = findNextId();
 
                 var newList = {
@@ -185,13 +162,13 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
                     "status": status,
                 };
 
-                yarn_purchase_orderListData.data.push(newList);
+                yarn_programListData.data.push(newList);
 
             } else if (name !== "" && status !== "" && editList) {
                 var getEditid = 0;
-                getEditid = document.getElementById('yarn_purchase_orderId-input').value;
-                yarn_purchase_orderListData.data = yarn_purchase_orderListData.data.map(function (yarn_purchase_order) {
-                    if (yarn_purchase_order.id == getEditid) {
+                getEditid = document.getElementById('yarn_programId-input').value;
+                yarn_programListData.data = yarn_programListData.data.map(function (yarn_program) {
+                    if (yarn_program.id == getEditid) {
                         var editObj = {
                             'id': getEditid,
                             "name": name,
@@ -200,7 +177,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
 
                         return editObj;
                     }
-                    return yarn_purchase_order;
+                    return yarn_program;
                 });
                 editList = false;
             }
@@ -208,10 +185,10 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
             if ($.fn.DataTable.isDataTable('#userList-table')) {
                 $('#userList-table').DataTable().destroy();
             }
-            loadUserList(yarn_purchase_orderListData)
+            loadUserList(yarn_programListData)
             form.submit();
 
-            $("#newPreProductionPlanModal").modal("hide");
+            $("#newYarnProgramModal").modal("hide");
         }
         form.classList.add('was-validated');
     }, false)
@@ -223,11 +200,11 @@ function fetchIdFromObj(member) {
 }
 
 function findNextId() {
-    if (yarn_purchase_orderListData.data.length === 0) {
+    if (yarn_programListData.data.length === 0) {
         return 0;
     }
-    var lastElementId = fetchIdFromObj(yarn_purchase_orderListData.data[yarn_purchase_orderListData.data.length - 1]),
-        firstElementId = fetchIdFromObj(yarn_purchase_orderListData.data[0]);
+    var lastElementId = fetchIdFromObj(yarn_programListData.data[yarn_programListData.data.length - 1]),
+        firstElementId = fetchIdFromObj(yarn_programListData.data[0]);
     return (firstElementId >= lastElementId) ? (firstElementId + 1) : (lastElementId + 1);
 }
 
@@ -238,21 +215,21 @@ function editContactList() {
         elem.addEventListener('click', function (event) {
             getEditid = elem.getAttribute('data-edit-id');
             editList = true;
-            document.getElementById("createPreProductionPlan-form").classList.remove("was-validated");
-            yarn_purchase_orderListData.data = yarn_purchase_orderListData.data.map(function (yarn_purchase_order) {
-                if (yarn_purchase_order.id == getEditid) {
-                    document.getElementById("newPreProductionPlanModalLabel").innerHTML = "Edit Yarn Purchase Order";
-                    document.getElementById("addPreProductionPlan-btn").innerHTML = "Update";
-                    document.getElementById("yarn_purchase_orderId-input").value = yarn_purchase_order.id;
-                    document.getElementById("name-input").value = yarn_purchase_order.name;
-                    document.getElementById('switch6').checked = yarn_purchase_order.status == 1 ? 1 : 0;
+            document.getElementById("createYarnProgram-form").classList.remove("was-validated");
+            yarn_programListData.data = yarn_programListData.data.map(function (yarn_program) {
+                if (yarn_program.id == getEditid) {
+                    document.getElementById("newYarnProgramModalLabel").innerHTML = "Edit Yarn Program";
+                    document.getElementById("addYarnProgram-btn").innerHTML = "Update";
+                    document.getElementById("yarn_programId-input").value = yarn_program.id;
+                    document.getElementById("name-input").value = yarn_program.name;
+                    document.getElementById('switch6').checked = yarn_program.status == 1 ? 1 : 0;
 
 
-                    var form = document.getElementById('createPreProductionPlan-form');
+                    var form = document.getElementById('createYarnProgram-form');
                     var currentAction = form.action;
 
                     // Append the value to the current action
-                    var newAction = currentAction + '/' + yarn_purchase_order.id; // Replace 'your-value' with the value you want to append
+                    var newAction = currentAction + '/' + yarn_program.id; // Replace 'your-value' with the value you want to append
 
                     // Update the form action with the new value
                     form.action = newAction;
@@ -266,7 +243,7 @@ function editContactList() {
                     // Append the _method field to the form
                     form.appendChild(methodField);
                 }
-                return yarn_purchase_order;
+                return yarn_program;
             });
         });
     });
@@ -274,13 +251,13 @@ function editContactList() {
 
 
 // add list event
-Array.from(document.querySelectorAll(".addPreProductionPlan-modal")).forEach(function (elem) {
+Array.from(document.querySelectorAll(".addYarnProgram-modal")).forEach(function (elem) {
     elem.addEventListener('click', function (event) {
         editList = false;
-        document.getElementById("createPreProductionPlan-form").classList.remove("was-validated");
-        document.getElementById("newPreProductionPlanModalLabel").innerHTML = "Add Yarn Purchase Order";
-        document.getElementById("addPreProductionPlan-btn").innerHTML = "Add";
-        document.getElementById("yarn_purchase_orderId-input").value = "";
+        document.getElementById("createYarnProgram-form").classList.remove("was-validated");
+        document.getElementById("newYarnProgramModalLabel").innerHTML = "Add Yarn Program";
+        document.getElementById("addYarnProgram-btn").innerHTML = "Add";
+        document.getElementById("yarn_programId-input").value = "";
         document.getElementById("name-input").value = "";
         document.getElementById("switch6").checked = false;
 
@@ -298,24 +275,24 @@ function generateSlug() {
     document.getElementById('slug-input').value = slug;
 }
 
-// remove yarn_purchase_order
-function removePreProductionPlan() {
+// remove yarn_program
+function removeYarnProgram() {
     var getid = 0;
-    Array.from(document.querySelectorAll(".remove-list")).forEach(function (yarn_purchase_order) {
-        yarn_purchase_order.addEventListener('click', function (event) {
-            getid = yarn_purchase_order.getAttribute('data-remove-id');
-            document.getElementById("remove-yarn_purchase_order").addEventListener("click", function () {
+    Array.from(document.querySelectorAll(".remove-list")).forEach(function (yarn_program) {
+        yarn_program.addEventListener('click', function (event) {
+            getid = yarn_program.getAttribute('data-remove-id');
+            document.getElementById("remove-yarn-program").addEventListener("click", function () {
                 function arrayRemove(arr, value) {
                     return arr.filter(function (ele) {
                         return ele.id != value;
                     });
                 }
-                var filtered = arrayRemove(yarn_purchase_orderListData.data, getid);
+                var filtered = arrayRemove(yarn_programListData.data, getid);
 
-                yarn_purchase_orderListData.data = filtered;
+                yarn_programListData.data = filtered;
 
                 $.ajax({
-                    url: "./pre_production_plans/" + getid + "/delete",
+                    url: "./yarn_program/" + getid + "/delete",
                     type: "GET",
                     dataType: 'json',
                     success: function (resonse) {
@@ -326,8 +303,8 @@ function removePreProductionPlan() {
                 if ($.fn.DataTable.isDataTable('#userList-table')) {
                     $('#userList-table').DataTable().destroy();
                 }
-                loadUserList(yarn_purchase_orderListData);
-                $("#removePreProductionPlanModal").modal("hide");
+                loadUserList(yarn_programListData);
+                $("#removeYarnProgramModal").modal("hide");
             });
         });
     });

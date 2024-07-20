@@ -137,6 +137,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::resource('yarn_stock', YarnStockController::class);
 
         Route::resource('yarn_program', YarnProgramController::class);
+        Route::get('yarn_program/{yarn_program}/delete', [YarnProgramController::class, 'destroy']);
 
         Route::resource('knitting_program', KnittingProgramController::class);
     });
@@ -145,6 +146,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
     Route::get('/fetch-orders-by-job-id', [DropdownController::class, 'getOrdersByJobID']);
     Route::get('/fetch-purchase-order-by-job-id', [DropdownController::class, 'getPurchaseOrdersByJobID']);
     Route::get('/fetch-order-items-by-order-id', [DropdownController::class, 'getOrderItemsByOrderID']);
+    Route::get('/fetch-pre-production-plan-by-order-id', [DropdownController::class, 'getPreProductionPlanByOrderID']);
     Route::post('/save-form-state', [FormController::class, 'saveFormState'])->name('save.form.state');
     Route::get('/get-form-state', [FormController::class, 'getFormState'])->name('get.form.state');
 

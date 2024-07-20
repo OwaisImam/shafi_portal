@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Count;
 use App\Models\Departments;
 use App\Models\Dyeing;
+use App\Models\Fiber;
 use App\Models\Knitting;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\Models\PreProductionPlan;
 use App\Models\PurchaseOrder;
 use App\Models\State;
 use App\Models\YarnPurchaseOrder;
@@ -45,6 +48,12 @@ class DropdownController extends Controller
         case 'dyeing':
             $data = Dyeing::where('status', 1)->get();
         break;
+        case 'fiber':
+            $data = Fiber::where('status', 1)->get();
+        break;
+        case 'count':
+            $data = Count::where('status', 1)->get();
+        break;
         default:
             $data = Departments::where('status', 1)->get();
         break;
@@ -55,7 +64,7 @@ class DropdownController extends Controller
 
     public function getOrdersByJobID(Request $request)
     {
-        $orders = Order::where('job_id', $request->job_id)->get();
+        $orders = Order::with(['fabric_construction', 'job','order_items.article'])->where('job_id', $request->job_id)->get();
 
         return JsonResponse::success($orders, 'Orders fetched successfully.');
     }
@@ -72,5 +81,13 @@ class DropdownController extends Controller
         $purchaseOrders = YarnPurchaseOrder::where('job_id', $request->job_id)->get();
 
         return JsonResponse::success($purchaseOrders, 'Yarn purchase order fetched successfully.');
+    }
+
+    public function getPreProductionPlanByOrderID(Request $request)
+    {
+        $purchaseOrders = PreProductionPlan::with(['order'])->where('job_id', $request->job_id)->get();
+
+        return JsonResponse::success($purchaseOrders, 'Pre production plan fetched successfully.');
+
     }
 }

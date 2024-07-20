@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('yarn_programs', function (Blueprint $table) {
             $table->id();
+            $table->integer('job_id');
+            $table->string('name');
             $table->timestamps();
         });
     }

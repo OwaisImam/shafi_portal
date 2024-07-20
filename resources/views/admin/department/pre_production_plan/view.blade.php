@@ -69,18 +69,14 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th>Range</th>
                                 <th>Fabric Construction</th>
-                                <th>GSM</th>
                                 <th>Total Order Quantity</th>
                                 <th>Total Article Style</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ $preProductionPlan->order->range->name }}</td>
                                 <td>{{ $preProductionPlan->order->fabric_construction->name }}</td>
-                                <td>{{ $preProductionPlan->order->gsm }}</td>
                                 <td>{{ $preProductionPlan->order->order_quantity . ' ' . $preProductionPlan->order->order_items->first()->unit }}
                                 </td>
                                 <td>{{ $preProductionPlan->order->article_style_count }}</td>

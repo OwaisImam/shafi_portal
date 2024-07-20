@@ -32,6 +32,7 @@
     <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST" id="yarnPurchaseOrder-form"
         action="{{ route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug]) }}">
         @csrf
+        <input type="hidden" name="form_id" value="yarnPurchaseOrder-form">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">

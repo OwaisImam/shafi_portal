@@ -25,7 +25,7 @@
             {{ $department->name }}
         @endslot
         @slot('title')
-            New @lang('translation.YarnProgram') Form
+            Edit @lang('translation.YarnProgram') Form
         @endslot
     @endcomponent
 
@@ -34,8 +34,9 @@
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.departments.yarn_program.store', ['slug' => $department->slug]) }}">
+                        action="{{ route('admin.departments.yarn_program.update', ['slug' => $department->slug, 'yarn_program' => $yarnProgram->id]) }}">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -43,7 +44,9 @@
                                     <select name="job_id" id="job-id-input" class="form-control select2" required>
                                         <option>Select</option>
                                         @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->number }}</option>
+                                            <option value="{{ $job->id }}"
+                                                {{ $yarnProgram->job_id == $job->id ? 'selected' : '' }}>
+                                                {{ $job->number }}</option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -57,7 +60,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="moobile_no" class="form-label">Name</label>
-                                    <input type="text" name="name" placeholder="Enter name" class="form-control">
+                                    <input type="text" name="name" placeholder="Enter name"
+                                        value="{{ $yarnProgram->name }}" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -67,13 +71,172 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="orders-row">
-                            <div id="repeater-container"></div>
+                            <div id="repeater-container">
+                                <table class="table main_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Job#</th>
+                                            @foreach ($yarnProgram->job->orders as $key => $order)
+                                                <th>{{ $order->fabric_construction->name }} ({{ $order->code }})</th>
+                                            @endforeach
+                                            <th>Total Kgs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $total_kgs = 0;
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $yarnProgram->job->number }}</td>
+                                            @foreach ($yarnProgram->job->orders as $key => $order)
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Qty:
+                                                                    {{ $order->order_quantity }}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="mb-3">
+                                                                <div class="input-group">
+                                                                    <input type="hidden" name="order_id[]"
+                                                                        value="{{ $order->id }}">
+                                                                    <input type="number"
+                                                                        id="required_kgs_{{ $key }}"
+                                                                        value="{{ $yarnProgram->items->where('order_id', $order->id)->first()->required_kgs }}"
+                                                                        name="required_kgs[]" class="form-control"
+                                                                        min="0" placeholder="Enter required kgs">
+                                                                    <span class="input-group-text">Kgs</span>
+                                                                </div>
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                                <div class="invalid-feedback">
+                                                                    Enter the valid kgs.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                @php
+                                                    $total_kgs += $yarnProgram->items
+                                                        ->where('order_id', $order->id)
+                                                        ->first()->required_kgs;
+                                                @endphp
+                                            @endforeach
+                                            <td>{{ $total_kgs }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                @php
+                                    $totalKgs = 0;
+                                    $totalBags = 0;
+                                @endphp
+                                @foreach ($yarnProgram->job->orders as $key => $order)
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>{{ $order->fabric_construction->name }} ({{ $order->code }})
+                                            </h5>
+
+                                            <div class="repeater-group-{{ App\Helper\Helper::indexToAlphabet($key) }}">
+                                                <div
+                                                    data-repeater-list="group-{{ App\Helper\Helper::indexToAlphabet($key) }}">
+                                                    @foreach ($yarnProgram->items->where('order_id', $order->id) as $item)
+                                                        <div data-repeater-item class="row">
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="article_style_no">Count</label>
+                                                                <select class="form-control"
+                                                                    onchange="getData(this, {{ $key }})"
+                                                                    name="count">
+                                                                    @foreach ($counts as $count)
+                                                                        <option value="{{ $count->id }}"
+                                                                            {{ $item->count_id == $count->id ? 'selected' : '' }}>
+                                                                            {{ $count->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 col-lg-3">
+                                                                <label for="article_style_no">Fiber</label>
+                                                                <select class="form-control" name="fiber">
+                                                                    @foreach ($fibers as $fiber)
+                                                                        <option value="{{ $fiber->id }}"
+                                                                            {{ $item->fiber_id == $fiber->id ? 'selected' : '' }}>
+                                                                            {{ $fiber->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="description">Percentage</label>
+                                                                <input type="number" id="percentage" max="100"
+                                                                    onfocusout="calculateKgs(this, {{ $key }})"
+                                                                    onchange="calculateKgs(this, {{ $key }})"
+                                                                    value="{{ $item->percentage }}" required
+                                                                    name="percentage" class="form-control"
+                                                                    placeholder="%" />
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="credit_days" class="form-label">Total
+                                                                    Kgs</label>
+                                                                <input type="number" id="total_kgs{{ $key }}"
+                                                                    value="{{ $item->kgs }}" readonly required
+                                                                    name="kgs" class="form-control"
+                                                                    placeholder="Total Kgs" />
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="color">Total Bags</label>
+                                                                <input type="number" id="total_bags{{ $key }}"
+                                                                    readonly name="bags" required
+                                                                    value="{{ $item->bags }}" class="form-control"
+                                                                    placeholder="Total Bags" />
+                                                            </div>
+                                                            <div class="col-lg-1 align-self-center">
+                                                                <div class="d-grid">
+                                                                    <span data-repeater-delete type="button">
+                                                                        <i
+                                                                            class="bx bx-trash-alt font-size-20 text-danger verti-timeline">
+                                                                        </i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $totalKgs += $item->kgs;
+                                                            $totalBags += $item->bags;
+                                                        @endphp
+                                                    @endforeach
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input data-repeater-create="group-b" type="button"
+                                                            class="btn btn-success mt-3 mt-lg-0" value="Add" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <table class="table footer_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th id="sum_kgs">{{ number_format($totalKgs, 2) }} Kgs</th>
+                                            <th id="sum_bags">{{ number_format($totalBags, 2) }} Bags</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
 
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -112,6 +275,10 @@
     <script src="{{ URL::asset('build/js/pages/table-editable.int.js') }}"></script>
     <script>
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // $(document).ready(function() {
+        //     $('#job-id-input').trigger('change');
+        // });
 
         function calculateQnty(input) {
             var total = 0;
@@ -191,6 +358,7 @@
                             `</td>`;
                         TotalQty += value.order_quantity;
                     });
+
                     mainTableHtml += ` <td>` + TotalQty + `</td>
                                     </tr>
                                 </tbody>
@@ -263,8 +431,6 @@
                             </div>\
                             </div>
                             `;
-
-
                     });
                     var footerTable = `<table class="table footer_table">\
                                 <thead>\

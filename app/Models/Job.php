@@ -12,4 +12,9 @@ class Job extends Model
     protected $table = 'p_jobs';
 
     protected $fillable = ['number', 'status'];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

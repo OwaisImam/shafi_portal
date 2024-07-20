@@ -68,4 +68,9 @@ class Helper
     {
         return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
+
+    public static function indexToAlphabet($index) {
+    // The ASCII code for 'a' is 97
+        return chr(97 + $index);
+    }
 }

@@ -10,7 +10,7 @@ class FormController extends Controller
     public function saveFormState(Request $request)
     {
         $formData = $request->all();
-        $userId = auth()->id().$request->form_id; // Or any unique identifier for the form
+        $userId = auth()->id().session()->getId().$request->form_id; // Or any unique identifier for the form
 
         // Save to Redis with a key
         Redis::set('form_state:' . $userId, json_encode($formData));
@@ -21,7 +21,7 @@ class FormController extends Controller
     // Retrieve form state
     public function getFormState(Request $request)
     {
-        $userId = auth()->id().$request->form_id; // Or any unique identifier for the form
+        $userId = auth()->id().session()->getId().$request->form_id; // Or any unique identifier for the form
 
         // Get from Redis
         $formState = Redis::get('form_state:' . $userId);

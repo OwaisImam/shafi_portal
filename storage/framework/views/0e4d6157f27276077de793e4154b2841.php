@@ -24,7 +24,7 @@
 
         <?php $__env->endSlot(); ?>
         <?php $__env->slot('title'); ?>
-            New <?php echo app('translator')->get('translation.YarnProgram'); ?> Form
+            Edit <?php echo app('translator')->get('translation.YarnProgram'); ?> Form
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
 
@@ -33,8 +33,9 @@
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="<?php echo e(route('admin.departments.yarn_program.store', ['slug' => $department->slug])); ?>">
+                        action="<?php echo e(route('admin.departments.yarn_program.update', ['slug' => $department->slug, 'yarn_program' => $yarnProgram->id])); ?>">
                         <?php echo csrf_field(); ?>
+                        <?php echo method_field('PUT'); ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -42,7 +43,9 @@
                                     <select name="job_id" id="job-id-input" class="form-control select2" required>
                                         <option>Select</option>
                                         <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($job->id); ?>"><?php echo e($job->number); ?></option>
+                                            <option value="<?php echo e($job->id); ?>"
+                                                <?php echo e($yarnProgram->job_id == $job->id ? 'selected' : ''); ?>>
+                                                <?php echo e($job->number); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
@@ -56,7 +59,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="moobile_no" class="form-label">Name</label>
-                                    <input type="text" name="name" placeholder="Enter name" class="form-control">
+                                    <input type="text" name="name" placeholder="Enter name"
+                                        value="<?php echo e($yarnProgram->name); ?>" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -66,13 +70,174 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="orders-row">
-                            <div id="repeater-container"></div>
+                            <div id="repeater-container">
+                                <table class="table main_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Job#</th>
+                                            <?php $__currentLoopData = $yarnProgram->job->orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <th><?php echo e($order->fabric_construction->name); ?> (<?php echo e($order->code); ?>)</th>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <th>Total Kgs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $total_kgs = 0;
+                                        ?>
+                                        <tr>
+                                            <td><?php echo e($yarnProgram->job->number); ?></td>
+                                            <?php $__currentLoopData = $yarnProgram->job->orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Qty:
+                                                                    <?php echo e($order->order_quantity); ?></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="mb-3">
+                                                                <div class="input-group">
+                                                                    <input type="hidden" name="order_id[]"
+                                                                        value="<?php echo e($order->id); ?>">
+                                                                    <input type="number"
+                                                                        id="required_kgs_<?php echo e($key); ?>"
+                                                                        value="<?php echo e($yarnProgram->items->where('order_id', $order->id)->first()->required_kgs); ?>"
+                                                                        name="required_kgs[]" class="form-control"
+                                                                        min="0" placeholder="Enter required kgs">
+                                                                    <span class="input-group-text">Kgs</span>
+                                                                </div>
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                                <div class="invalid-feedback">
+                                                                    Enter the valid kgs.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <?php
+                                                    $total_kgs += $yarnProgram->items
+                                                        ->where('order_id', $order->id)
+                                                        ->first()->required_kgs;
+                                                ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <td><?php echo e($total_kgs); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <?php
+                                    $totalKgs = 0;
+                                    $totalBags = 0;
+                                ?>
+                                <?php $__currentLoopData = $yarnProgram->job->orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5><?php echo e($order->fabric_construction->name); ?> (<?php echo e($order->code); ?>)
+                                            </h5>
+
+                                            <div class="repeater-group-<?php echo e(App\Helper\Helper::indexToAlphabet($key)); ?>">
+                                                <div
+                                                    data-repeater-list="group-<?php echo e(App\Helper\Helper::indexToAlphabet($key)); ?>">
+                                                    <?php $__currentLoopData = $yarnProgram->items->where('order_id', $order->id); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <div data-repeater-item class="row">
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="article_style_no">Count</label>
+                                                                <select class="form-control"
+                                                                    onchange="getData(this, <?php echo e($key); ?>)"
+                                                                    name="count">
+                                                                    <?php $__currentLoopData = $counts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($count->id); ?>"
+                                                                            <?php echo e($item->count_id == $count->id ? 'selected' : ''); ?>>
+                                                                            <?php echo e($count->name); ?>
+
+                                                                        </option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 col-lg-3">
+                                                                <label for="article_style_no">Fiber</label>
+                                                                <select class="form-control" name="fiber">
+                                                                    <?php $__currentLoopData = $fibers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fiber): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($fiber->id); ?>"
+                                                                            <?php echo e($item->fiber_id == $fiber->id ? 'selected' : ''); ?>>
+                                                                            <?php echo e($fiber->name); ?>
+
+                                                                        </option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="description">Percentage</label>
+                                                                <input type="number" id="percentage" max="100"
+                                                                    onfocusout="calculateKgs(this, <?php echo e($key); ?>)"
+                                                                    onchange="calculateKgs(this, <?php echo e($key); ?>)"
+                                                                    value="<?php echo e($item->percentage); ?>" required
+                                                                    name="percentage" class="form-control"
+                                                                    placeholder="%" />
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="credit_days" class="form-label">Total
+                                                                    Kgs</label>
+                                                                <input type="number" id="total_kgs<?php echo e($key); ?>"
+                                                                    value="<?php echo e($item->kgs); ?>" readonly required
+                                                                    name="kgs" class="form-control"
+                                                                    placeholder="Total Kgs" />
+                                                            </div>
+                                                            <div class="mb-3 col-lg-2">
+                                                                <label for="color">Total Bags</label>
+                                                                <input type="number" id="total_bags<?php echo e($key); ?>"
+                                                                    readonly name="bags" required
+                                                                    value="<?php echo e($item->bags); ?>" class="form-control"
+                                                                    placeholder="Total Bags" />
+                                                            </div>
+                                                            <div class="col-lg-1 align-self-center">
+                                                                <div class="d-grid">
+                                                                    <span data-repeater-delete type="button">
+                                                                        <i
+                                                                            class="bx bx-trash-alt font-size-20 text-danger verti-timeline">
+                                                                        </i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php
+                                                            $totalKgs += $item->kgs;
+                                                            $totalBags += $item->bags;
+                                                        ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input data-repeater-create="group-b" type="button"
+                                                            class="btn btn-success mt-3 mt-lg-0" value="Add" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <table class="table footer_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th id="sum_kgs"><?php echo e(number_format($totalKgs, 2)); ?> Kgs</th>
+                                            <th id="sum_bags"><?php echo e(number_format($totalBags, 2)); ?> Bags</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
 
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -111,6 +276,10 @@
     <script src="<?php echo e(URL::asset('build/js/pages/table-editable.int.js')); ?>"></script>
     <script>
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // $(document).ready(function() {
+        //     $('#job-id-input').trigger('change');
+        // });
 
         function calculateQnty(input) {
             var total = 0;
@@ -190,6 +359,7 @@
                             `</td>`;
                         TotalQty += value.order_quantity;
                     });
+
                     mainTableHtml += ` <td>` + TotalQty + `</td>
                                     </tr>
                                 </tbody>
@@ -262,8 +432,6 @@
                             </div>\
                             </div>
                             `;
-
-
                     });
                     var footerTable = `<table class="table footer_table">\
                                 <thead>\
@@ -404,4 +572,4 @@
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/department/yarn_program/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/owaisimam/PhpStormProjects/shafi_portal/resources/views/admin/department/yarn_program/edit.blade.php ENDPATH**/ ?>

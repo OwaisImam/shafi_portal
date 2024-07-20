@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class YarnPurchaseOrderController extends Controller
@@ -165,7 +166,12 @@ class YarnPurchaseOrderController extends Controller
                 $validated['date_of_purchase'] = Carbon::parse($validated['date_of_purchase']);
             }
 
-            // $this->yarnPurchaseOrderRepository->create($validated);
+            $this->yarnPurchaseOrderRepository->create($validated);
+
+            $userId = auth()->id().session()->getId().$this->request->form_id;
+
+            Redis::set('form_state:' . $userId,null);
+
             DB::commit();
 
             return redirect()->route('admin.departments.yarn_purchase_order.index', ['slug' => $this->department->slug])->with('success', 'Yarn Purchase Order created successfully.');
