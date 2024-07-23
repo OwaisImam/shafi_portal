@@ -226,6 +226,7 @@
                                     <label for="color">Color</label>
                                     <input type="text" id="color" name="color" required value="#556ee6"
                                         class="form-control colorpicker-showalpha" placeholder="Color" />
+
                                 </div>
                                 <div class="mb-3 col-lg-1">
                                     <label for="qty">Qty</label>
