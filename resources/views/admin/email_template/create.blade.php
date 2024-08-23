@@ -94,7 +94,7 @@
                         </div>
 
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </form>
                 </div>

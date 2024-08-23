@@ -1,37 +1,38 @@
-@extends('layouts.departments.master')
 
-@section('title')
-    @lang('translation.Orders')
-@endsection
 
-@section('css')
-    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('translation.Orders'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/select2/css/select2.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css')); ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css')); ?>" rel="stylesheet"
         type="text/css" />
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
-@endsection
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            @lang('translation.Departments')
-        @endslot
-        @slot('li_2')
-            {{ $department->name }}
-        @endslot
-        @slot('title')
-            @lang('translation.YarnPurchaseOrder')
-        @endslot
-    @endcomponent
+    <link rel="stylesheet" href="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.css')); ?>">
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?>
+            <?php echo app('translator')->get('translation.Departments'); ?>
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('li_2'); ?>
+            <?php echo e($department->name); ?>
+
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?>
+            <?php echo app('translator')->get('translation.YarnPurchaseOrder'); ?>
+        <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST" id="yarnPurchaseOrder-form"
-        action="{{ route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug]) }}">
-        @csrf
+        action="<?php echo e(route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug])); ?>">
+        <?php echo csrf_field(); ?>
         <input type="hidden" name="form_id" value="yarnPurchaseOrder-form">
         <div class="row">
             <div class="col-xl-12">
@@ -43,11 +44,12 @@
                                     <label for="order_id" class="form-label">Order </label>
                                     <select name="order_id" id="order_id" class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($orders as $order)
-                                            <option value="{{ $order->id }}"
-                                                {{ old('order_id') == $order->id ? 'selected' : '' }}>{{ $order->code }}
+                                        <?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($order->id); ?>"
+                                                <?php echo e(old('order_id') == $order->id ? 'selected' : ''); ?>><?php echo e($order->code); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -62,11 +64,12 @@
                                     <label for="job_id" class="form-label">Job No</label>
                                     <select name="job_id" id="job_id" class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}"
-                                                {{ old('job_id') == $job->id ? 'selected' : '' }}>{{ $job->number }}
+                                        <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($job->id); ?>"
+                                                <?php echo e(old('job_id') == $job->id ? 'selected' : ''); ?>><?php echo e($job->number); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -84,12 +87,13 @@
                                     <label for="count_id" class="form-label">Count </label>
                                     <select name="count_id" id="count_id" class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($counts as $count)
-                                            <option value="{{ $count->id }}"
-                                                {{ old('count_id') == $count->id ? 'selected' : '' }}>
-                                                {{ $count->name }}
+                                        <?php $__currentLoopData = $counts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($count->id); ?>"
+                                                <?php echo e(old('count_id') == $count->id ? 'selected' : ''); ?>>
+                                                <?php echo e($count->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -104,11 +108,12 @@
                                     <label for="fiber_id" class="form-label">Fiber</label>
                                     <select name="fiber_id" id="fiber_id" class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($fibers as $fiber)
-                                            <option value="{{ $fiber->id }}"
-                                                {{ old('fiber_id') == $fiber->id ? 'selected' : '' }}>{{ $fiber->name }}
+                                        <?php $__currentLoopData = $fibers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fiber): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($fiber->id); ?>"
+                                                <?php echo e(old('fiber_id') == $fiber->id ? 'selected' : ''); ?>><?php echo e($fiber->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -127,12 +132,13 @@
                                     <select name="fabric_construction_id" id="fabric_construction_id"
                                         class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($fabricConstructions as $fabricConstruction)
-                                            <option value="{{ $fabricConstruction->id }}"
-                                                {{ old('fabric_construction_id') == $fabricConstruction->id ? 'selected' : '' }}>
-                                                {{ $fabricConstruction->name }}
+                                        <?php $__currentLoopData = $fabricConstructions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fabricConstruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($fabricConstruction->id); ?>"
+                                                <?php echo e(old('fabric_construction_id') == $fabricConstruction->id ? 'selected' : ''); ?>>
+                                                <?php echo e($fabricConstruction->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -149,11 +155,12 @@
                                         data-parsley-required-message="You must select at least one option."
                                         class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($mills as $mill)
-                                            <option value="{{ $mill->id }}"
-                                                {{ old('mill_id') == $mill->id ? 'selected' : '' }}>{{ $mill->name }}
+                                        <?php $__currentLoopData = $mills; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mill): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($mill->id); ?>"
+                                                <?php echo e(old('mill_id') == $mill->id ? 'selected' : ''); ?>><?php echo e($mill->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -170,11 +177,12 @@
                                     <label for="agent_id" class="form-label">Agent </label>
                                     <select name="agent_id" id="agent_id" class="form-control select2">
                                         <option value="">Select</option>
-                                        @foreach ($agents as $agent)
-                                            <option value="{{ $agent->id }}"
-                                                {{ old('agent_id') == $agent->id ? 'selected' : '' }}>{{ $agent->name }}
+                                        <?php $__currentLoopData = $agents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $agent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($agent->id); ?>"
+                                                <?php echo e(old('agent_id') == $agent->id ? 'selected' : ''); ?>><?php echo e($agent->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -190,12 +198,13 @@
                                     <select name="terms_of_delivery_id" id="terms_of_delivery_id"
                                         class="form-control select2" required>
                                         <option value="">Select</option>
-                                        @foreach ($termsOfDelivery as $termsOfDeliver)
+                                        <?php $__currentLoopData = $termsOfDelivery; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $termsOfDeliver): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option
-                                                value="{{ $termsOfDeliver->id }}"{{ old('terms_of_delivery_id') == $termsOfDeliver->id ? 'selected' : '' }}>
-                                                {{ $termsOfDeliver->name }}
+                                                value="<?php echo e($termsOfDeliver->id); ?>"<?php echo e(old('terms_of_delivery_id') == $termsOfDeliver->id ? 'selected' : ''); ?>>
+                                                <?php echo e($termsOfDeliver->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -219,7 +228,7 @@
                                 <div class="mb-3">
                                     <label for="contract_no" class="form-label">Contract No</label>
                                     <input class="form-control" type="number" name="contract_no"
-                                        value="{{ old('contract_no') }}" placeholder="Enter contract no" required
+                                        value="<?php echo e(old('contract_no')); ?>" placeholder="Enter contract no" required
                                         id="contract_no">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -234,7 +243,7 @@
                                     <label for="date_of_purchase" class="form-label">Date of Purchase</label>
                                     <div class="input-group" id="date_of_purchase_cont">
                                         <input type="text" class="form-control" placeholder="dd M, yyyy"
-                                            value="{{ old('date_of_purchase') ? old('date_of_purchase') : date('d M, Y') }}"
+                                            value="<?php echo e(old('date_of_purchase') ? old('date_of_purchase') : date('d M, Y')); ?>"
                                             id="date_of_purchase" data-date-format="dd M, yyyy" name="date_of_purchase"
                                             data-date-container='#date_of_purchase_cont' data-provide="datepicker">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
@@ -252,7 +261,7 @@
                                 <div class="mb-3">
                                     <label for="gst_no" class="form-label">Terms of Payment</label>
                                     <div class="input-group">
-                                        <input type="number" value="{{ old('terms_of_payment') }}"
+                                        <input type="number" value="<?php echo e(old('terms_of_payment')); ?>"
                                             name="terms_of_payment" class="form-control"
                                             placeholder="Enter terms of payment">
                                         <span class="input-group-text">Days</span>
@@ -270,7 +279,7 @@
                                     <label for="delivery_date_cont" class="form-label">Delivery Date</label>
                                     <div class="input-group" id="delivery_date_cont">
                                         <input type="text" class="form-control" placeholder="dd M, yyyy"
-                                            value="{{ old('delivery_date') ? old('delivery_date') : date('d M, Y') }}"
+                                            value="<?php echo e(old('delivery_date') ? old('delivery_date') : date('d M, Y')); ?>"
                                             id="delivery_date" data-date-format="dd M, yyyy" name="delivery_date"
                                             data-date-container='#delivery_date_cont'
                                             onchange="calculateCompletionIn(this)" data-provide="datepicker">
@@ -292,7 +301,7 @@
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Lbs</label>
                                     <input type="number" class="form-control" onkeyup="calculateKGsBags(this)"
-                                        id="lbs" placeholder="Enter Lbs" value="{{ old('lbs') }}" required
+                                        id="lbs" placeholder="Enter Lbs" value="<?php echo e(old('lbs')); ?>" required
                                         name="lbs">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -306,7 +315,7 @@
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Kgs</label>
                                     <input type="number" class="form-control" id="kgs" placeholder="Enter Kgs"
-                                        value="{{ old('kgs') }}" readonly required name="kgs">
+                                        value="<?php echo e(old('kgs')); ?>" readonly required name="kgs">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -321,7 +330,7 @@
                                     <div class="btn-group dropup">
                                         <input type="hidden" name="unit" id="unit" value="Bags">
                                         <input type="number" class="form-control" id="qty"
-                                            placeholder="Enter Qty" value="{{ old('qty') }}" readonly required
+                                            placeholder="Enter Qty" value="<?php echo e(old('qty')); ?>" readonly required
                                             name="qty">
                                         <button type="button" class="btn btn-primary dropdown-toggle" id="unitButton"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -347,7 +356,7 @@
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="price_per_lb"
                                             placeholder="Enter price/lb" onchange="calculateAmount(this)" step="0.10"
-                                            value="{{ old('price_per_lb') }}" required name="price_per_lb">
+                                            value="<?php echo e(old('price_per_lb')); ?>" required name="price_per_lb">
                                         <span class="input-group-text">Rs</span>
                                     </div>
                                     <div class="valid-feedback">
@@ -363,7 +372,7 @@
                                     <label for="credit_days" class="form-label">Amount</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="amount"
-                                            placeholder="Enter amount" readonly value="{{ old('amount') }}" required
+                                            placeholder="Enter amount" readonly value="<?php echo e(old('amount')); ?>" required
                                             name="amount">
                                         <span class="input-group-text">Rs</span>
                                     </div>
@@ -380,7 +389,7 @@
                                     <label for="credit_days" class="form-label">Amount With GST</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="with_gst"
-                                            placeholder="Enter amount with gst" readonly value="{{ old('with_gst') }}"
+                                            placeholder="Enter amount with gst" readonly value="<?php echo e(old('with_gst')); ?>"
                                             required name="with_gst">
                                         <span class="input-group-text">Rs</span>
                                     </div>
@@ -398,7 +407,7 @@
                                 <div class="mb-3">
                                     <label for="completion_in" class="form-label">Completion In</label>
                                     <div class="input-group">
-                                        <input type="number" id="completion_in" value="{{ old('completion_in') ?: 0 }}"
+                                        <input type="number" id="completion_in" value="<?php echo e(old('completion_in') ?: 0); ?>"
                                             name="completion_in" class="form-control" readonly
                                             placeholder="Enter terms of payment in days">
                                         <span class="input-group-text">Days</span>
@@ -417,7 +426,7 @@
                                     <label for="delivered" class="form-label">Delivered</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" onchange="calculateBalance(this)"
-                                            placeholder="Enter delivered" value="{{ old('delivered') }}"
+                                            placeholder="Enter delivered" value="<?php echo e(old('delivered')); ?>"
                                             name="delivered" step="0.01" required>
                                         <div class="input-group-text unit">
                                             Bags
@@ -436,7 +445,7 @@
                                     <label for="balance" class="form-label">Balance</label>
                                     <div class="input-group">
                                         <input type="number" placeholder="Enter balance" name="balance"
-                                            class="form-control" id="balance" value="{{ old('balance') }}" readonly
+                                            class="form-control" id="balance" value="<?php echo e(old('balance')); ?>" readonly
                                             required>
                                         <div class="input-group-text unit">
                                             Bags
@@ -454,7 +463,7 @@
                                 <div class="mb-3">
                                     <label for="invoice_of" class="form-label">Invoice of</label>
                                     <input class="form-control" type="text" name="invoice_of"
-                                        value="{{ old('invoice_of') }}" placeholder="Enter invocie of" required
+                                        value="<?php echo e(old('invoice_of')); ?>" placeholder="Enter invocie of" required
                                         id="invoice_of">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -471,7 +480,7 @@
                             <div class="col-md-3 border-end">
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label">Remarks</label>
-                                    <textarea type="number" placeholder="Enter remarks" name="remarks" class="form-control" id="remarks">{{ old('remarks') }}</textarea>
+                                    <textarea type="number" placeholder="Enter remarks" name="remarks" class="form-control" id="remarks"><?php echo e(old('remarks')); ?></textarea>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -483,40 +492,40 @@
                         </div>
 
                         <div>
-                            <button class="btn btn-primary" type="submit">Create</button>
+                            <button class="btn btn-primary" type="submit">Ceeate</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-@endsection
-@section('script')
-    <script src="{{ URL::asset('build/libs/inputmask/inputmask.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-mask.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/parsleyjs/parsley.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/parsleyjs/parsley.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/select2/js/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-advanced.init.js')); ?>"></script>
     <!-- form advanced init -->
-    <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>
     <!-- toastr init -->
-    <script src="{{ URL::asset('build/js/pages/toastr.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/toastr.init.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/order-form-repeaterr.int.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/table-edits/build/table-edits.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/table-editable.int.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/order-form-repeaterr.int.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/table-edits/build/table-edits.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/table-editable.int.js')); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         function calculateKGsBags(input) {
@@ -607,7 +616,7 @@
             });
             data['form_id'] = 'yarnPurchaseOrder-form';
 
-            axios.post('{{ route('admin.save.form.state') }}', data)
+            axios.post('<?php echo e(route('admin.save.form.state')); ?>', data)
                 .then(response => {
                     form.submit();
                 })
@@ -617,7 +626,7 @@
         }
 
         function getFormState() {
-            axios.get('{{ route('admin.get.form.state', ['form_id' => 'yarnPurchaseOrder-form']) }}')
+            axios.get('<?php echo e(route('admin.get.form.state', ['form_id' => 'yarnPurchaseOrder-form'])); ?>')
                 .then(response => {
                     if (response.data.form_state) {
                         // Populate form fields with saved state
@@ -655,21 +664,23 @@
 
         window.onload = getFormState;
     </script>
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
         <script>
-            @foreach ($errors->all() as $error)
-                toastr["error"]('{{ $error }}');
-            @endforeach
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                toastr["error"]('<?php echo e($error); ?>');
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </script>
-    @endif
-    @if (session('success'))
+    <?php endif; ?>
+    <?php if(session('success')): ?>
         <script>
-            toastr["success"]('{{ session('success') }}');
+            toastr["success"]('<?php echo e(session('success')); ?>');
         </script>
-    @endif
-    @if (session('error'))
+    <?php endif; ?>
+    <?php if(session('error')): ?>
         <script>
-            toastr["error"]('{{ session('error') }}');
+            toastr["error"]('<?php echo e(session('error')); ?>');
         </script>
-    @endif
-@endsection
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\shafi_portal\resources\views/admin/department/yarn_purchase_order/create.blade.php ENDPATH**/ ?>

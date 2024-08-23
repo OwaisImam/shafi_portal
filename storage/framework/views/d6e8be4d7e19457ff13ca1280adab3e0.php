@@ -1,47 +1,48 @@
-@extends('layouts.departments.master')
 
-@section('title')
-    @lang('translation.Orders')
-@endsection
 
-@section('css')
-    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('translation.Orders'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/select2/css/select2.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css')); ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css')); ?>" rel="stylesheet"
         type="text/css" />
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
-@endsection
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            @lang('translation.Departments')
-        @endslot
-        @slot('li_2')
-            {{ $department->name }}
-        @endslot
-        @slot('title')
-            New @lang('translation.Orders') Form
-        @endslot
-    @endcomponent
+    <link rel="stylesheet" href="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.css')); ?>">
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?>
+            <?php echo app('translator')->get('translation.Departments'); ?>
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('li_2'); ?>
+            <?php echo e($department->name); ?>
+
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?>
+            New <?php echo app('translator')->get('translation.Orders'); ?> Form
+        <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.departments.orders.store', ['slug' => $department->slug]) }}">
-                        @csrf
+                        action="<?php echo e(route('admin.departments.orders.store', ['slug' => $department->slug])); ?>">
+                        <?php echo csrf_field(); ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="supplier" class="form-label">Customer's PO Number</label>
                                     <input type="text" name="customer_po_number" required
-                                        value="{{ old('customer_po_number') }}" class="form-control">
+                                        value="<?php echo e(old('customer_po_number')); ?>" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -55,9 +56,9 @@
                                     <label for="moobile_no" class="form-label">Job No</label>
                                     <select name="job_id" class="form-control select2" required>
                                         <option>Select</option>
-                                        @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->number }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($job->id); ?>"><?php echo e($job->number); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -74,9 +75,9 @@
                                     <label for="customer" class="form-label">Customer</label>
                                     <select class="form-control select2" name="customer_id" required>
                                         <option>Select</option>
-                                        @foreach ($clients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($client->id); ?>"><?php echo e($client->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -90,7 +91,7 @@
                                 <div class="mb-3">
                                     <label for="serial_no" class="form-label">PO Receive Date</label>
                                     <input type="date" class="form-control" id="po_receive_date"
-                                        placeholder="PO Receive Date" value="{{ old('po_receive_date') }}" required
+                                        placeholder="PO Receive Date" value="<?php echo e(old('po_receive_date')); ?>" required
                                         name="po_receive_date">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -107,7 +108,7 @@
                                 <div class="mb-3">
                                     <label for="credit_days" class="form-label">Delivery Date</label>
                                     <input type="date" class="form-control" id="delivery_date" placeholder="Deliery Date"
-                                        value="{{ old('delivery_date') }}" required name="delivery_date">
+                                        value="<?php echo e(old('delivery_date')); ?>" required name="delivery_date">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -121,9 +122,9 @@
                                     <label for="gst_no" class="form-label">Payment Terms</label>
                                     <select name="payment_term_id" class="form-control select2" required>
                                         <option value="0">Select</option>
-                                        @foreach ($paymentTerms as $paymentTerm)
-                                            <option value="{{ $paymentTerm->id }}">{{ $paymentTerm->name }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $paymentTerms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paymentTerm): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($paymentTerm->id); ?>"><?php echo e($paymentTerm->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -142,10 +143,11 @@
                                     <label for="credit_days" class="form-label">Fabric Construction</label>
                                     <select name="fabric_construction_id" required class="form-control select2">
                                         <option>Select</option>
-                                        @foreach ($fabricConstructions as $fabricConstruction)
-                                            <option value="{{ $fabricConstruction->id }}">{{ $fabricConstruction->name }}
+                                        <?php $__currentLoopData = $fabricConstructions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fabricConstruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($fabricConstruction->id); ?>"><?php echo e($fabricConstruction->name); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -160,7 +162,7 @@
                                 <div class="mb-3">
                                     <label for="order_quantity" class="form-label">Total Order Quantity</label>
                                     <input type="text" class="form-control" id="order_quantity"
-                                        placeholder="Total Order Quantity" value="{{ old('order_quantity') ?: 0 }}"
+                                        placeholder="Total Order Quantity" value="<?php echo e(old('order_quantity') ?: 0); ?>"
                                         required name="order_quantity">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -185,9 +187,9 @@
                                     <select name="article_style_id" required id="article_style_id"
                                         class="form-control select2">
                                         <option value="0">Select</option>
-                                        @foreach ($articleStyles as $articleStyle)
-                                            <option value="{{ $articleStyle->id }}">{{ $articleStyle->name }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $articleStyles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $articleStyle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($articleStyle->id); ?>"><?php echo e($articleStyle->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
 
@@ -201,9 +203,9 @@
                                     <label for="credit_days" class="form-label">Range</label>
                                     <select name="range_id" id="range_id" class="form-control select2" required>
                                         <option>Select</option>
-                                        @foreach ($ranges as $range)
-                                            <option value="{{ $range->id }}">{{ $range->name }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $ranges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $range): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($range->id); ?>"><?php echo e($range->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
 
@@ -211,9 +213,9 @@
                                     <label for="size">Size</label>
                                     <select name="size" id="size" required
                                         class="form-control select2 select2-multiple" multiple>
-                                        @foreach (App\Constants\DefaultValues::SIZES as $size)
-                                            <option value="{{ $size }}">{{ $size }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = App\Constants\DefaultValues::SIZES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($size); ?>"><?php echo e($size); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
                                 <div class="mb-3 col-lg-1">
@@ -273,7 +275,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Create</button>
+                            <button class="btn btn-primary" type="submit">Ceeate</button>
                         </div>
                     </form>
                 </div>
@@ -281,33 +283,33 @@
             <!-- end card -->
         </div> <!-- end col -->
     </div>
-@endsection
-@section('script')
-    <script src="{{ URL::asset('build/libs/inputmask/inputmask.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-mask.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/parsleyjs/parsley.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/parsleyjs/parsley.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/select2/js/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-advanced.init.js')); ?>"></script>
     <!-- form advanced init -->
-    <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>
     <!-- toastr init -->
-    <script src="{{ URL::asset('build/js/pages/toastr.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/toastr.init.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/order-form-repeaterr.int.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/table-edits/build/table-edits.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/table-editable.int.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/order-form-repeaterr.int.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/table-edits/build/table-edits.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/table-editable.int.js')); ?>"></script>
     <script>
         function calculateQnty(input) {
             var total = 0;
@@ -322,21 +324,23 @@
 
         }
     </script>
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
         <script>
-            @foreach ($errors->all() as $error)
-                toastr["error"]('{{ $error }}');
-            @endforeach
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                toastr["error"]('<?php echo e($error); ?>');
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </script>
-    @endif
-    @if (session('success'))
+    <?php endif; ?>
+    <?php if(session('success')): ?>
         <script>
-            toastr["success"]('{{ session('success') }}');
+            toastr["success"]('<?php echo e(session('success')); ?>');
         </script>
-    @endif
-    @if (session('error'))
+    <?php endif; ?>
+    <?php if(session('error')): ?>
         <script>
-            toastr["error"]('{{ session('error') }}');
+            toastr["error"]('<?php echo e(session('error')); ?>');
         </script>
-    @endif
-@endsection
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\shafi_portal\resources\views/admin/department/orders/create.blade.php ENDPATH**/ ?>

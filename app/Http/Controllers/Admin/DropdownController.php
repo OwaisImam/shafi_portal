@@ -13,10 +13,10 @@ use App\Models\Knitting;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\PreProductionPlan;
-use App\Models\PurchaseOrder;
 use App\Models\State;
 use App\Models\YarnPurchaseOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DropdownController extends Controller
 {
@@ -38,35 +38,42 @@ class DropdownController extends Controller
     {
         $data = [];
 
-       switch($request->type) {
-        case 'department':
-            $data = Departments::where('status', 1)->get();
-        break;
-        case 'knitting':
-            $data = Knitting::where('status', 1)->get();
-        break;
-        case 'dyeing':
-            $data = Dyeing::where('status', 1)->get();
-        break;
-        case 'fiber':
-            $data = Fiber::where('status', 1)->get();
-        break;
-        case 'count':
-            $data = Count::where('status', 1)->get();
-        break;
-        default:
-            $data = Departments::where('status', 1)->get();
-        break;
-       }
+        switch ($request->type) {
+            case 'department':
+                $data = Departments::where('status', 1)->get();
+                break;
+            case 'knitting':
+                $data = Knitting::where('status', 1)->get();
+                break;
+            case 'dyeing':
+                $data = Dyeing::where('status', 1)->get();
+                break;
+            case 'fiber':
+                $data = Fiber::where('status', 1)->get();
+                break;
+            case 'count':
+                $data = Count::where('status', 1)->get();
+                break;
+            default:
+                $data = Departments::where('status', 1)->get();
+                break;
+        }
 
         return JsonResponse::success($data, 'Reocords fetched successfully.');
     }
 
     public function getOrdersByJobID(Request $request)
     {
-        $orders = Order::with(['fabric_construction', 'job','order_items.article'])->where('job_id', $request->job_id)->get();
+        $orders = Order::with(['fabric_construction', 'job', 'order_items.article'])->where('job_id', $request->job_id)->get();
 
         return JsonResponse::success($orders, 'Orders fetched successfully.');
+    }
+
+    public function getOrderDetailsByID(Request $request)
+    {
+        $order = Order::with(['fabric_construction', 'job', 'order_items.article', 'client'])->where('id', $request->order_id)->first();
+
+        return JsonResponse::success($order, 'Order detauls fetched successfully.');
     }
 
     public function getOrderItemsByOrderID(Request $request)
@@ -89,5 +96,16 @@ class DropdownController extends Controller
 
         return JsonResponse::success($purchaseOrders, 'Pre production plan fetched successfully.');
 
+    }
+
+    public function getOrderItemsByArticleID(Request $request)
+    {
+        $orderItems = OrderItems::select('color', DB::raw('SUM(qty) as total_quantity'))
+        ->where('order_id', $request->order_id)
+        ->whereIn('article_style_no', $request->article_ids)
+        ->groupBy('color')
+        ->get();
+
+        return JsonResponse::success($orderItems, 'Order items fetched successfully.');
     }
 }

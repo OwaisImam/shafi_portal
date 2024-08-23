@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\ArticleStyleController;
+use App\Http\Controllers\Admin\CartageSlipController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClientsController;
 use App\Http\Controllers\Admin\CountController;
@@ -15,11 +16,13 @@ use App\Http\Controllers\Admin\FiberController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\KnittingController;
+use App\Http\Controllers\Admin\KnittingProgramController;
 use App\Http\Controllers\Admin\MillController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentTermsController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\PreProductionPlanController;
+use App\Http\Controllers\Admin\ProcessController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\RangeController;
 use App\Http\Controllers\Admin\RolesController;
@@ -27,14 +30,11 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TermsOfDeliveryController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\YarnPurchaseOrderController;
-use App\Http\Controllers\Admin\CartageSlipController;
-use App\Http\Controllers\Admin\KnittingProgramController;
 use App\Http\Controllers\Admin\YarnPoReceivingController;
+use App\Http\Controllers\Admin\YarnProgramController;
+use App\Http\Controllers\Admin\YarnPurchaseOrderController;
 use App\Http\Controllers\Admin\YarnStockController;
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\Admin\ProcessController;
-use App\Http\Controllers\Admin\YarnProgramController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -140,6 +140,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::get('yarn_program/{yarn_program}/delete', [YarnProgramController::class, 'destroy']);
 
         Route::resource('knitting_program', KnittingProgramController::class);
+        Route::get('knitting_program/{knitting_program}/delete', [KnittingProgramController::class, 'destroy']);
     });
 
     Route::get('/fetch-data-by-type', [DropdownController::class, 'fetchDataByType']);
@@ -147,6 +148,8 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
     Route::get('/fetch-purchase-order-by-job-id', [DropdownController::class, 'getPurchaseOrdersByJobID']);
     Route::get('/fetch-order-items-by-order-id', [DropdownController::class, 'getOrderItemsByOrderID']);
     Route::get('/fetch-pre-production-plan-by-order-id', [DropdownController::class, 'getPreProductionPlanByOrderID']);
+    Route::get('/fetch-order-details-by-id', [DropdownController::class, 'getOrderDetailsByID']);
+    Route::get('/fetch-order-items-by-article-id', [DropdownController::class, 'getOrderItemsByArticleID']);
     Route::post('/save-form-state', [FormController::class, 'saveFormState'])->name('save.form.state');
     Route::get('/get-form-state', [FormController::class, 'getFormState'])->name('get.form.state');
 

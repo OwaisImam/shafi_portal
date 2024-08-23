@@ -34,8 +34,9 @@
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.departments.knitting_program.store', ['slug' => $department->slug]) }}">
+                        action="{{ route('admin.departments.knitting_program.update', ['slug' => $department->slug, 'knitting_program' => $knittingProgram->id]) }}">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -43,7 +44,7 @@
                                     <select name="job_id" id="job-id-input" class="form-control select2" required>
                                         <option>Select</option>
                                         @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->number }}</option>
+                                            <option value="{{ $job->id }}" {{$knittingProgram->job_id === $job->id ? 'selected' : ''}}>{{ $job->number }}</option>
                                         @endforeach
                                     </select>
                                     <div class="valid-feedback">
@@ -101,7 +102,7 @@
                             <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Description</label>
-                                    <input type="text" name="description" value="{{ old('description') }}" placeholder="description" class="form-control">
+                                    <input type="text" name="description" value="{{ $knittingProgram->description ? $knittingProgram->description : old('   ') }}" placeholder="description" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -113,7 +114,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="fabric_content" class="form-label">Fabric Content</label>
-                                    <input type="text" id="fabric_content" value="{{ old('fabric_content') }}" placeholder="Fabric Content" name="fabric_content" class="form-control">
+                                    <input type="text" id="fabric_content" value="{{ $knittingProgram->fabric_content ? $knittingProgram->fabric_content : old('fabric_content') }}" placeholder="Fabric Content" name="fabric_content" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -133,7 +134,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Finished Gsm</label>
-                                    <input type="text" id="required-finished-gsm" value="{{ old('required_finished_gsm') }}" placeholder="Required Finished Gsm" name="required_finished_gsm" class="form-control">
+                                    <input type="text" id="required-finished-gsm" value="{{ $knittingProgram->required_finished_gsm ? $knittingProgram->required_finished_gsm :  old('required_finished_gsm') }}" placeholder="Required Finished Gsm" name="required_finished_gsm" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -145,7 +146,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Finished Width</label>
-                                    <input type="text" id="required-finished-width" value="{{ old('required_finished_width') }}" placeholder="Required Finished Width" name="required_finished_width" class="form-control">
+                                    <input type="text" id="required-finished-width" value="{{ $knittingProgram->required_finished_width ? $knittingProgram->required_finished_width : old('required_finished_width') }}" placeholder="Required Finished Width" name="required_finished_width" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -157,7 +158,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Raising Quality</label>
-                                    <input type="text" id="required-finished-quality" value="{{ old('required_finished_quality') }}" placeholder="Required Raising Quality" name="required_finished_quality" class="form-control">
+                                    <input type="text" id="required-finished-quality" value="{{ $knittingProgram->required_finished_quality ? $knittingProgram->required_finished_quality : old('required_finished_quality') }}" placeholder="Required Raising Quality" name="required_finished_quality" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -169,7 +170,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Shade Matching Light</label>
-                                    <input type="text" name="shade_matching_light" value="{{ old('shade_matching_light') }}" placeholder="Shade Matching Light" id="shade-matching-light" class="form-control">
+                                    <input type="text" name="shade_matching_light" value="{{ $knittingProgram->shade_matching_light ? $knittingProgram->shade_matching_light : old('shade_matching_light') }}" placeholder="Shade Matching Light" id="shade-matching-light" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -180,7 +181,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" type="submit">Create</button>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -220,6 +221,10 @@
     <script>
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+        $(document).ready(function () {
+            $('#job-id-input').trigger('change');
+
+        });
       
         $('#job-id-input').on('change', function(event) {
             event.preventDefault();
@@ -238,9 +243,12 @@
                     $('#order-id-input').html(
                         '<option value="">Select order</option>');
                     $.each(data.result, function(key, value) {
+                        var selectedValue = (value.id == {{$knittingProgram->order_id}}) ? 'selected' : '';
                         $('#order-id-input').append('<option value="' +
-                            value.id + '">' + value.code + ' ('+value.customer_po_number+')</option>');
+                            value.id + '" '+selectedValue+'>' + value.code + ' ('+value.customer_po_number+')</option>');
                     });
+                    $('#order-id-input').trigger('change');
+
                 },
                 error: function(xhr, status, error) {
                     callback(xhr.status, xhr.responseJSON);
@@ -263,13 +271,17 @@
                 },
                 success: function(data, status, xhr) {
                     $('#customer-input').val(data.result.client.name);
+                    var selectedValues = {!! json_encode(explode(',', $knittingProgram->article_id)) !!};
 
                     $('#article-id-input').html(
                         '<option value="">Select article</option>');
                     $.each(data.result.order_items, function(key, value) {
-                        $('#article-id-input').append('<option value="' +
-                            value.article_style_no + '">' + value.article_style_no+'</option>');
+                        
+                        $('#article-id-input').append('<option value="' + value.article_style_no + '" >' + 
+                            value.article_style_no + '</option>');
                     });
+                    $('#article-id-input').val(selectedValues).trigger('change');
+
                 },
                 error: function(xhr, status, error) {
                     callback(xhr.status, xhr.responseJSON);
@@ -309,9 +321,16 @@
                                 <tbody>
                                     `;
                                     $.each(data.result, function(key, value) {
+
+                                        var knittingProgramItems = {!! json_encode($knittingProgram->items) !!};
+                                        var bodyFabricValue = '';
+                                        if (knittingProgramItems[key]) {
+                                            bodyFabricValue = knittingProgramItems[key].body_fabric || '';
+                                        }
+                                        
                                         mainTableHtml += `
                                             <tr>
-                                                <td width="10%"><input type="number" step="0.01" id="body_fabric_`+key+`" onkeyup="calculateFabricDetail(this, `+key+`)" placeholder="Body Fabric" name="body_fabric[]" class="form-control"></td>
+                                                <td width="10%"><input type="number" value="${bodyFabricValue}" step="0.01" id="body_fabric_`+key+`" onkeyup="calculateFabricDetail(this, `+key+`)" placeholder="Body Fabric" name="body_fabric[]" class="form-control"></td>
                                                 <td> 
                                                     <div class="rounded overflow-hidden">
                                                         <div class="p-1" style="background-color: `+value.color+`">
@@ -335,7 +354,7 @@
                                            `;
                                     });
                                     mainTableHtml += ` </tbody>
-                                      <tfoot>
+                                    <tfoot>
                                         <tr>\
                                             <th colspan=2>Total</th>\
                                             <th id="sum_dozen">0</th>\
@@ -344,11 +363,11 @@
                                             <th id="sum_qty">0</th>\
                                         </tr>\
                                     </tfoot>
-                                    </table>`;
-
-
-
+                                        </table>`;
                     $('#repeater-container').append(mainTableHtml);
+
+                    $('input[name="body_fabric[]"]').trigger('keyup');
+
                 },
                 error: function(xhr, status, error) {
                     callback(xhr.status, xhr.responseJSON);

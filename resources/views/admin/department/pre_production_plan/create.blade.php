@@ -302,7 +302,7 @@
 
                         </div>
                         <div class="mt-4">
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </div>
                 </div>

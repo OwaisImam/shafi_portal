@@ -1,50 +1,51 @@
-@extends('layouts.departments.master')
 
-@section('title')
-    @lang('translation.KnittingProgram')
-@endsection
 
-@section('css')
-    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('translation.KnittingProgram'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/select2/css/select2.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.css')); ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css')); ?>" rel="stylesheet"
         type="text/css">
-    <link href="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+    <link href="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css')); ?>" rel="stylesheet"
         type="text/css" />
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('build/libs/toastr/build/toastr.min.css') }}">
-@endsection
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            @lang('translation.Departments')
-        @endslot
-        @slot('li_2')
-            {{ $department->name }}
-        @endslot
-        @slot('title')
-            New @lang('translation.KnittingProgram')
-        @endslot
-    @endcomponent
+    <link rel="stylesheet" href="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.css')); ?>">
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?>
+            <?php echo app('translator')->get('translation.Departments'); ?>
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('li_2'); ?>
+            <?php echo e($department->name); ?>
+
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?>
+            New <?php echo app('translator')->get('translation.KnittingProgram'); ?>
+        <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <form class="repeater needs-validation" novalidate enctype="multipart/form-data" method="POST"
-                        action="{{ route('admin.departments.knitting_program.store', ['slug' => $department->slug]) }}">
-                        @csrf
+                        action="<?php echo e(route('admin.departments.knitting_program.store', ['slug' => $department->slug])); ?>">
+                        <?php echo csrf_field(); ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="job_id" class="form-label">Job No</label>
                                     <select name="job_id" id="job-id-input" class="form-control select2" required>
                                         <option>Select</option>
-                                        @foreach ($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->number }}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($job->id); ?>"><?php echo e($job->number); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -101,7 +102,7 @@
                             <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Description</label>
-                                    <input type="text" name="description" value="{{ old('description') }}" placeholder="description" class="form-control">
+                                    <input type="text" name="description" value="<?php echo e(old('description')); ?>" placeholder="description" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -113,7 +114,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="fabric_content" class="form-label">Fabric Content</label>
-                                    <input type="text" id="fabric_content" value="{{ old('fabric_content') }}" placeholder="Fabric Content" name="fabric_content" class="form-control">
+                                    <input type="text" id="fabric_content" value="<?php echo e(old('fabric_content')); ?>" placeholder="Fabric Content" name="fabric_content" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -133,7 +134,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Finished Gsm</label>
-                                    <input type="text" id="required-finished-gsm" value="{{ old('required_finished_gsm') }}" placeholder="Required Finished Gsm" name="required_finished_gsm" class="form-control">
+                                    <input type="text" id="required-finished-gsm" value="<?php echo e(old('required_finished_gsm')); ?>" placeholder="Required Finished Gsm" name="required_finished_gsm" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -145,7 +146,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Finished Width</label>
-                                    <input type="text" id="required-finished-width" value="{{ old('required_finished_width') }}" placeholder="Required Finished Width" name="required_finished_width" class="form-control">
+                                    <input type="text" id="required-finished-width" value="<?php echo e(old('required_finished_width')); ?>" placeholder="Required Finished Width" name="required_finished_width" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -157,7 +158,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Required Raising Quality</label>
-                                    <input type="text" id="required-finished-quality" value="{{ old('required_finished_quality') }}" placeholder="Required Raising Quality" name="required_finished_quality" class="form-control">
+                                    <input type="text" id="required-finished-quality" value="<?php echo e(old('required_finished_quality')); ?>" placeholder="Required Raising Quality" name="required_finished_quality" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -169,7 +170,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="article_id" class="form-label">Shade Matching Light</label>
-                                    <input type="text" name="shade_matching_light" value="{{ old('shade_matching_light') }}" placeholder="Shade Matching Light" id="shade-matching-light" class="form-control">
+                                    <input type="text" name="shade_matching_light" value="<?php echo e(old('shade_matching_light')); ?>" placeholder="Shade Matching Light" id="shade-matching-light" class="form-control">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -189,34 +190,34 @@
             <!-- end card -->
         </div> <!-- end col -->
     </div>
-@endsection
-@section('script')
-    <script src="{{ URL::asset('build/libs/inputmask/inputmask.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/inputmask.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/inputmask/jquery.inputmask.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-mask.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/parsleyjs/parsley.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-mask.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/parsleyjs/parsley.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/select2/js/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/spectrum-colorpicker2/spectrum.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/yarn-program-form-repeater.int.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jquery.repeater/jquery.repeater.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/yarn-program-form-repeater.int.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-maxlength/bootstrap-maxlength.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/@chenfengyuan/datepicker/datepicker.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-advanced.init.js')); ?>"></script>
     <!-- form advanced init -->
-    <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/toastr/build/toastr.min.js')); ?>"></script>
     <!-- toastr init -->
-    <script src="{{ URL::asset('build/js/pages/toastr.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/toastr.init.js')); ?>"></script>
 
-    <script src="{{ URL::asset('build/libs/table-edits/build/table-edits.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/table-editable.int.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/table-edits/build/table-edits.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/table-editable.int.js')); ?>"></script>
     <script>
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -404,21 +405,23 @@
             $('#sum_fabic_kgs').text(fabricKgs+ " Kgs");
         }
     </script>
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
         <script>
-            @foreach ($errors->all() as $error)
-                toastr["error"]('{{ $error }}');
-            @endforeach
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                toastr["error"]('<?php echo e($error); ?>');
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </script>
-    @endif
-    @if (session('success'))
+    <?php endif; ?>
+    <?php if(session('success')): ?>
         <script>
-            toastr["success"]('{{ session('success') }}');
+            toastr["success"]('<?php echo e(session('success')); ?>');
         </script>
-    @endif
-    @if (session('error'))
+    <?php endif; ?>
+    <?php if(session('error')): ?>
         <script>
-            toastr["error"]('{{ session('error') }}');
+            toastr["error"]('<?php echo e(session('error')); ?>');
         </script>
-    @endif
-@endsection
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.departments.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\shafi_portal\resources\views/admin/department/knitting_program/create.blade.php ENDPATH**/ ?>

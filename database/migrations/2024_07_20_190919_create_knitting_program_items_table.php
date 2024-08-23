@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('knitting_program_items', function (Blueprint $table) {
             $table->id();
             $table->integer('knitting_program_id');
-            $table->integer('order_id');
-            $table->integer('count_id');
-            $table->integer('fiber_id');
-            $table->integer('percentage');
-            $table->double('kgs');
-            $table->double('bags');
-            $table->double('required_kgs');
+            $table->integer('body_fabric');
+            $table->double('body_fabric_dozen');
+            $table->double('fabric_detail_kgs');
+            $table->double('order_qty');
             $table->timestamps();
         });
     }

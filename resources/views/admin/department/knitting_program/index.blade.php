@@ -89,8 +89,8 @@
         </div>
     </div>
 
-    <!-- removeYarnProgramModal -->
-    <div class="modal fade" id="removeYarnProgramModal" tabindex="-1" aria-hidden="true">
+    <!-- removeKnittingProgramModal -->
+    <div class="modal fade" id="removeKnittingProgramModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-body px-4 py-5 text-center">
@@ -104,7 +104,7 @@
                     <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this Record ?</p>
 
                     <div class="hstack gap-2 justify-content-center mb-0">
-                        <button type="button" class="btn btn-danger" id="remove-yarn-program">Remove Now</button>
+                        <button type="button" class="btn btn-danger" id="remove-knitting-program">Remove Now</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -140,7 +140,7 @@
     <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
-    <script src="{{ URL::asset('build/js/pages/yarn_program/yarn_program-list.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/knitting_program/knitting_program-list.init.js') }}"></script>
 
     <!-- toastr plugin -->
     <script src="{{ URL::asset('build/libs/toastr/build/toastr.min.js') }}"></script>
