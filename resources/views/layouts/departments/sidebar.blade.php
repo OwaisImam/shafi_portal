@@ -360,6 +360,26 @@
                             </ul>
                         </li>
                     @endcanany
+                     @canany(['yarn_stock-update', 'yarn_stock-list', 'yarn_stock-view',
+                        'yarn_stock-delete', 'yarn_stock-edit', 'yarn_stock-create'])
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users">@lang('translation.YarnStock')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @can('yarn_stock-list')
+                                    <li><a href="{{ route('admin.departments.yarn_stock.index', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.List')</a></li>
+                                @endcan
+
+                                @can('yarn_stock-create')
+                                    <li><a href="{{ route('admin.departments.yarn_stock.create', ['slug' => $department->slug]) }}"
+                                            key="t-default">@lang('translation.Create')</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                 @elseif($department->slug == 'fabrication')
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">

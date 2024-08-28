@@ -229,5 +229,6 @@ return [
   "YarnStock" => "Yarn Stock",
   "YarnProgram" =>"Yarn Program",
   "YarnPrograms" =>"Yarn Programs",
-  "KnittingProgram" => "Knitting Program"
+  "KnittingProgram" => "Knitting Program",
+  "YarnStock" => "Yarn Stock"
 ];

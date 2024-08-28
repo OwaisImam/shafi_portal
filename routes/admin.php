@@ -119,6 +119,9 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::get('yarn_purchase_order/{yarn_purchase_order}/delete', [YarnPurchaseOrderController::class, 'destroy']);
         Route::get('yarn_purchase_order/{yarn_purchase_order}/print', [YarnPurchaseOrderController::class, 'print']);
 
+        Route::resource('yarn_stock', YarnStockController::class);
+        Route::get('yarn_stock/{yarn_stock}/delete', [YarnStockController::class]);
+        
         Route::resource('agents', AgentController::class);
         Route::get('agents/{agent}/delete', [AgentController::class, 'destroy']);
 
@@ -134,7 +137,6 @@ Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.'], function 
         Route::resource('cartage_slip', CartageSlipController::class);
 
         Route::resource('yarn_po_receiving', YarnPoReceivingController::class);
-        Route::resource('yarn_stock', YarnStockController::class);
 
         Route::resource('yarn_program', YarnProgramController::class);
         Route::get('yarn_program/{yarn_program}/delete', [YarnProgramController::class, 'destroy']);

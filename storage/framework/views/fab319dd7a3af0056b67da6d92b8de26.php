@@ -360,6 +360,26 @@
                             </ul>
                         </li>
                     <?php endif; ?>
+                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['yarn_stock-update', 'yarn_stock-list', 'yarn_stock-view',
+                        'yarn_stock-delete', 'yarn_stock-edit', 'yarn_stock-create'])): ?>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user"></i>
+                                <span key="t-users"><?php echo app('translator')->get('translation.YarnStock'); ?></span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_stock-list')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_stock.index', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.List'); ?></a></li>
+                                <?php endif; ?>
+
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('yarn_stock-create')): ?>
+                                    <li><a href="<?php echo e(route('admin.departments.yarn_stock.create', ['slug' => $department->slug])); ?>"
+                                            key="t-default"><?php echo app('translator')->get('translation.Create'); ?></a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 <?php elseif($department->slug == 'fabrication'): ?>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">

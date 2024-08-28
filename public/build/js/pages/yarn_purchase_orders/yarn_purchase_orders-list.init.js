@@ -138,7 +138,7 @@ function loadUserList(datas) {
                         }
 
                         if (hasReceivingPermission) {
-                            actions += '<li><a href="./yarn_purchase_order/' + full.id + '" class="dropdown-item"><i class="mdi mdi-call-received font-size-16 text-warning me-1"></i> Add Receiving</a></li>';
+                            actions += '<li><a href="./yarn_stock/create?yarn_po_id=' + full.id + '" class="dropdown-item"><i class="mdi mdi-call-received font-size-16 text-warning me-1"></i> Add Stock</a></li>';
                         }
 
                         actions += '<li><a href="./yarn_purchase_order/' + full.id + '/print" class="dropdown-item remove-list"><i class="mdi mdi-trash-can font-size-16 text-primary me-1"></i> Print</a></li>';

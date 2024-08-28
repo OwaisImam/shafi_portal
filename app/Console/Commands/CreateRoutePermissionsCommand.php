@@ -57,7 +57,7 @@ class CreateRoutePermissionsCommand extends Command
                   'cartage_slip',
                   'yarn_stock',
                   'yarn_program',
-                  'knitting_program'
+                  'knitting_program',
               ];
 
         $permissionList = [];
