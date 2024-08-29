@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class YarnStock extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'yarn_purchase_order_id',
+        'parent_stock_id',
+        'total_qty',
+        'received_qty',
+        'remaining_qty',
+        'cartage_slip_id',
+        'delivery_from_type',
+        'delivery_from_id',
+        'delivery_to_type',
+        'delivery_to_id',
+        'type',
+        'status',
+        'remarks',
+    ];
+
 }

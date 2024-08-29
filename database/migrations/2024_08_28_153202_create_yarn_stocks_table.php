@@ -19,12 +19,12 @@ return new class extends Migration
             $table->double('received_qty')->nullable();
             $table->double('remaining_qty')->nullable();
             $table->integer('cartage_slip_id')->nullable();
-            $table->string('received_from_type')->nullable();
-            $table->integer('received_from_id')->nullable();
-            $table->string('deliver_to_type')->nullable();
-            $table->integer('deliver_to_id')->nullable();
+            $table->string('delivery_from_type')->nullable();
+            $table->integer('delivery_from_id')->nullable();
+            $table->string('delivery_to_type')->nullable();
+            $table->integer('delivery_to_id')->nullable();
             $table->enum('type', ['Shortfall', 'Normal'])->default('Normal');
-            $table->enum('status', ['Received', 'Delivered', 'Pending', 'Not Delivered','Not Received', 'Missing'])->default('Pending');
+            $table->enum('status', ['Received', 'Delivered', 'Pending', 'Not Delivered','Not Received', 'Missing', 'Ready_For_Dispatch', ])->default('Pending');
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

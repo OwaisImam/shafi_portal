@@ -25,6 +25,7 @@
         "yajra/laravel-datatables": "10.0"
     },
     "require-dev": {
+        "enlightn/security-checker": "^1.11",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.57",
         "laravel/pint": "^1.0",

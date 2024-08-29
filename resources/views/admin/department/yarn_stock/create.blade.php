@@ -30,7 +30,7 @@
     @endcomponent
 
     <form class="needs-validation" novalidate enctype="multipart/form-data" method="POST" id="yarnPurchaseOrder-form"
-        action="{{ route('admin.departments.yarn_purchase_order.store', ['slug' => $department->slug]) }}">
+        action="{{ route('admin.departments.yarn_stock.store', ['slug' => $department->slug]) }}">
         @csrf
         <input type="hidden" name="form_id" value="yarnPurchaseOrder-form">
         <input type="hidden" name="yarn_purchase_order_id" value="{{ $yarn_po->id }}">
@@ -47,13 +47,14 @@
                                             <select class="form-control select2" id="from-type-input"
                                                 value="{{ old('delivery_from_type') }}" required name="delivery_from_type">
                                                 <option value="">Select</option>
+                                                <option value="company">Company</option>
                                                 <option value="departments">Department</option>
                                                 <option value="knitting">Knitting House</option>
                                                 <option value="dyeing">Dyeing House</option>
                                             </select>
                                             <div class="invalid-feedback">Please select a valid received from type.</div>
                                         </div>
-                                        <div class="col-lg-8">
+                                        <div class="col-lg-8" id="delivery-from-div">
                                             <select class="form-control select2" id="delivery-from-input"
                                                 value="{{ old('delivery_from_id') }}" required name="delivery_from_id">
                                                 <option value="">Select</option>
@@ -101,15 +102,15 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="mb-3">
-                                    <label for="qty" class="form-label">Total Qty</label>
-                                    <input type="number" class="form-control" onkeyup="calculateKGsBags(this)"
-                                        id="qty" placeholder="Enter Lbs" value="{{ old('qty') }}" required
-                                        name="qty">
+                                    <label for="total_qty" class="form-label">Total Qty</label>
+                                    <input type="number" class="form-control"
+                                        id="total_qty" placeholder="Enter Lbs" step="0.01" value="{{ $yarn_po->kgs ?:  old('total_qty') }}" required
+                                        name="total_qty">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
-                                        Enter the valid qty.
+                                        Enter the valid total qty.
                                     </div>
                                 </div>
                             </div>
@@ -117,20 +118,20 @@
                                 <div class="mb-3">
                                     <label for="received_qty" class="form-label">Received Qty</label>
                                     <input type="number" class="form-control" id="received_qty" placeholder="Enter Received Qty In Kgs"
-                                        value="{{ old('received_qty') }}" required name="received_qty">
+                                        value="{{ old('received_qty') }}" step="0.01" max="{{ $yarn_po->kgs }}" required name="received_qty">
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
-                                        Enter the valid received kgs.
+                                        Enter the valid received qty.
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 border-end">
                                 <div class="mb-3 ">
                                     <label for="remaining_qty" class="form-label">Remaining Qty</label>
-                                        <input type="number" class="form-control" id="remaining_qty"
-                                            placeholder="Enter Remaining Qty In Kgs" value="{{ old('remaining_qty') }}" required
+                                        <input type="number" class="form-control" id="remaining_qty" readonly
+                                            placeholder="Enter Remaining Qty In Kgs" step="0.01" value="{{ old('remaining_qty') }}" required
                                             name="remaining_qty">
                                     <div class="valid-feedback">
                                         Looks good!
@@ -147,7 +148,6 @@
                                     <select class="form-control select2" id="status-input" value="{{ old('status') }}"
                                         required name="status">
                                         <option value="">Select</option>
-                                        <option value="Ready_For_Dispatch">Ready For Dispatch</option>
                                         <option value="Received">Received</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Delivered">Delivered</option>
@@ -195,7 +195,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div>
                             <button class="btn btn-primary" type="submit">Create</button>
                         </div>
@@ -235,6 +234,20 @@
     <script>
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+        $('#received_qty').on('keyup focusout', function(event) {
+            var receivedQty = parseFloat($(this).val()) || 0; // Convert to float and handle empty input
+            var totalQty = parseFloat($('#total_qty').val()) || 0; // Convert to float and handle empty input
+            var maxQty = parseFloat($(this).attr('max')) || totalQty; // Get max attribute value or default to totalQty
+
+            // Check if receivedQty exceeds max and adjust if necessary
+            if (receivedQty > maxQty) {
+                receivedQty = maxQty;
+                $(this).val(receivedQty.toFixed(2)); // Set to max value
+            }
+
+            $('#remaining_qty').val((totalQty - receivedQty).toFixed(2));
+        });
+
         $('#from-type-input').on('change', function(event) {
             event.preventDefault();
             var selected = $(this).val();
@@ -266,6 +279,12 @@
                             $("#delivery-from-input").append('<option value="' +
                                 value.id + '">' + value.company_name + '</option>');
                         });
+                    }
+                    if(selected == 'company') {
+                        $('#delivery-from-div').hide();
+                        $('#delivery-from-input').removeAttr('required');
+                    } else {
+                        $('#delivery-from-div').show();
                     }
 
                 },
