@@ -25,4 +25,18 @@ class YarnStock extends Model
         'remarks',
     ];
 
+    public function cartage_slip()
+    {
+        return $this->belongsTo(CartageSlip::class);
+    }
+
+    public function parent_stock()
+    {
+        return $this->belongsTo(YarnStock::class, 'id', 'parent_stock_id');
+    }
+
+    public function yarn_purchase_order()
+    {
+        return $this->belongsTo(YarnPurchaseOrder::class);
+    }
 }

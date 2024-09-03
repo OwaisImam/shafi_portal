@@ -423,44 +423,6 @@
 
                             <div class="col-md-3 border-end">
                                 <div class="mb-3">
-                                    <label for="delivered" class="form-label">Delivered</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" onchange="calculateBalance(this)"
-                                            placeholder="Enter delivered" value="<?php echo e(old('delivered')); ?>"
-                                            name="delivered" step="0.01" required>
-                                        <div class="input-group-text unit">
-                                            Bags
-                                        </div>
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid delivered count.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label for="balance" class="form-label">Balance</label>
-                                    <div class="input-group">
-                                        <input type="number" placeholder="Enter balance" name="balance"
-                                            class="form-control" id="balance" value="<?php echo e(old('balance')); ?>" readonly
-                                            required>
-                                        <div class="input-group-text unit">
-                                            Bags
-                                        </div>
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid balance.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
                                     <label for="invoice_of" class="form-label">Invoice of</label>
                                     <input class="form-control" type="text" name="invoice_of"
                                         value="<?php echo e(old('invoice_of')); ?>" placeholder="Enter invocie of" required
@@ -473,11 +435,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-
-                            <div class="col-md-3 border-end">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label">Remarks</label>
                                     <textarea type="number" placeholder="Enter remarks" name="remarks" class="form-control" id="remarks"><?php echo e(old('remarks')); ?></textarea>
@@ -489,10 +448,12 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
+
                         <div>
-                            <button class="btn btn-primary" type="submit">Ceeate</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </div>
                 </div>

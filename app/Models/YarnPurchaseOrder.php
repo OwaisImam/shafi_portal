@@ -28,8 +28,6 @@ class YarnPurchaseOrder extends Model
          'contract_no',
          'job_id',
          'remarks',
-         'delivered',
-         'balance',
          'delivery_date',
          'completion_in',
          'order_id',

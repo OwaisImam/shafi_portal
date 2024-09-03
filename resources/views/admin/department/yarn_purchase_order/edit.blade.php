@@ -417,34 +417,6 @@
 
                             <div class="col-md-3 border-end">
                                 <div class="mb-3">
-                                    <label for="delivered" class="form-label">Delivered</label>
-                                    <input type="number" class="form-control" inputmode="kana"
-                                        onchange="calculateBalance(this)" placeholder="Enter delivered"
-                                        value="{{ $yarn_po->delivered }}" name="delivered" step="0.01" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid delivered count.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label for="balance" class="form-label">Balance</label>
-                                    <input type="number" placeholder="Enter balance" name="balance"
-                                        class="form-control" id="balance" value="{{ $yarn_po->balance }}" readonly
-                                        required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Select the valid balance.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
                                     <label for="invoice_of" class="form-label">Invoice of</label>
                                     <input class="form-control" type="text" name="invoice_of"
                                         value="{{ $yarn_po->invoice_of ?: old('invoice_of') }}"
@@ -457,9 +429,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
 
                             <div class="col-md-3">
                                 <div class="mb-3">
@@ -475,6 +444,7 @@
                             </div>
                         </div>
 
+                    
                         <div>
                             <button class="btn btn-primary" type="submit">Update</button>
                         </div>

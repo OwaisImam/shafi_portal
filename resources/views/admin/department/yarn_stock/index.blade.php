@@ -54,11 +54,15 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col" style="width: 40px;">#</th>
-                                    <th scope="col">Order ID</th>
-                                    <th scope="col">Kg's</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Qty</th>
+                                    <th scope="col">Order Code</th>
+                                    <th scope="col">Received From</th>
+                                    <th scope="col">Delivered To</th>
+                                    <th scope="col">Total Qty</th>
                                     <th scope="col">Received Qty</th>
+                                    <th scope="col">Remaining Qty</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                         </table>

@@ -6,7 +6,6 @@ Contact: themesbrand@gmail.com
 File: contact user list Js File
 */
 
-
 var url = "/";
 var yarn_purchase_orderListData = '';
 var editList = false;
@@ -63,24 +62,88 @@ function loadUserList(datas) {
                 }
             },
             {
-                data: "receiving.yarn_po.order.code",
+                data: "yarn_purchase_order.order.code"
             },
             {
-                data: "kgs",
+                data: "delivery_from_type",
+                render: function (data, type, full, meta) {
+                    if(data === 'company') {
+                        return full.yarn_purchase_order.order.client.name;
+                    }
+                    return full.delivery_from.comapny_name;
+                }
             },
             {
-                data: "unit",
+                data: "delivery_to_type",
+                render: function (data, type, full, meta) {
+                    if(full.delivery_to?.company_name){
+                        return data.toUpperCase() +' - ' + full.delivery_to?.company_name;
+                    } else if(full.delivery_to?.name) {
+                        return data.toUpperCase() +' - ' + full.delivery_to?.name;
+                    }
+                }
             },
             {
-                data: "qty",
+                data: "total_qty"
             },
             {
-                data: "receiving.received_qty"
-            }
+                data: "received_qty"
+            },
+            {
+                data: "remaining_qty"
+            },
+            {
+                data: "type"
+            },
+            {
+                data: "status"
+            },
+            {
+                data: null,
+                'bSortable': false,
+                render: function (data, type, full) {
+                    var hasEditPermission = datas.permissions.some(permission => permission.name === 'yarn_stock-edit');
+                    var hasDeletePermission = datas.permissions.some(permission => permission.name === 'yarn_stock-delete');
+                    var hasViewPermission = datas.permissions.some(permission => permission.name === 'yarn_stock-view');
+                    if (hasDeletePermission || hasEditPermission || hasViewPermission) {
+
+                        var actions = '<ul class="list-inline font-size-20 contact-links mb-0">\
+                        <li class="list-inline-item">\
+                        <div class="dropdown">\
+                        <a href="javascript: void(0);" class="dropdown-toggle card-drop px-2" data-bs-toggle="dropdown" aria-expanded="false">\
+                            <i class="mdi mdi-dots-horizontal font-size-18"></i>\
+                        </a>\
+                        <ul class="dropdown-menu dropdown-menu-end">';
+                        
+                        if (hasViewPermission) {
+                            actions += '<li><a href="./yarn_stock/'+full.id+'" class="dropdown-item remove-list"><i class="mdi mdi-eye font-size-16 text-warning me-1"></i> View</a></li>';
+                        }
+
+                        if (hasEditPermission) {
+                            actions += '<li><a href="./yarn_stock/' + full.id + '/edit" class="dropdown-item edit-list" data-edit-id="' + full.id + '"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>';
+                        }
+
+                        if (hasDeletePermission) {
+                            actions += '<li><a href="#removeYarnStockModal" data-bs-toggle="modal" class="dropdown-item remove-list" data-remove-id="' + full.id + '"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>';
+                        }
+
+                       
+
+                        actions += '</ul>\
+                    </div>\
+                        </li>\
+                    </ul>';
+                    } else {
+                        actions = "";
+                    }
+
+                    return actions;
+                },
+            },
         ],
         drawCallback: function (oSettings) {
-            editContactList();
-            removeYarnPurchaseOrder();
+            editYarnList();
+            removeYarnStock();
         },
     });
 
@@ -94,7 +157,7 @@ function loadUserList(datas) {
 
 
 // create user modal form
-var createContactForms = document.querySelectorAll('.createYarnPurchaseOrder-form')
+var createContactForms = document.querySelectorAll('.createYarnStock-form')
 Array.prototype.slice.call(createContactForms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
@@ -142,7 +205,7 @@ Array.prototype.slice.call(createContactForms).forEach(function (form) {
             loadUserList(yarn_purchase_orderListData)
             form.submit();
 
-            $("#newYarnPurchaseOrderModal").modal("hide");
+            $("#newYarnStockModal").modal("hide");
         }
         form.classList.add('was-validated');
     }, false)
@@ -163,23 +226,23 @@ function findNextId() {
 }
 
 // edit list event
-function editContactList() {
+function editYarnList() {
     var getEditid = 0;
     Array.from(document.querySelectorAll(".edit-list")).forEach(function (elem) {
         elem.addEventListener('click', function (event) {
             getEditid = elem.getAttribute('data-edit-id');
             editList = true;
-            document.getElementById("createYarnPurchaseOrder-form").classList.remove("was-validated");
+            document.getElementById("createYarnStock-form").classList.remove("was-validated");
             yarn_purchase_orderListData.data = yarn_purchase_orderListData.data.map(function (yarn_purchase_order) {
                 if (yarn_purchase_order.id == getEditid) {
-                    document.getElementById("newYarnPurchaseOrderModalLabel").innerHTML = "Edit Yarn Purchase Order";
-                    document.getElementById("addYarnPurchaseOrder-btn").innerHTML = "Update";
+                    document.getElementById("newYarnStockModalLabel").innerHTML = "Edit Yarn Purchase Order";
+                    document.getElementById("addYarnStock-btn").innerHTML = "Update";
                     document.getElementById("yarn_purchase_orderId-input").value = yarn_purchase_order.id;
                     document.getElementById("name-input").value = yarn_purchase_order.name;
                     document.getElementById('switch6').checked = yarn_purchase_order.status == 1 ? 1 : 0;
 
 
-                    var form = document.getElementById('createYarnPurchaseOrder-form');
+                    var form = document.getElementById('createYarnStock-form');
                     var currentAction = form.action;
 
                     // Append the value to the current action
@@ -205,12 +268,12 @@ function editContactList() {
 
 
 // add list event
-Array.from(document.querySelectorAll(".addYarnPurchaseOrder-modal")).forEach(function (elem) {
+Array.from(document.querySelectorAll(".addYarnStock-modal")).forEach(function (elem) {
     elem.addEventListener('click', function (event) {
         editList = false;
-        document.getElementById("createYarnPurchaseOrder-form").classList.remove("was-validated");
-        document.getElementById("newYarnPurchaseOrderModalLabel").innerHTML = "Add Yarn Purchase Order";
-        document.getElementById("addYarnPurchaseOrder-btn").innerHTML = "Add";
+        document.getElementById("createYarnStock-form").classList.remove("was-validated");
+        document.getElementById("newYarnStockModalLabel").innerHTML = "Add Yarn Purchase Order";
+        document.getElementById("addYarnStock-btn").innerHTML = "Add";
         document.getElementById("yarn_purchase_orderId-input").value = "";
         document.getElementById("name-input").value = "";
         document.getElementById("switch6").checked = false;
@@ -230,7 +293,7 @@ function generateSlug() {
 }
 
 // remove yarn_purchase_order
-function removeYarnPurchaseOrder() {
+function removeYarnStock() {
     var getid = 0;
     Array.from(document.querySelectorAll(".remove-list")).forEach(function (yarn_purchase_order) {
         yarn_purchase_order.addEventListener('click', function (event) {
@@ -258,7 +321,7 @@ function removeYarnPurchaseOrder() {
                     $('#userList-table').DataTable().destroy();
                 }
                 loadUserList(yarn_purchase_orderListData);
-                $("#removeYarnPurchaseOrderModal").modal("hide");
+                $("#removeYarnStockModal").modal("hide");
             });
         });
     });
